@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Chat - ReyCloud</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f6f8;
+    color:#111827;
+    height:100vh;
+    overflow:hidden;
+}
+
+.app{
+    display:flex;
+    height:100vh;
+}
+
+.sidebar{
+    width:330px;
+    background:#fff;
+    border-right:1px solid #e5e7eb;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar-header{
+    padding:20px;
+    border-bottom:1px solid #eee;
+}
+
+.sidebar-header h2{
+    font-size:21px;
+    margin-bottom:14px;
+}
+
+.search{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    outline:none;
+    font-size:14px;
+}
+
+.search:focus{
+    border-color:#111827;
+}
+
+.conversations{
+    flex:1;
+    overflow-y:auto;
+}
+
+.conversation{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    cursor:pointer;
+    border-bottom:1px solid #f3f4f6;
+}
+
+.conversation:hover{
+    background:#f9fafb;
+}
+
+.conversation.active{
+    background:#eef2ff;
+}
+
+.avatar{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#e5e7eb;
+    flex-shrink:0;
+}
+
+.avatar-fallback{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    background:#111827;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    flex-shrink:0;
+}
+
+.conv-info{
+    min-width:0;
+    flex:1;
+}
+
+.conv-top{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.conv-name{
+    font-weight:bold;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.conv-time{
+    font-size:11px;
+    color:#9ca3af;
+}
+
+.conv-bottom{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:5px;
+}
+
+.last-message{
+    color:#6b7280;
+    font-size:13px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.unread{
+    background:#111827;
+    color:white;
+    min-width:20px;
+    height:20px;
+    padding:0 6px;
+    border-radius:10px;
+    font-size:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.chat{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.chat-header{
+    height:72px;
+    background:#fff;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 18px;
+}
+
+.chat-user-info{
+    flex:1;
+    min-width:0;
+}
+
+.chat-user-name{
+    font-weight:bold;
+    font-size:16px;
+}
+
+.chat-user-role{
+    font-size:12px;
+    color:#6b7280;
+    margin-top:3px;
+}
+
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.empty{
+    margin:auto;
+    text-align:center;
+    color:#9ca3af;
+}
+
+.message-row{
+    display:flex;
+    width:100%;
+}
+
+.message-row.mine{
+    justify-content:flex-end;
+}
+
+.message{
+    max-width:min(75%,520px);
+    padding:10px 12px;
+    border-radius:15px;
+    background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.05);
+    position:relative;
+}
+
+.message.mine{
+    background:#111827;
+    color:white;
+    border-bottom-right-radius:4px;
+}
+
+.message:not(.mine){
+    border-bottom-left-radius:4px;
+}
+
+.reply-box{
+    border-left:3px solid #9ca3af;
+    background:rgba(0,0,0,.05);
+    padding:7px 9px;
+    margin-bottom:7px;
+    border-radius:6px;
+    font-size:12px;
+}
+
+.mine .reply-box{
+    background:rgba(255,255,255,.1);
+    border-color:#fff;
+}
+
+.reply-name{
+    font-weight:bold;
+    margin-bottom:3px;
+}
+
+.message-text{
+    white-space:pre-wrap;
+    word-break:break-word;
+    line-height:1.4;
+    font-size:14px;
+}
+
+.message-image{
+    max-width:100%;
+    max-height:300px;
+    border-radius:10px;
+    display:block;
+    margin-bottom:7px;
+    cursor:pointer;
+}
+
+.message-meta{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:6px;
+    margin-top:5px;
+    font-size:10px;
+    opacity:.65;
+}
+
+.message-actions{
+    display:flex;
+    gap:5px;
+    margin-top:7px;
+}
+
+.action-btn{
+    border:0;
+    background:rgba(0,0,0,.06);
+    padding:5px 8px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:11px;
+}
+
+.mine .action-btn{
+    background:rgba(255,255,255,.12);
+    color:white;
+}
+
+.reactions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top:7px;
+}
+
+.reaction{
+    border:1px solid #e5e7eb;
+    background:#fff;
+    border-radius:20px;
+    padding:3px 7px;
+    font-size:12px;
+    cursor:pointer;
+    color:#111;
+}
+
+.composer{
+    background:#fff;
+    border-top:1px solid #e5e7eb;
+    padding:12px;
+}
+
+.reply-preview{
+    display:none;
+    padding:8px 10px;
+    margin-bottom:8px;
+    background:#f3f4f6;
+    border-radius:10px;
+    font-size:12px;
+}
+
+.reply-preview.show{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.reply-preview button{
+    border:0;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.image-preview{
+    display:none;
+    margin-bottom:8px;
+    position:relative;
+}
+
+.image-preview.show{
+    display:inline-block;
+}
+
+.image-preview img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.remove-image{
+    position:absolute;
+    top:-7px;
+    right:-7px;
+    width:22px;
+    height:22px;
+    border:0;
+    border-radius:50%;
+    background:#111827;
+    color:#fff;
+    cursor:pointer;
+}
+
+.composer-row{
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+}
+
+.composer textarea{
+    flex:1;
+    resize:none;
+    min-height:44px;
+    max-height:130px;
+    border:1px solid #ddd;
+    border-radius:14px;
+    padding:12px;
+    outline:none;
+    font-family:inherit;
+}
+
+.icon-btn{
+    width:44px;
+    height:44px;
+    border:0;
+    border-radius:12px;
+    background:#f3f4f6;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.send-btn{
+    width:44px;
+    height:44px;
+    border:0;
+    border-radius:12px;
+    background:#111827;
+    color:white;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.send-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.mobile-back{
+    display:none;
+    border:0;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.new-chat{
+    margin-top:10px;
+    width:100%;
+    border:0;
+    background:#111827;
+    color:#fff;
+    padding:11px;
+    border-radius:11px;
+    cursor:pointer;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:20;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:#fff;
+    width:100%;
+    max-width:400px;
+    border-radius:18px;
+    padding:20px;
+}
+
+.modal-box h3{
+    margin-bottom:14px;
+}
+
+.modal-input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+}
+
+.modal-actions{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+}
+
+.modal-actions button{
+    flex:1;
+    padding:11px;
+    border:0;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.cancel{
+    background:#f3f4f6;
+}
+
+.confirm{
+    background:#111827;
+    color:white;
+}
+
+.loading{
+    padding:25px;
+    text-align:center;
+    color:#9ca3af;
+}
+
+.toast{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:#111827;
+    color:#fff;
+    padding:11px 16px;
+    border-radius:10px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:50;
+    font-size:13px;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        width:100%;
+    }
+
+    .chat{
+        display:none;
+        width:100%;
+    }
+
+    .app.chat-open .sidebar{
+        display:none;
+    }
+
+    .app.chat-open .chat{
+        display:flex;
+    }
+
+    .mobile-back{
+        display:block;
+    }
+
+    .message{
+        max-width:85%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app" id="app">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+            <h2>Private Chat</h2>
+
+            <input
+                id="searchInput"
+                class="search"
+                placeholder="Cari username..."
+            >
+
+            <button
+                class="new-chat"
+                onclick="openNewChat()"
+            >
+                + Chat Baru
+            </button>
+        </div>
+
+        <div
+            id="conversationList"
+            class="conversations"
+        >
+            <div class="loading">
+                Memuat conversation...
+            </div>
+        </div>
+
+    </aside>
+
+    <main class="chat">
+
+        <header class="chat-header">
+
+            <button
+                class="mobile-back"
+                onclick="closeChat()"
+            >
+                ←
+            </button>
+
+            <div id="headerAvatar"></div>
+
+            <div class="chat-user-info">
+                <div
+                    id="chatUsername"
+                    class="chat-user-name"
+                >
+                    Pilih chat
+                </div>
+
+                <div
+                    id="chatRole"
+                    class="chat-user-role"
+                >
+                    Belum ada conversation
+                </div>
+            </div>
+
+        </header>
+
+        <section
+            id="messages"
+            class="messages"
+        >
+            <div class="empty">
+                <h3>Private Chat</h3>
+                <p>Pilih conversation untuk mulai chat.</p>
+            </div>
+        </section>
+
+        <div class="composer">
+
+            <div
+                id="replyPreview"
+                class="reply-preview"
+            >
+                <span id="replyText"></span>
+
+                <button
+                    onclick="cancelReply()"
+                >
+                    ×
+                </button>
+            </div>
+
+            <div
+                id="imagePreview"
+                class="image-preview"
+            >
+                <img id="previewImage">
+
+                <button
+                    class="remove-image"
+                    onclick="removeImage()"
+                >
+                    ×
+                </button>
+            </div>
+
+            <div class="composer-row">
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                    hidden
+                >
+
+                <button
+                    class="icon-btn"
+                    onclick="document.getElementById('imageInput').click()"
+                >
+                    📷
+                </button>
+
+                <textarea
+                    id="messageInput"
+                    placeholder="Tulis pesan..."
+                    rows="1"
+                ></textarea>
+
+                <button
+                    id="sendButton"
+                    class="send-btn"
+                    onclick="sendMessage()"
+                >
+                    ➤
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div
+    id="newChatModal"
+    class="modal"
+>
+    <div class="modal-box">
+
+        <h3>Mulai Private Chat</h3>
+
+        <input
+            id="targetUsername"
+            class="modal-input"
+            placeholder="Username tujuan"
+        >
+
+        <div class="modal-actions">
+
+            <button
+                class="cancel"
+                onclick="closeNewChat()"
+            >
+                Batal
+            </button>
+
+            <button
+                class="confirm"
+                onclick="createChat()"
+            >
+                Mulai Chat
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+<script>
+const API =
+    window.API_URL ||
+    "";
+
+const currentUser =
+    localStorage.getItem("username") ||
+    localStorage.getItem("user") ||
+    "";
+
+let activeRoom = null;
+let activeOtherUser = null;
+let conversations = [];
+let currentMessages = [];
+let replyMessage = null;
+let selectedImage = null;
+
+const app =
+    document.getElementById("app");
+
+const conversationList =
+    document.getElementById(
+        "conversationList"
+    );
+
+const messagesEl =
+    document.getElementById(
+        "messages"
+    );
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+const messageInput =
+    document.getElementById(
+        "messageInput"
+    );
+
+const imageInput =
+    document.getElementById(
+        "imageInput"
+    );
+
+function escapeHtml(value){
+    return String(
+        value ?? ""
+    )
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function usernameKey(value){
+    return String(
+        value || ""
+    )
+    .trim()
+    .toLowerCase();
+}
+
+function formatTime(date){
+    if(!date){
+        return "";
+    }
+
+    const d =
+        new Date(date);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+        return "";
+    }
+
+    return d.toLocaleTimeString(
+        "id-ID",
+        {
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+}
+
+function formatDate(date){
+    if(!date){
+        return "";
+    }
+
+    const d =
+        new Date(date);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+        return "";
+    }
+
+    return d.toLocaleDateString(
+        "id-ID",
+        {
+            day:"2-digit",
+            month:"short"
+        }
+    );
+}
+
+function showToast(message){
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    setTimeout(
+        () =>
+            toast.classList.remove(
+                "show"
+            ),
+        2500
+    );
+}
+
+function avatarHtml(
+    user,
+    sizeClass = ""
+){
+    if(user?.avatar){
+        return `
+            <img
+                class="avatar ${sizeClass}"
+                src="${escapeHtml(user.avatar)}"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+            >
+            <div
+                class="avatar-fallback ${sizeClass}"
+                style="display:none"
+            >
+                ${escapeHtml(
+                    String(
+                        user.username ||
+                        "?"
+                    )[0]
+                        .toUpperCase()
+                )}
+            </div>
+        `;
+    }
+
+    return `
+        <div class="avatar-fallback ${sizeClass}">
+            ${escapeHtml(
+                String(
+                    user?.username ||
+                    "?"
+                )[0]
+                    .toUpperCase()
+            )}
+        </div>
+    `;
+}
+
+async function api(
+    url,
+    options = {}
+){
+    const response =
+        await fetch(
+            API + url,
+            {
+                headers:{
+                    "Content-Type":
+                        "application/json",
+                    ...(options.headers || {})
+                },
+                ...options
+            }
+        );
+
+    let data;
+
+    try{
+        data =
+            await response.json();
+    }catch{
+        data = {
+            status:false,
+            message:
+                "Response server tidak valid"
+        };
+    }
+
+    if(!response.ok){
+        throw new Error(
+            data.message ||
+            `HTTP ${response.status}`
+        );
+    }
+
+    return data;
+}
+
+async function loadConversations(){
+
+    if(!currentUser){
+        conversationList.innerHTML = `
+            <div class="loading">
+                Silakan login terlebih dahulu.
+            </div>
+        `;
+        return;
+    }
+
+    try{
+
+        const data =
+            await api(
+                `/api/private/conversations/${encodeURIComponent(currentUser)}`
+            );
+
+        conversations =
+            Array.isArray(
+                data.result
+            )
+                ? data.result
+                : [];
+
+        renderConversations();
+
+    }catch(error){
+
+        console.error(error);
+
+        conversationList.innerHTML = `
+            <div class="loading">
+                ${escapeHtml(
+                    error.message
+                )}
+            </div>
+        `;
+    }
+}
+
+function renderConversations(){
+
+    const query =
+        usernameKey(
+            searchInput.value
+        );
+
+    const filtered =
+        conversations.filter(
+            room => {
+
+                const other =
+                    room.otherUser?.username ||
+                    "";
+
+                return usernameKey(
+                    other
+                ).includes(
+                    query
+                );
+            }
+        );
+
+    if(!filtered.length){
+
+        conversationList.innerHTML = `
+            <div class="loading">
+                Belum ada conversation.
+            </div>
+        `;
+
+        return;
+    }
+
+    conversationList.innerHTML =
+        filtered.map(
+            room => {
+
+                const other =
+                    room.otherUser ||
+                    {
+                        username:"Unknown"
+                    };
+
+                const active =
+                    activeRoom?.id ===
+                    room.id;
+
+                const unread =
+                    Number(
+                        room.unread || 0
+                    );
+
+                return `
+                    <div
+                        class="conversation ${active ? "active" : ""}"
+                        onclick="openConversation('${escapeHtml(room.id)}')"
+                    >
+
+                        ${avatarHtml(other)}
+
+                        <div class="conv-info">
+
+                            <div class="conv-top">
+
+                                <div class="conv-name">
+                                    ${escapeHtml(
+                                        other.username
+                                    )}
+                                </div>
+
+                                <div class="conv-time">
+                                    ${formatDate(
+                                        room.lastMessageAt ||
+                                        room.createdAt
+                                    )}
+                                </div>
+
+                            </div>
+
+                            <div class="conv-bottom">
+
+                                <div class="last-message">
+                                    ${escapeHtml(
+                                        room.lastMessage ||
+                                        "Belum ada pesan"
+                                    )}
+                                </div>
+
+                                ${
+                                    unread > 0
+                                        ? `
+                                            <div class="unread">
+                                                ${unread > 99 ? "99+" : unread}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+            }
+        ).join("");
+}
+
+async function openConversation(
+    roomId
+){
+
+    const room =
+        conversations.find(
+            item =>
+                item.id ===
+                roomId
+        );
+
+    if(!room){
+        return;
+    }
+
+    activeRoom =
+        room;
+
+    activeOtherUser =
+        room.otherUser;
+
+    app.classList.add(
+        "chat-open"
+    );
+
+    renderHeader();
+
+    await loadMessages();
+
+    await markRead();
+
+    await loadConversations();
+}
+
+function renderHeader(){
+
+    const user =
+        activeOtherUser ||
+        {};
+
+    document.getElementById(
+        "chatUsername"
+    ).textContent =
+        user.username ||
+        "Private Chat";
+
+    document.getElementById(
+        "chatRole"
+    ).textContent =
+        user.role ||
+        "member";
+
+    document.getElementById(
+        "headerAvatar"
+    ).innerHTML =
+        avatarHtml(user);
+}
+
+async function loadMessages(){
+
+    if(!activeRoom){
+        return;
+    }
+
+    messagesEl.innerHTML = `
+        <div class="loading">
+            Memuat pesan...
+        </div>
+    `;
+
+    try{
+
+        const data =
+            await api(
+                `/api/private/${encodeURIComponent(activeRoom.id)}/messages?username=${encodeURIComponent(currentUser)}`
+            );
+
+        currentMessages =
+            Array.isArray(
+                data.result
+            )
+                ? data.result
+                : [];
+
+        renderMessages();
+
+    }catch(error){
+
+        console.error(error);
+
+        messagesEl.innerHTML = `
+            <div class="empty">
+                ${escapeHtml(
+                    error.message
+                )}
+            </div>
+        `;
+    }
+}
+
+function renderMessages(){
+
+    if(!currentMessages.length){
+
+        messagesEl.innerHTML = `
+            <div class="empty">
+                <h3>Belum ada pesan</h3>
+                <p>Mulai percakapan sekarang 👋</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    messagesEl.innerHTML =
+        currentMessages.map(
+            message => {
+
+                const mine =
+                    usernameKey(
+                        message.sender
+                    ) ===
+                    usernameKey(
+                        currentUser
+                    );
+
+                const reply =
+                    message.replyTo;
+
+                const reactions =
+                    Array.isArray(
+                        message.reactions
+                    )
+                        ? message.reactions
+                        : [];
+
+                return `
+                    <div
+                        class="message-row ${mine ? "mine" : ""}"
+                    >
+
+                        <div
+                            class="message ${mine ? "mine" : ""}"
+                        >
+
+                            ${
+                                reply
+                                    ? `
+                                        <div class="reply-box">
+
+                                            <div class="reply-name">
+                                                ${escapeHtml(
+                                                    reply.sender
+                                                )}
+                                            </div>
+
+                                            <div>
+                                                ${
+                                                    reply.message
+                                                        ? escapeHtml(
+                                                            reply.message
+                                                        )
+                                                        : "📷 Foto"
+                                                }
+                                            </div>
+
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                message.image
+                                    ? `
+                                        <img
+                                            class="message-image"
+                                            src="${escapeHtml(message.image)}"
+                                            onclick="window.open('${escapeHtml(message.image)}','_blank')"
+                                        >
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                message.message
+                                    ? `
+                                        <div class="message-text">
+                                            ${escapeHtml(
+                                                message.message
+                                            )}
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                reactions.length
+                                    ? `
+                                        <div class="reactions">
+                                            ${reactions.map(
+                                                reaction => `
+                                                    <button
+                                                        class="reaction"
+                                                        onclick="toggleReaction('${escapeHtml(message.id)}','${escapeHtml(reaction.emoji)}')"
+                                                    >
+                                                        ${escapeHtml(reaction.emoji)}
+                                                        ${reaction.users?.length || 0}
+                                                    </button>
+                                                `
+                                            ).join("")}
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            <div class="message-meta">
+                                ${formatTime(
+                                    message.createdAt
+                                )}
+                            </div>
+
+                            <div class="message-actions">
+
+                                <button
+                                    class="action-btn"
+                                    onclick="replyToMessage('${escapeHtml(message.id)}')"
+                                >
+                                    ↩ Reply
+                                </button>
+
+                                <button
+                                    class="action-btn"
+                                    onclick="toggleReaction('${escapeHtml(message.id)}','❤️')"
+                                >
+                                    ❤️
+                                </button>
+
+                                <button
+                                    class="action-btn"
+                                    onclick="toggleReaction('${escapeHtml(message.id)}','👍')"
+                                >
+                                    👍
+                                </button>
+
+                                ${
+                                    mine
+                                        ? `
+                                            <button
+                                                class="action-btn"
+                                                onclick="deleteMessage('${escapeHtml(message.id)}')"
+                                            >
+                                                🗑
+                                            </button>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+            }
+        ).join("");
+
+    scrollMessages();
+}
+
+function scrollMessages(){
+
+    requestAnimationFrame(
+        () => {
+            messagesEl.scrollTop =
+                messagesEl.scrollHeight;
+        }
+    );
+}
+
+function replyToMessage(
+    messageId
+){
+
+    const message =
+        currentMessages.find(
+            item =>
+                item.id ===
+                messageId
+        );
+
+    if(!message){
+        return;
+    }
+
+    replyMessage =
+        message;
+
+    document.getElementById(
+        "replyText"
+    ).textContent =
+        `${message.sender}: ${
+            message.message ||
+            "📷 Foto"
+        }`;
+
+    document.getElementById(
+        "replyPreview"
+    ).classList.add(
+        "show"
+    );
+
+    messageInput.focus();
+}
+
+function cancelReply(){
+
+    replyMessage =
+        null;
+
+    document.getElementById(
+        "replyPreview"
+    ).classList.remove(
+        "show"
+    );
+
+    document.getElementById(
+        "replyText"
+    ).textContent =
+        "";
+}
+
+imageInput.addEventListener(
+    "change",
+    () => {
+
+        const file =
+            imageInput.files?.[0];
+
+        if(!file){
+            return;
+        }
+
+        if(
+            !file.type.startsWith(
+                "image/"
+            )
+        ){
+            showToast(
+                "File harus berupa gambar"
+            );
+
+            imageInput.value = "";
+
+            return;
+        }
+
+        if(
+            file.size >
+            5 * 1024 * 1024
+        ){
+            showToast(
+                "Ukuran gambar maksimal 5MB"
+            );
+
+            imageInput.value = "";
+
+            return;
+        }
+
+        selectedImage =
+            file;
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+            event => {
+
+                document.getElementById(
+                    "previewImage"
+                ).src =
+                    event.target.result;
+
+                document.getElementById(
+                    "imagePreview"
+                ).classList.add(
+                    "show"
+                );
+            };
+
+        reader.readAsDataURL(
+            file
+        );
+    }
+);
+
+function removeImage(){
+
+    selectedImage =
+        null;
+
+    imageInput.value =
+        "";
+
+    document.getElementById(
+        "imagePreview"
+    ).classList.remove(
+        "show"
+    );
+
+    document.getElementById(
+        "previewImage"
+    ).src =
+        "";
+}
+
+async function uploadImage(
+    file
+){
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "file",
+        file
+    );
+
+    const response =
+        await fetch(
+            API + "/upload",
+            {
+                method:"POST",
+                body:formData
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if(!response.ok || !data.status){
+        throw new Error(
+            data.message ||
+            "Upload gambar gagal"
+        );
+    }
+
+    return (
+        data.url ||
+        data.result?.url ||
+        data.result?.file?.url ||
+        ""
+    );
+}
+
+async function sendMessage(){
+
+    if(!activeRoom){
+        showToast(
+            "Pilih conversation terlebih dahulu"
+        );
+
+        return;
+    }
+
+    const message =
+        messageInput.value
+            .trim();
+
+    if(
+        !message &&
+        !selectedImage
+    ){
+        return;
+    }
+
+    const sendButton =
+        document.getElementById(
+            "sendButton"
+        );
+
+    sendButton.disabled =
+        true;
+
+    try{
+
+        let imageUrl =
+            "";
+
+        if(selectedImage){
+
+            showToast(
+                "Mengupload foto..."
+            );
+
+            imageUrl =
+                await uploadImage(
+                    selectedImage
+                );
+        }
+
+        const body = {
+            username:
+                currentUser,
+
+            message,
+
+            image:
+                imageUrl,
+
+            replyTo:
+                replyMessage?.id ||
+                ""
+        };
+
+        const data =
+            await api(
+                `/api/private/${encodeURIComponent(activeRoom.id)}/messages`,
+                {
+                    method:"POST",
+                    body:JSON.stringify(
+                        body
+                    )
+                }
+            );
+
+        if(data.status){
+
+            currentMessages.push(
+                data.result
+            );
+
+            messageInput.value =
+                "";
+
+            cancelReply();
+
+            removeImage();
+
+            renderMessages();
+
+            await loadConversations();
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            error.message ||
+            "Gagal mengirim pesan"
+        );
+
+    }finally{
+
+        sendButton.disabled =
+            false;
+    }
+}
+
+async function deleteMessage(
+    messageId
+){
+
+    if(
+        !confirm(
+            "Hapus pesan ini?"
+        )
+    ){
+        return;
+    }
+
+    try{
+
+        await api(
+            `/api/private/${encodeURIComponent(activeRoom.id)}/messages/${encodeURIComponent(messageId)}`,
+            {
+                method:"DELETE",
+                body:JSON.stringify({
+                    username:
+                        currentUser
+                })
+            }
+        );
+
+        currentMessages =
+            currentMessages.filter(
+                message =>
+                    message.id !==
+                    messageId
+            );
+
+        renderMessages();
+
+        await loadConversations();
+
+        showToast(
+            "Pesan dihapus"
+        );
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+async function toggleReaction(
+    messageId,
+    emoji
+){
+
+    try{
+
+        const message =
+            currentMessages.find(
+                item =>
+                    item.id ===
+                    messageId
+            );
+
+        if(!message){
+            return;
+        }
+
+        const reaction =
+            Array.isArray(
+                message.reactions
+            )
+                ? message.reactions.find(
+                    item =>
+                        item.emoji ===
+                        emoji
+                )
+                : null;
+
+        const userKey =
+            usernameKey(
+                currentUser
+            );
+
+        const alreadyReacted =
+            reaction?.users?.includes(
+                userKey
+            );
+
+        if(alreadyReacted){
+
+            await api(
+                `/api/messages/${encodeURIComponent(messageId)}/reaction`,
+                {
+                    method:"DELETE",
+                    body:JSON.stringify({
+                        username:
+                            currentUser,
+                        emoji
+                    })
+                }
+            );
+
+        }else{
+
+            await api(
+                `/api/private/${encodeURIComponent(activeRoom.id)}/messages/${encodeURIComponent(messageId)}/reaction`,
+                {
+                    method:"POST",
+                    body:JSON.stringify({
+                        username:
+                            currentUser,
+                        emoji
+                    })
+                }
+            );
+        }
+
+        await loadMessages();
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+async function markRead(){
+
+    if(!activeRoom){
+        return;
+    }
+
+    try{
+
+        await api(
+            `/api/private/${encodeURIComponent(activeRoom.id)}/read`,
+            {
+                method:"POST",
+                body:JSON.stringify({
+                    username:
+                        currentUser
+                })
+            }
+        );
+
+    }catch(error){
+
+        console.error(
+            "READ ERROR",
+            error
+        );
+    }
+}
+
+function openNewChat(){
+
+    document.getElementById(
+        "newChatModal"
+    ).classList.add(
+        "show"
+    );
+
+    document.getElementById(
+        "targetUsername"
+    ).value =
+        "";
+
+    document.getElementById(
+        "targetUsername"
+    ).focus();
+}
+
+function closeNewChat(){
+
+    document.getElementById(
+        "newChatModal"
+    ).classList.remove(
+        "show"
+    );
+}
+
+async function createChat(){
+
+    const target =
+        document.getElementById(
+            "targetUsername"
+        ).value.trim();
+
+    if(!target){
+        showToast(
+            "Username tujuan wajib diisi"
+        );
+
+        return;
+    }
+
+    if(
+        usernameKey(target) ===
+        usernameKey(currentUser)
+    ){
+        showToast(
+            "Tidak bisa chat dengan diri sendiri"
+        );
+
+        return;
+    }
+
+    try{
+
+        const data =
+            await api(
+                "/api/private/conversations",
+                {
+                    method:"POST",
+                    body:JSON.stringify({
+                        username:
+                            currentUser,
+                        targetUsername:
+                            target
+                    })
+                }
+            );
+
+        closeNewChat();
+
+        await loadConversations();
+
+        if(data.result?.id){
+
+            await openConversation(
+                data.result.id
+            );
+        }
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+function closeChat(){
+
+    app.classList.remove(
+        "chat-open"
+    );
+
+    activeRoom =
+        null;
+
+    activeOtherUser =
+        null;
+
+    document.getElementById(
+        "chatUsername"
+    ).textContent =
+        "Pilih chat";
+
+    document.getElementById(
+        "chatRole"
+    ).textContent =
+        "Belum ada conversation";
+
+    document.getElementById(
+        "headerAvatar"
+    ).innerHTML =
+        "";
+
+    messagesEl.innerHTML = `
+        <div class="empty">
+            <h3>Private Chat</h3>
+            <p>Pilih conversation untuk mulai chat.</p>
+        </div>
+    `;
+}
+
+searchInput.addEventListener(
+    "input",
+    renderConversations
+);
+
+messageInput.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key ===
+                "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            sendMessage();
+        }
+    }
+);
+
+messageInput.addEventListener(
+    "input",
+    () => {
+
+        messageInput.style.height =
+            "auto";
+
+        messageInput.style.height =
+            Math.min(
+                messageInput.scrollHeight,
+                130
+            ) + "px";
+    }
+);
+
+setInterval(
+    async () => {
+
+        if(!activeRoom){
+            return;
+        }
+
+        try{
+
+            await loadMessages();
+
+            await markRead();
+
+            await loadConversations();
+
+        }catch(error){
+
+            console.error(
+                "AUTO REFRESH ERROR",
+                error
+            );
+        }
+
+    },
+    5000
+);
+
+loadConversations();
+</script>
+
+</body>
+</html>
