@@ -19,6 +19,11 @@ body{
     color:#111827;
 }
 
+button,
+input{
+    font-family:inherit;
+}
+
 .app{
     min-height:100vh;
     display:flex;
@@ -213,28 +218,6 @@ body{
     overflow:hidden;
 }
 
-.chat-header::before{
-    content:"";
-    position:absolute;
-    width:220px;
-    height:220px;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:50%;
-    right:-80px;
-    top:-100px;
-}
-
-.chat-header::after{
-    content:"";
-    position:absolute;
-    width:140px;
-    height:140px;
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:50%;
-    right:50px;
-    bottom:-100px;
-}
-
 .chat-header h1{
     position:relative;
     z-index:1;
@@ -306,10 +289,6 @@ body{
     color:#4b5563;
 }
 
-.refresh-btn:hover{
-    background:#f9fafb;
-}
-
 .messages{
     flex:1;
     overflow-y:auto;
@@ -342,21 +321,11 @@ body{
     font-size:21px;
 }
 
-.empty strong{
-    color:#6b7280;
-    font-size:14px;
-}
-
-.empty p{
-    font-size:12px;
-    margin-top:4px;
-    max-width:300px;
-}
-
 .message{
     display:flex;
     gap:10px;
     max-width:80%;
+    user-select:none;
 }
 
 .message.mine{
@@ -376,10 +345,6 @@ body{
     justify-content:center;
     font-size:11px;
     font-weight:800;
-}
-
-.message.mine .message-avatar{
-    background:#374151;
 }
 
 .message-content{
@@ -435,10 +400,92 @@ body{
     color:#fff;
 }
 
+.chat-image{
+    display:block;
+    max-width:300px;
+    width:100%;
+    max-height:320px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:7px;
+    cursor:pointer;
+}
+
+.reply-preview{
+    background:#f3f4f6;
+    border-left:3px solid #6b7280;
+    padding:7px 9px;
+    border-radius:7px;
+    margin-bottom:7px;
+    font-size:10px;
+    color:#6b7280;
+}
+
+.message.mine .reply-preview{
+    background:#374151;
+    border-left-color:#d1d5db;
+    color:#e5e7eb;
+}
+
+.reply-preview strong{
+    display:block;
+    margin-bottom:2px;
+}
+
+.reply-preview span{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
 .chat-input{
     padding:13px;
     border-top:1px solid #e5e7eb;
     background:#fff;
+}
+
+.reply-bar{
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#f3f4f6;
+    border-left:3px solid #111827;
+    border-radius:8px;
+    padding:8px 10px;
+    margin-bottom:9px;
+    font-size:11px;
+}
+
+.reply-bar.show{
+    display:flex;
+}
+
+.reply-info{
+    min-width:0;
+}
+
+.reply-info strong{
+    display:block;
+    font-size:11px;
+}
+
+.reply-info span{
+    display:block;
+    color:#6b7280;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    max-width:500px;
+}
+
+.cancel-reply{
+    border:0;
+    background:transparent;
+    cursor:pointer;
+    font-size:16px;
+    color:#6b7280;
 }
 
 .input-wrap{
@@ -455,13 +502,24 @@ body{
     font-size:13px;
     color:#111827;
     background:#fafafa;
-    transition:.2s;
 }
 
 .input-wrap input:focus{
     border-color:#9ca3af;
     background:#fff;
-    box-shadow:0 0 0 3px #f3f4f6;
+}
+
+.file-btn{
+    width:45px;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    background:#fff;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.file-btn:hover{
+    background:#f3f4f6;
 }
 
 .send-btn{
@@ -472,16 +530,45 @@ body{
     color:#fff;
     cursor:pointer;
     font-size:16px;
-    transition:.2s;
 }
 
-.send-btn:hover{
-    background:#374151;
-}
-
-.send-btn:disabled{
+.send-btn:disabled,
+.file-btn:disabled{
     opacity:.5;
     cursor:not-allowed;
+}
+
+.image-preview{
+    display:none;
+    position:relative;
+    width:max-content;
+    max-width:100%;
+    margin-bottom:9px;
+}
+
+.image-preview.show{
+    display:block;
+}
+
+.image-preview img{
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border-radius:9px;
+    border:1px solid #e5e7eb;
+}
+
+.remove-image{
+    position:absolute;
+    right:-7px;
+    top:-7px;
+    width:22px;
+    height:22px;
+    border:0;
+    border-radius:50%;
+    background:#111827;
+    color:#fff;
+    cursor:pointer;
 }
 
 .input-info{
@@ -502,6 +589,85 @@ body{
     border-radius:8px;
     cursor:pointer;
 }
+
+
+/* LONG PRESS MENU */
+
+.context-menu{
+    position:fixed;
+    z-index:100;
+    display:none;
+    min-width:150px;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    box-shadow:0 15px 40px rgba(0,0,0,.14);
+    padding:6px;
+}
+
+.context-menu.show{
+    display:block;
+}
+
+.context-menu button{
+    width:100%;
+    border:0;
+    background:transparent;
+    text-align:left;
+    padding:10px 11px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:12px;
+    color:#374151;
+}
+
+.context-menu button:hover{
+    background:#f3f4f6;
+}
+
+.context-menu .delete-option{
+    color:#dc2626;
+}
+
+
+/* IMAGE VIEWER */
+
+.image-viewer{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    z-index:200;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.image-viewer.show{
+    display:flex;
+}
+
+.image-viewer img{
+    max-width:95vw;
+    max-height:90vh;
+    object-fit:contain;
+    border-radius:10px;
+}
+
+.close-viewer{
+    position:absolute;
+    top:20px;
+    right:20px;
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:#fff;
+    color:#111827;
+    cursor:pointer;
+    font-size:20px;
+}
+
 
 @media(max-width:800px){
 
@@ -532,14 +698,6 @@ body{
         padding:15px;
     }
 
-    .chat-header{
-        padding:21px;
-    }
-
-    .chat-header h1{
-        font-size:21px;
-    }
-
     .chat-box{
         height:calc(100vh - 225px);
         min-height:450px;
@@ -562,6 +720,11 @@ body{
 
     .chat-header{
         border-radius:13px;
+        padding:21px;
+    }
+
+    .chat-header h1{
+        font-size:21px;
     }
 
     .chat-box{
@@ -575,6 +738,15 @@ body{
     .message{
         max-width:96%;
     }
+
+    .chat-image{
+        max-width:230px;
+        max-height:260px;
+    }
+
+    .reply-info span{
+        max-width:220px;
+    }
 }
 </style>
 </head>
@@ -583,231 +755,316 @@ body{
 
 <div class="app">
 
-    <aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
 
-        <div class="logo">
-            <div class="logo-icon">R</div>
-
-            <div class="logo-text">
-                ReyCloud <span>Panel</span>
-            </div>
+    <div class="logo">
+        <div class="logo-icon">R</div>
+        <div class="logo-text">
+            ReyCloud <span>Panel</span>
         </div>
+    </div>
 
-        <div class="nav-title">
-            Menu
-        </div>
+    <div class="nav-title">Menu</div>
 
-        <nav class="nav">
+    <nav class="nav">
+        <a href="dashboard.html">
+            <span>⌂</span>
+            Dashboard
+        </a>
 
-            <a href="dashboard.html">
-                <span>⌂</span>
-                Dashboard
-            </a>
+        <a href="cpanel.html">
+            <span>▣</span>
+            Create Panel
+        </a>
 
-            <a href="cpanel.html">
-                <span>▣</span>
-                Create Panel
-            </a>
+        <a href="cadmin.html">
+            <span>♙</span>
+            Create Admin
+        </a>
 
-            <a href="cadmin.html">
-                <span>♙</span>
-                Create Admin
-            </a>
+        <a href="chat.html" class="active">
+            <span>◉</span>
+            Public Chat
+        </a>
+    </nav>
 
-            <a href="chat.html" class="active">
-                <span>◉</span>
-                Public Chat
-            </a>
+    <div class="sidebar-user">
 
-        </nav>
+        <div class="user-mini">
 
-        <div class="sidebar-user">
-
-            <div class="user-mini">
-
-                <div
-                    class="avatar"
-                    id="sidebarAvatar"
-                >
-                    R
-                </div>
-
-                <div class="user-info">
-
-                    <strong id="sidebarUsername">
-                        User
-                    </strong>
-
-                    <span id="sidebarRole">
-                        member
-                    </span>
-
-                </div>
-
+            <div class="avatar" id="sidebarAvatar">
+                R
             </div>
 
-        </div>
+            <div class="user-info">
 
-    </aside>
+                <strong id="sidebarUsername">
+                    User
+                </strong>
 
-
-    <main class="main">
-
-        <header class="topbar">
-
-            <div
-                style="
-                    display:flex;
-                    align-items:center;
-                    gap:10px
-                "
-            >
-
-                <button
-                    class="mobile-menu"
-                    id="mobileMenu"
-                    type="button"
-                >
-                    ☰
-                </button>
-
-                <div class="page-title">
-                    Public Chat
-                </div>
-
-            </div>
-
-            <div class="status">
-
-                <span
-                    class="status-dot"
-                    id="statusDot"
-                ></span>
-
-                <span id="statusText">
-                    Connecting...
+                <span id="sidebarRole">
+                    member
                 </span>
 
             </div>
 
-        </header>
+        </div>
+
+    </div>
+
+</aside>
 
 
-        <section class="content">
+<main class="main">
 
-            <div class="chat-header">
+<header class="topbar">
 
-                <h1>
-                    💬 Public Chat
-                </h1>
+    <div style="display:flex;align-items:center;gap:10px">
 
-                <p>
-                    Ngobrol bersama pengguna ReyCloud lainnya.
-                </p>
+        <button
+            class="mobile-menu"
+            id="mobileMenu"
+            type="button"
+        >
+            ☰
+        </button>
 
-            </div>
+        <div class="page-title">
+            Public Chat
+        </div>
 
+    </div>
 
-            <div class="chat-box">
+    <div class="status">
 
-                <div class="chat-top">
+        <span
+            class="status-dot"
+            id="statusDot"
+        ></span>
 
-                    <div class="chat-top-left">
+        <span id="statusText">
+            Connecting...
+        </span>
 
-                        <div class="chat-icon">
-                            💬
-                        </div>
+    </div>
 
-                        <div>
-
-                            <strong>
-                                ReyCloud Community
-                            </strong>
-
-                            <small id="messageCount">
-                                Memuat pesan...
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="refresh-btn"
-                        id="refreshBtn"
-                        type="button"
-                    >
-                        ↻ Refresh
-                    </button>
-
-                </div>
+</header>
 
 
-                <div
-                    class="messages"
-                    id="messages"
-                >
+<section class="content">
 
-                    <div class="empty">
+<div class="chat-header">
 
-                        <div class="empty-icon">
-                            ⏳
-                        </div>
+    <h1>💬 Public Chat</h1>
 
-                        <strong>
-                            Memuat chat...
-                        </strong>
+    <p>
+        Ngobrol bersama pengguna ReyCloud lainnya.
+    </p>
 
-                        <p>
-                            Tunggu sebentar
-                        </p>
-
-                    </div>
-
-                </div>
+</div>
 
 
-                <div class="chat-input">
+<div class="chat-box">
 
-                    <div class="input-wrap">
+<div class="chat-top">
 
-                        <input
-                            type="text"
-                            id="messageInput"
-                            maxlength="1000"
-                            autocomplete="off"
-                            placeholder="Tulis pesan..."
-                        >
+    <div class="chat-top-left">
 
-                        <button
-                            class="send-btn"
-                            id="sendBtn"
-                            type="button"
-                        >
-                            ➤
-                        </button>
+        <div class="chat-icon">
+            💬
+        </div>
 
-                    </div>
+        <div>
 
-                    <div class="input-info">
+            <strong>
+                ReyCloud Community
+            </strong>
 
-                        <span>
-                            Chat publik
-                        </span>
+            <small id="messageCount">
+                Memuat pesan...
+            </small>
 
-                        <span id="charCount">
-                            0/1000
-                        </span>
+        </div>
 
-                    </div>
+    </div>
 
-                </div>
+    <button
+        class="refresh-btn"
+        id="refreshBtn"
+        type="button"
+    >
+        ↻ Refresh
+    </button>
 
-            </div>
+</div>
 
-        </section>
 
-    </main>
+<div
+    class="messages"
+    id="messages"
+>
+    <div class="empty">
+        <div class="empty-icon">⏳</div>
+        <strong>Memuat chat...</strong>
+        <p>Tunggu sebentar</p>
+    </div>
+</div>
+
+
+<div class="chat-input">
+
+    <div
+        class="reply-bar"
+        id="replyBar"
+    >
+
+        <div class="reply-info">
+
+            <strong id="replyUsername">
+                Reply
+            </strong>
+
+            <span id="replyMessage">
+                -
+            </span>
+
+        </div>
+
+        <button
+            class="cancel-reply"
+            id="cancelReply"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        class="image-preview"
+        id="imagePreview"
+    >
+
+        <img
+            id="previewImage"
+            alt="Preview"
+        >
+
+        <button
+            class="remove-image"
+            id="removeImage"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="input-wrap">
+
+        <input
+            type="file"
+            id="imageInput"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            hidden
+        >
+
+        <button
+            class="file-btn"
+            id="fileBtn"
+            type="button"
+        >
+            🖼️
+        </button>
+
+        <input
+            type="text"
+            id="messageInput"
+            maxlength="1000"
+            autocomplete="off"
+            placeholder="Tulis pesan..."
+        >
+
+        <button
+            class="send-btn"
+            id="sendBtn"
+            type="button"
+        >
+            ➤
+        </button>
+
+    </div>
+
+
+    <div class="input-info">
+
+        <span id="uploadStatus">
+            Chat publik
+        </span>
+
+        <span id="charCount">
+            0/1000
+        </span>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- CONTEXT MENU -->
+
+<div
+    class="context-menu"
+    id="contextMenu"
+>
+
+    <button
+        id="replyAction"
+        type="button"
+    >
+        ↩️ Reply
+    </button>
+
+    <button
+        id="deleteAction"
+        class="delete-option"
+        type="button"
+    >
+        🗑️ Hapus
+    </button>
+
+</div>
+
+
+<!-- IMAGE VIEWER -->
+
+<div
+    class="image-viewer"
+    id="imageViewer"
+>
+
+    <button
+        class="close-viewer"
+        id="closeViewer"
+        type="button"
+    >
+        ×
+    </button>
+
+    <img
+        id="viewerImage"
+        alt="Image"
+    >
 
 </div>
 
@@ -820,10 +1077,20 @@ const API_BASE =
 const API_CHAT =
     `${API_BASE}/api/chat`;
 
+const API_UPLOAD =
+    `${API_BASE}/upload`;
+
+const MAX_IMAGE_SIZE =
+    5 * 1024 * 1024;
+
 let currentUser = null;
 let loading = false;
-let lastMessagesHash = "";
 let initialized = false;
+let lastMessagesHash = "";
+
+let selectedImage = null;
+let replyTarget = null;
+let contextTarget = null;
 
 
 /* =========================
@@ -832,16 +1099,14 @@ let initialized = false;
 
 function getUser(){
 
-    const possibleKeys = [
+    const keys = [
         "user",
         "currentUser",
         "reycloud_user",
         "loginUser"
     ];
 
-    for(
-        const key of possibleKeys
-    ){
+    for(const key of keys){
 
         try{
 
@@ -880,12 +1145,11 @@ function getUser(){
         }catch(error){
 
             console.error(
-                `[STORAGE ERROR] ${key}`,
+                "[STORAGE]",
                 error
             );
 
         }
-
     }
 
     return null;
@@ -893,7 +1157,7 @@ function getUser(){
 
 
 /* =========================
-   USER SETUP
+   USER
 ========================= */
 
 function setupUser(){
@@ -901,15 +1165,10 @@ function setupUser(){
     currentUser =
         getUser();
 
-    console.log(
-        "[REYCLOUD USER]",
-        currentUser
-    );
-
     if(!currentUser){
 
         alert(
-            "Session login tidak ditemukan. Silakan login terlebih dahulu."
+            "Session login tidak ditemukan."
         );
 
         window.location.href =
@@ -952,7 +1211,7 @@ function setupUser(){
 
 
 /* =========================
-   HTML SECURITY
+   SECURITY
 ========================= */
 
 function escapeHTML(value){
@@ -960,32 +1219,30 @@ function escapeHTML(value){
     return String(
         value ?? ""
     )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 }
 
 
 /* =========================
    FORMAT
 ========================= */
+
+function formatRole(role){
+
+    return String(
+        role || "member"
+    )
+        .replace(
+            /\b\w/g,
+            char =>
+                char.toUpperCase()
+        );
+}
+
 
 function formatTime(date){
 
@@ -1010,21 +1267,8 @@ function formatTime(date){
 }
 
 
-function formatRole(role){
-
-    return String(
-        role || "member"
-    )
-        .replace(
-            /\b\w/g,
-            char =>
-                char.toUpperCase()
-        );
-}
-
-
 /* =========================
-   API STATUS
+   STATUS
 ========================= */
 
 function setApiStatus(
@@ -1058,6 +1302,7 @@ function setApiStatus(
 
         text.textContent =
             "API Offline";
+
     }
 }
 
@@ -1083,28 +1328,12 @@ async function loadMessages(
                 API_CHAT,
                 {
                     method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        "Accept":
-                            "application/json"
-                    }
+                    cache:"no-store"
                 }
             );
 
-        let data = null;
-
-        try{
-
-            data =
-                await response.json();
-
-        }catch{
-
-            throw new Error(
-                `Server mengembalikan response tidak valid (${response.status})`
-            );
-
-        }
+        const data =
+            await response.json();
 
         if(
             !response.ok ||
@@ -1113,7 +1342,7 @@ async function loadMessages(
 
             throw new Error(
                 data.message ||
-                `Gagal mengambil chat (${response.status})`
+                "Gagal mengambil chat"
             );
         }
 
@@ -1126,15 +1355,15 @@ async function loadMessages(
                 ? data.result
                 : [];
 
-        const hash =
-            JSON.stringify(
-                messages
-            );
-
         document.getElementById(
             "messageCount"
         ).textContent =
             `${messages.length} pesan`;
+
+        const hash =
+            JSON.stringify(
+                messages
+            );
 
         if(
             hash ===
@@ -1167,28 +1396,6 @@ async function loadMessages(
         ).textContent =
             "Gagal terhubung";
 
-        document.getElementById(
-            "messages"
-        ).innerHTML = `
-            <div class="empty">
-
-                <div class="empty-icon">
-                    ⚠️
-                </div>
-
-                <strong>
-                    Gagal memuat chat
-                </strong>
-
-                <p>
-                    ${escapeHTML(
-                        error.message
-                    )}
-                </p>
-
-            </div>
-        `;
-
     }finally{
 
         loading = false;
@@ -1214,7 +1421,6 @@ function renderMessages(
 
         container.innerHTML = `
             <div class="empty">
-
                 <div class="empty-icon">
                     💬
                 </div>
@@ -1226,7 +1432,6 @@ function renderMessages(
                 <p>
                     Jadilah orang pertama yang mengirim pesan.
                 </p>
-
             </div>
         `;
 
@@ -1242,92 +1447,14 @@ function renderMessages(
     container.innerHTML =
         messages
             .map(
-                chat => {
-
-                    const usernameRaw =
-                        String(
-                            chat.username ||
-                            "User"
-                        );
-
-                    const currentUsername =
-                        String(
-                            currentUser?.username ||
-                            ""
-                        );
-
-                    const isMine =
-                        usernameRaw
-                            .toLowerCase() ===
-                        currentUsername
-                            .toLowerCase();
-
-                    const username =
-                        escapeHTML(
-                            usernameRaw
-                        );
-
-                    const role =
-                        escapeHTML(
-                            formatRole(
-                                chat.role
-                            )
-                        );
-
-                    const message =
-                        escapeHTML(
-                            chat.message
-                        );
-
-                    const initial =
-                        usernameRaw
-                            .charAt(0)
-                            .toUpperCase();
-
-                    return `
-                        <div class="message ${
-                            isMine
-                                ? "mine"
-                                : ""
-                        }">
-
-                            <div class="message-avatar">
-                                ${escapeHTML(
-                                    initial
-                                )}
-                            </div>
-
-                            <div class="message-content">
-
-                                <div class="message-meta">
-
-                                    <span class="message-name">
-                                        ${username}
-                                    </span>
-
-                                    <span class="role">
-                                        ${role}
-                                    </span>
-
-                                    <span class="message-time">
-                                        ${formatTime(
-                                            chat.createdAt
-                                        )}
-                                    </span>
-
-                                </div>
-
-                                <div class="bubble">
-                                    ${message}
-                                </div>
-
-                            </div>
-
-                        </div>
-                    `;
-                }
+                chat =>
+                    renderMessage(
+                        chat
+                    )
             )
             .join("");
+
+    bindMessageEvents();
 
     if(
         forceScroll ||
@@ -1342,23 +1469,791 @@ function renderMessages(
 
             }
         );
-
     }
 }
 
 
 /* =========================
-   SEND
+   MESSAGE HTML
+========================= */
+
+function renderMessage(chat){
+
+    const usernameRaw =
+        String(
+            chat.username ||
+            "User"
+        );
+
+    const currentUsername =
+        String(
+            currentUser?.username ||
+            ""
+        );
+
+    const isMine =
+        usernameRaw.toLowerCase() ===
+        currentUsername.toLowerCase();
+
+    const message =
+        String(
+            chat.message ||
+            ""
+        );
+
+    const image =
+        String(
+            chat.image ||
+            ""
+        );
+
+    let replyHTML = "";
+
+    if(chat.replyTo){
+
+        const replyMessage =
+            chat.replyTo.message ||
+            (
+                chat.replyTo.image
+                    ? "🖼️ Foto"
+                    : "-"
+            );
+
+        replyHTML = `
+            <div class="reply-preview">
+                <strong>
+                    ${escapeHTML(
+                        chat.replyTo.username ||
+                        "User"
+                    )}
+                </strong>
+
+                <span>
+                    ${escapeHTML(
+                        replyMessage
+                    )}
+                </span>
+            </div>
+        `;
+    }
+
+    let imageHTML = "";
+
+    if(image){
+
+        imageHTML = `
+            <img
+                class="chat-image"
+                src="${escapeHTML(image)}"
+                alt="Foto"
+                loading="lazy"
+                data-image="${escapeHTML(image)}"
+            >
+        `;
+    }
+
+    let messageHTML = "";
+
+    if(message){
+
+        messageHTML = `
+            <div>
+                ${escapeHTML(message)}
+            </div>
+        `;
+    }
+
+    const username =
+        escapeHTML(
+            usernameRaw
+        );
+
+    const role =
+        escapeHTML(
+            formatRole(
+                chat.role
+            )
+        );
+
+    const initial =
+        escapeHTML(
+            usernameRaw
+                .charAt(0)
+                .toUpperCase()
+        );
+
+    return `
+        <div
+            class="message ${
+                isMine
+                    ? "mine"
+                    : ""
+            }"
+            data-id="${escapeHTML(
+                chat.id
+            )}"
+        >
+
+            <div class="message-avatar">
+                ${initial}
+            </div>
+
+            <div class="message-content">
+
+                <div class="message-meta">
+
+                    <span class="message-name">
+                        ${username}
+                    </span>
+
+                    <span class="role">
+                        ${role}
+                    </span>
+
+                    <span class="message-time">
+                        ${formatTime(
+                            chat.createdAt
+                        )}
+                    </span>
+
+                </div>
+
+                <div class="bubble">
+
+                    ${replyHTML}
+
+                    ${imageHTML}
+
+                    ${messageHTML}
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* =========================
+   LONG PRESS
+========================= */
+
+function bindMessageEvents(){
+
+    document
+        .querySelectorAll(
+            ".message"
+        )
+        .forEach(
+            element => {
+
+                let timer = null;
+                let moved = false;
+
+                element.addEventListener(
+                    "touchstart",
+                    () => {
+
+                        moved = false;
+
+                        timer =
+                            setTimeout(
+                                () => {
+
+                                    if(
+                                        !moved
+                                    ){
+
+                                        showContextMenu(
+                                            element
+                                        );
+                                    }
+
+                                },
+                                550
+                            );
+
+                    },
+                    {
+                        passive:true
+                    }
+                );
+
+                element.addEventListener(
+                    "touchmove",
+                    () => {
+
+                        moved = true;
+
+                        clearTimeout(
+                            timer
+                        );
+
+                    },
+                    {
+                        passive:true
+                    }
+                );
+
+                element.addEventListener(
+                    "touchend",
+                    () => {
+
+                        clearTimeout(
+                            timer
+                        );
+
+                    }
+                );
+
+
+                element.addEventListener(
+                    "contextmenu",
+                    event => {
+
+                        event.preventDefault();
+
+                        showContextMenu(
+                            element
+                        );
+
+                    }
+                );
+
+
+                element
+                    .querySelectorAll(
+                        ".chat-image"
+                    )
+                    .forEach(
+                        img => {
+
+                            img.addEventListener(
+                                "click",
+                                event => {
+
+                                    event.stopPropagation();
+
+                                    openImage(
+                                        img.dataset.image
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+            }
+        );
+}
+
+
+/* =========================
+   CONTEXT MENU
+========================= */
+
+function showContextMenu(
+    element
+){
+
+    const id =
+        element.dataset.id;
+
+    const chat =
+        findMessageById(
+            id
+        );
+
+    if(!chat){
+        return;
+    }
+
+    contextTarget =
+        chat;
+
+    const menu =
+        document.getElementById(
+            "contextMenu"
+        );
+
+    const rect =
+        element.getBoundingClientRect();
+
+    menu.style.left =
+        Math.min(
+            rect.left,
+            window.innerWidth - 170
+        ) + "px";
+
+    menu.style.top =
+        Math.min(
+            rect.bottom + 5,
+            window.innerHeight - 100
+        ) + "px";
+
+    menu.classList.add(
+        "show"
+    );
+}
+
+
+function closeContextMenu(){
+
+    document
+        .getElementById(
+            "contextMenu"
+        )
+        .classList
+        .remove(
+            "show"
+        );
+
+    contextTarget =
+        null;
+}
+
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const menu =
+            document.getElementById(
+                "contextMenu"
+            );
+
+        if(
+            !menu.contains(
+                event.target
+            )
+        ){
+
+            closeContextMenu();
+
+        }
+    }
+);
+
+
+/* =========================
+   FIND MESSAGE
+========================= */
+
+let cachedMessages = [];
+
+function findMessageById(
+    id
+){
+
+    return cachedMessages.find(
+        message =>
+            String(
+                message.id
+            ) === String(id)
+    ) || null;
+}
+
+
+/* =========================
+   REPLY
+========================= */
+
+function setReply(
+    chat
+){
+
+    replyTarget =
+        chat;
+
+    document.getElementById(
+        "replyUsername"
+    ).textContent =
+        `Reply ${chat.username || "User"}`;
+
+    document.getElementById(
+        "replyMessage"
+    ).textContent =
+        chat.message ||
+        (
+            chat.image
+                ? "🖼️ Foto"
+                : "-"
+        );
+
+    document.getElementById(
+        "replyBar"
+    ).classList.add(
+        "show"
+    );
+
+    document.getElementById(
+        "messageInput"
+    ).focus();
+
+    closeContextMenu();
+}
+
+
+function cancelReply(){
+
+    replyTarget =
+        null;
+
+    document.getElementById(
+        "replyBar"
+    ).classList.remove(
+        "show"
+    );
+}
+
+
+document.getElementById(
+    "replyAction"
+).addEventListener(
+    "click",
+    () => {
+
+        if(contextTarget){
+
+            setReply(
+                contextTarget
+            );
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "cancelReply"
+).addEventListener(
+    "click",
+    cancelReply
+);
+
+
+/* =========================
+   DELETE
+========================= */
+
+async function deleteMessage(
+    chat
+){
+
+    if(!chat){
+        return;
+    }
+
+    const confirmed =
+        confirm(
+            "Hapus pesan ini?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                `${API_CHAT}/${encodeURIComponent(
+                    chat.id
+                )}`,
+                {
+                    method:"DELETE",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+
+                        "Accept":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            username:
+                                currentUser.username
+                        })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            !data.status
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal menghapus pesan"
+            );
+        }
+
+        closeContextMenu();
+
+        lastMessagesHash =
+            "";
+
+        await loadMessages();
+
+    }catch(error){
+
+        console.error(
+            "[CHAT DELETE]",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Gagal menghapus pesan"
+        );
+    }
+}
+
+
+document.getElementById(
+    "deleteAction"
+).addEventListener(
+    "click",
+    () => {
+
+        if(contextTarget){
+
+            deleteMessage(
+                contextTarget
+            );
+        }
+
+    }
+);
+
+
+/* =========================
+   UPLOAD
+========================= */
+
+function extractUploadUrl(
+    data
+){
+
+    const candidates = [
+        data?.url,
+        data?.result?.url,
+        data?.result?.fileUrl,
+        data?.result?.urlFile,
+        data?.result?.link,
+        data?.data?.url,
+        data?.file?.url
+    ];
+
+    return candidates.find(
+        value =>
+            typeof value === "string" &&
+            /^https?:\/\//i.test(
+                value
+            )
+    ) || "";
+}
+
+
+async function uploadImage(
+    file
+){
+
+    if(!file){
+        return "";
+    }
+
+    if(
+        file.size >
+        MAX_IMAGE_SIZE
+    ){
+
+        throw new Error(
+            "Ukuran foto maksimal 5MB."
+        );
+    }
+
+    const allowed = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif"
+    ];
+
+    if(
+        !allowed.includes(
+            file.type
+        )
+    ){
+
+        throw new Error(
+            "Format foto harus JPG, PNG, WEBP, atau GIF."
+        );
+    }
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "file",
+        file
+    );
+
+    document.getElementById(
+        "uploadStatus"
+    ).textContent =
+        "Mengupload foto...";
+
+    const response =
+        await fetch(
+            API_UPLOAD,
+            {
+                method:"POST",
+                body:formData
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if(
+        !response.ok
+    ){
+
+        throw new Error(
+            data.message ||
+            "Upload foto gagal"
+        );
+    }
+
+    const url =
+        extractUploadUrl(
+            data
+        );
+
+    if(!url){
+
+        console.log(
+            "[UPLOAD RESPONSE]",
+            data
+        );
+
+        throw new Error(
+            "URL foto tidak ditemukan dari response upload."
+        );
+    }
+
+    return url;
+}
+
+
+/* =========================
+   IMAGE SELECT
+========================= */
+
+document.getElementById(
+    "fileBtn"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "imageInput"
+        ).click();
+
+    }
+);
+
+
+document.getElementById(
+    "imageInput"
+).addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+        if(!file){
+            return;
+        }
+
+        if(
+            file.size >
+            MAX_IMAGE_SIZE
+        ){
+
+            alert(
+                "Ukuran foto maksimal 5MB."
+            );
+
+            event.target.value = "";
+
+            return;
+        }
+
+        selectedImage =
+            file;
+
+        const preview =
+            document.getElementById(
+                "imagePreview"
+            );
+
+        const image =
+            document.getElementById(
+                "previewImage"
+            );
+
+        image.src =
+            URL.createObjectURL(
+                file
+            );
+
+        preview.classList.add(
+            "show"
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "removeImage"
+).addEventListener(
+    "click",
+    () => {
+
+        selectedImage =
+            null;
+
+        document.getElementById(
+            "imageInput"
+        ).value = "";
+
+        document.getElementById(
+            "imagePreview"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+/* =========================
+   SEND MESSAGE
 ========================= */
 
 async function sendMessage(){
 
     if(!currentUser){
-
-        alert(
-            "Session login tidak ditemukan."
-        );
-
         return;
     }
 
@@ -1367,19 +2262,31 @@ async function sendMessage(){
             "messageInput"
         );
 
-    const button =
+    const sendButton =
         document.getElementById(
             "sendBtn"
+        );
+
+    const fileButton =
+        document.getElementById(
+            "fileBtn"
         );
 
     const message =
         input.value.trim();
 
-    if(!message){
+    if(
+        !message &&
+        !selectedImage
+    ){
+
         return;
     }
 
-    if(message.length > 1000){
+    if(
+        message.length >
+        1000
+    ){
 
         alert(
             "Pesan maksimal 1000 karakter."
@@ -1388,18 +2295,44 @@ async function sendMessage(){
         return;
     }
 
-    if(!currentUser.username){
+    sendButton.disabled =
+        true;
 
-        alert(
-            "Username login tidak ditemukan."
-        );
-
-        return;
-    }
-
-    button.disabled = true;
+    fileButton.disabled =
+        true;
 
     try{
+
+        let imageUrl =
+            "";
+
+        if(selectedImage){
+
+            imageUrl =
+                await uploadImage(
+                    selectedImage
+                );
+        }
+
+        document.getElementById(
+            "uploadStatus"
+        ).textContent =
+            "Mengirim pesan...";
+
+        const body = {
+            username:
+                currentUser.username,
+
+            message,
+
+            image:
+                imageUrl,
+
+            replyTo:
+                replyTarget
+                    ? replyTarget.id
+                    : ""
+        };
 
         const response =
             await fetch(
@@ -1416,29 +2349,14 @@ async function sendMessage(){
                     },
 
                     body:
-                        JSON.stringify({
-                            username:
-                                currentUser.username,
-
-                            message
-                        })
+                        JSON.stringify(
+                            body
+                        )
                 }
             );
 
-        let data = null;
-
-        try{
-
-            data =
-                await response.json();
-
-        }catch{
-
-            throw new Error(
-                `Response server tidak valid (${response.status})`
-            );
-
-        }
+        const data =
+            await response.json();
 
         if(
             !response.ok ||
@@ -1447,30 +2365,56 @@ async function sendMessage(){
 
             throw new Error(
                 data.message ||
-                `Gagal mengirim pesan (${response.status})`
+                "Gagal mengirim pesan"
             );
         }
 
-        setApiStatus(true);
-
         input.value = "";
+
+        selectedImage =
+            null;
+
+        document.getElementById(
+            "imageInput"
+        ).value = "";
+
+        document.getElementById(
+            "imagePreview"
+        ).classList.remove(
+            "show"
+        );
+
+        cancelReply();
 
         updateCharCount();
 
-        lastMessagesHash = "";
+        document.getElementById(
+            "uploadStatus"
+        ).textContent =
+            "Chat publik";
 
-        await loadMessages(true);
+        lastMessagesHash =
+            "";
+
+        await loadMessages(
+            true
+        );
+
+        setApiStatus(true);
 
         input.focus();
 
     }catch(error){
 
         console.error(
-            "[CHAT POST]",
+            "[CHAT SEND]",
             error
         );
 
-        setApiStatus(false);
+        document.getElementById(
+            "uploadStatus"
+        ).textContent =
+            "Chat publik";
 
         alert(
             error.message ||
@@ -1479,7 +2423,11 @@ async function sendMessage(){
 
     }finally{
 
-        button.disabled = false;
+        sendButton.disabled =
+            false;
+
+        fileButton.disabled =
+            false;
     }
 }
 
@@ -1499,6 +2447,99 @@ function updateCharCount(){
         "charCount"
     ).textContent =
         `${input.value.length}/1000`;
+}
+
+
+/* =========================
+   CACHE MESSAGES
+========================= */
+
+async function loadMessages(
+    forceScroll = false
+){
+
+    if(loading){
+        return;
+    }
+
+    loading = true;
+
+    try{
+
+        const response =
+            await fetch(
+                API_CHAT,
+                {
+                    cache:"no-store"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            !data.status
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal mengambil chat"
+            );
+        }
+
+        setApiStatus(true);
+
+        const messages =
+            Array.isArray(
+                data.result
+            )
+                ? data.result
+                : [];
+
+        cachedMessages =
+            messages;
+
+        document.getElementById(
+            "messageCount"
+        ).textContent =
+            `${messages.length} pesan`;
+
+        const hash =
+            JSON.stringify(
+                messages
+            );
+
+        if(
+            hash ===
+            lastMessagesHash
+        ){
+
+            loading = false;
+            return;
+        }
+
+        lastMessagesHash =
+            hash;
+
+        renderMessages(
+            messages,
+            forceScroll
+        );
+
+    }catch(error){
+
+        console.error(
+            "[CHAT GET]",
+            error
+        );
+
+        setApiStatus(false);
+
+    }finally{
+
+        loading = false;
+    }
 }
 
 
@@ -1529,8 +2570,7 @@ document.getElementById(
     event => {
 
         if(
-            event.key === "Enter" &&
-            !event.shiftKey
+            event.key === "Enter"
         ){
 
             event.preventDefault();
@@ -1548,15 +2588,17 @@ document.getElementById(
     "click",
     () => {
 
-        lastMessagesHash = "";
+        lastMessagesHash =
+            "";
 
         loadMessages(true);
+
     }
 );
 
 
 /* =========================
-   MOBILE MENU
+   MOBILE
 ========================= */
 
 document.getElementById(
@@ -1577,10 +2619,6 @@ document.getElementById(
     }
 );
 
-
-/* =========================
-   AUTO CLOSE SIDEBAR
-========================= */
 
 document.querySelectorAll(
     ".nav a"
@@ -1608,6 +2646,68 @@ document.querySelectorAll(
 
 
 /* =========================
+   IMAGE VIEWER
+========================= */
+
+function openImage(
+    url
+){
+
+    document.getElementById(
+        "viewerImage"
+    ).src =
+        url;
+
+    document.getElementById(
+        "imageViewer"
+    ).classList.add(
+        "show"
+    );
+}
+
+
+function closeImage(){
+
+    document.getElementById(
+        "imageViewer"
+    ).classList.remove(
+        "show"
+    );
+
+    document.getElementById(
+        "viewerImage"
+    ).src = "";
+}
+
+
+document.getElementById(
+    "closeViewer"
+).addEventListener(
+    "click",
+    closeImage
+);
+
+
+document.getElementById(
+    "imageViewer"
+).addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target.id ===
+            "imageViewer"
+        ){
+
+            closeImage();
+
+        }
+
+    }
+);
+
+
+/* =========================
    INIT
 ========================= */
 
@@ -1619,10 +2719,7 @@ function init(){
 
     initialized = true;
 
-    const loggedIn =
-        setupUser();
-
-    if(!loggedIn){
+    if(!setupUser()){
         return;
     }
 
