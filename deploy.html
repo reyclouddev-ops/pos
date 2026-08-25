@@ -1172,7 +1172,7 @@ body::before{
 <script>
 const API_BASE =
     window.API_BASE ||
-    "api.legionteknologi.my.id";
+    "https://api.legionteknologi.my.id";
 
 const hostnameInput =
     document.getElementById(
@@ -1590,7 +1590,7 @@ async function deploy(){
     );
 
     formData.append(
-        "hostname",
+        "projectName",
         hostname
     );
 
@@ -1637,7 +1637,7 @@ async function deploy(){
         const response =
             await fetch(
                 API_BASE +
-                "/api/deploy",
+                "/api/vercel",
                 {
                     method:"POST",
                     body:formData
@@ -1696,6 +1696,7 @@ async function deploy(){
 
         const vercelUrl =
             data.result?.vercelUrl ||
+            data.result?.vercel ||
             data.result?.url ||
             data.vercelUrl ||
             data.url ||
