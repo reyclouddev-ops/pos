@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deploy — ReyCloud</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#050505;
+    --card:#0b0b0b;
+    --card2:#101010;
+    --border:#242424;
+    --text:#ffffff;
+    --muted:#8d8d8d;
+    --vercel:#ffffff;
+    --cloudflare:#f6821f;
+    --green:#22c55e;
+    --red:#ef4444;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(255,255,255,.06),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(246,130,31,.08),
+            transparent 30%
+        ),
+        #050505;
+    color:var(--text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+        linear-gradient(
+            rgba(255,255,255,.018) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.018) 1px,
+            transparent 1px
+        );
+    background-size:35px 35px;
+    mask-image:linear-gradient(
+        to bottom,
+        black,
+        transparent
+    );
+}
+
+.container{
+    width:min(1050px,calc(100% - 30px));
+    margin:auto;
+    padding:28px 0 60px;
+}
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:43px;
+    height:43px;
+    border-radius:12px;
+    background:#fff;
+    color:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:18px;
+    box-shadow:0 0 25px rgba(255,255,255,.15);
+}
+
+.brand h1{
+    font-size:19px;
+    font-weight:800;
+}
+
+.brand span{
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:2px;
+}
+
+.back{
+    text-decoration:none;
+    color:#fff;
+    border:1px solid var(--border);
+    background:#0b0b0b;
+    padding:11px 15px;
+    border-radius:11px;
+    font-size:13px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.back:hover{
+    background:#171717;
+    border-color:#444;
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:
+        linear-gradient(
+            135deg,
+            #0c0c0c,
+            #080808
+        );
+    border-radius:22px;
+    padding:30px;
+    margin-bottom:20px;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    right:-80px;
+    top:-100px;
+    background:
+        radial-gradient(
+            circle,
+            rgba(246,130,31,.25),
+            transparent 70%
+        );
+    pointer-events:none;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.badges{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:17px;
+}
+
+.badge{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 11px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:#111;
+    color:#ddd;
+    font-size:11px;
+    font-weight:700;
+}
+
+.badge.vercel{
+    color:#fff;
+}
+
+.badge.cloudflare{
+    color:#ff9b3d;
+}
+
+.hero h2{
+    font-size:clamp(27px,5vw,43px);
+    line-height:1.05;
+    letter-spacing:-1.5px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#8d8d8d;
+    max-width:650px;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1.35fr .65fr;
+    gap:20px;
+}
+
+.card{
+    border:1px solid var(--border);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.035),
+            rgba(255,255,255,.012)
+        );
+    border-radius:20px;
+    padding:22px;
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.25);
+}
+
+.card-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.card-title-icon{
+    width:35px;
+    height:35px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#151515;
+    border:1px solid #282828;
+}
+
+.card-title h3{
+    font-size:15px;
+}
+
+.card-title p{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+
+.field{
+    margin-bottom:16px;
+}
+
+.field label{
+    display:block;
+    font-size:12px;
+    color:#bbb;
+    margin-bottom:8px;
+    font-weight:700;
+}
+
+.input{
+    width:100%;
+    border:1px solid #292929;
+    outline:none;
+    background:#080808;
+    color:#fff;
+    border-radius:12px;
+    padding:14px;
+    font-size:14px;
+    transition:.2s;
+}
+
+.input:focus{
+    border-color:#555;
+    box-shadow:0 0 0 3px rgba(255,255,255,.035);
+}
+
+.input::placeholder{
+    color:#555;
+}
+
+.hostname-preview{
+    margin-top:8px;
+    font-size:11px;
+    color:#666;
+}
+
+.hostname-preview strong{
+    color:#aaa;
+}
+
+.upload-box{
+    border:1px dashed #383838;
+    border-radius:16px;
+    padding:28px 18px;
+    text-align:center;
+    cursor:pointer;
+    background:#080808;
+    transition:.25s;
+}
+
+.upload-box:hover,
+.upload-box.drag{
+    border-color:#777;
+    background:#101010;
+}
+
+.upload-icon{
+    width:54px;
+    height:54px;
+    margin:0 auto 13px;
+    border-radius:15px;
+    background:#141414;
+    border:1px solid #292929;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.upload-box h4{
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+.upload-box p{
+    color:#666;
+    font-size:11px;
+}
+
+.file-info{
+    display:none;
+    margin-top:12px;
+    padding:12px;
+    border-radius:12px;
+    background:#101010;
+    border:1px solid #292929;
+}
+
+.file-info.active{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.file-icon{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    background:#181818;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.file-text{
+    min-width:0;
+    flex:1;
+}
+
+.file-name{
+    font-size:12px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.file-size{
+    font-size:10px;
+    color:#666;
+    margin-top:3px;
+}
+
+.remove-file{
+    border:0;
+    background:#191919;
+    color:#888;
+    width:30px;
+    height:30px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.remove-file:hover{
+    color:#fff;
+}
+
+.deploy-btn{
+    width:100%;
+    border:0;
+    border-radius:13px;
+    padding:15px;
+    margin-top:5px;
+    cursor:pointer;
+    background:#fff;
+    color:#000;
+    font-size:13px;
+    font-weight:900;
+    transition:.2s;
+}
+
+.deploy-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 30px rgba(255,255,255,.1);
+}
+
+.deploy-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.info-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.info{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px;
+    border:1px solid #202020;
+    background:#0a0a0a;
+    border-radius:12px;
+}
+
+.info-icon{
+    width:35px;
+    height:35px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#151515;
+    font-size:16px;
+}
+
+.info-text{
+    flex:1;
+}
+
+.info-text strong{
+    display:block;
+    font-size:12px;
+}
+
+.info-text span{
+    display:block;
+    font-size:10px;
+    color:#666;
+    margin-top:3px;
+}
+
+.cloudflare-line{
+    margin-top:20px;
+    padding:15px;
+    border-radius:14px;
+    border:1px solid rgba(246,130,31,.22);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(246,130,31,.07),
+            transparent
+        );
+}
+
+.cloudflare-line strong{
+    color:#ff9b3d;
+    font-size:12px;
+}
+
+.cloudflare-line p{
+    color:#777;
+    font-size:10px;
+    line-height:1.6;
+    margin-top:5px;
+}
+
+.status-card{
+    display:none;
+    margin-top:20px;
+}
+
+.status-card.active{
+    display:block;
+}
+
+.status-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.status-title{
+    font-size:14px;
+    font-weight:800;
+}
+
+.status-badge{
+    font-size:10px;
+    padding:6px 9px;
+    border-radius:999px;
+    background:#151515;
+    color:#aaa;
+}
+
+.progress{
+    height:7px;
+    width:100%;
+    background:#171717;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:#fff;
+    border-radius:999px;
+    transition:width .4s ease;
+}
+
+.steps{
+    margin-top:17px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#555;
+    font-size:11px;
+}
+
+.step.active{
+    color:#ddd;
+}
+
+.step.done{
+    color:#22c55e;
+}
+
+.step-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#333;
+}
+
+.step.active .step-dot{
+    background:#fff;
+    box-shadow:0 0 10px rgba(255,255,255,.5);
+}
+
+.step.done .step-dot{
+    background:#22c55e;
+}
+
+.result{
+    display:none;
+    margin-top:20px;
+}
+
+.result.active{
+    display:block;
+}
+
+.success{
+    border-color:rgba(34,197,94,.25);
+}
+
+.result-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.success-icon{
+    width:43px;
+    height:43px;
+    border-radius:13px;
+    background:rgba(34,197,94,.1);
+    border:1px solid rgba(34,197,94,.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#22c55e;
+    font-size:20px;
+}
+
+.result-head h3{
+    font-size:15px;
+}
+
+.result-head p{
+    color:#666;
+    font-size:11px;
+    margin-top:3px;
+}
+
+.url-box{
+    padding:14px;
+    border-radius:13px;
+    border:1px solid #252525;
+    background:#080808;
+    margin-bottom:10px;
+}
+
+.url-label{
+    color:#666;
+    font-size:10px;
+    margin-bottom:6px;
+}
+
+.url{
+    color:#fff;
+    font-size:12px;
+    word-break:break-all;
+}
+
+.url.custom{
+    color:#ff9b3d;
+}
+
+.result-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:15px;
+}
+
+.action{
+    text-decoration:none;
+    text-align:center;
+    padding:13px;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:800;
+    border:1px solid #292929;
+    color:#fff;
+    background:#111;
+    transition:.2s;
+}
+
+.action:hover{
+    background:#1a1a1a;
+}
+
+.action.primary{
+    background:#fff;
+    color:#000;
+}
+
+.error{
+    display:none;
+    margin-top:15px;
+    padding:13px;
+    border-radius:12px;
+    border:1px solid rgba(239,68,68,.2);
+    background:rgba(239,68,68,.06);
+    color:#f87171;
+    font-size:11px;
+    line-height:1.6;
+}
+
+.error.active{
+    display:block;
+}
+
+.footer{
+    text-align:center;
+    margin-top:28px;
+    color:#444;
+    font-size:10px;
+}
+
+.footer span{
+    color:#777;
+}
+
+@media(max-width:760px){
+    .container{
+        width:min(100% - 20px,1050px);
+        padding-top:15px;
+    }
+
+    .topbar{
+        margin-bottom:15px;
+    }
+
+    .brand h1{
+        font-size:16px;
+    }
+
+    .back{
+        padding:9px 11px;
+        font-size:11px;
+    }
+
+    .hero{
+        padding:23px 19px;
+        border-radius:18px;
+    }
+
+    .hero h2{
+        font-size:29px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:18px;
+        border-radius:17px;
+    }
+
+    .result-actions{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+        <div class="brand">
+            <div class="logo">RCD</div>
+            <div>
+                <h1>ReyCloud Deploy</h1>
+                <span>Vercel × Cloudflare</span>
+            </div>
+        </div>
+
+        <a
+            href="/dashboard.html"
+            class="back"
+        >
+            ← Dashboard
+        </a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+
+            <div class="badges">
+                <div class="badge vercel">
+                    ▲ VERCEL
+                </div>
+
+                <div class="badge cloudflare">
+                    ☁ CLOUDFLARE
+                </div>
+            </div>
+
+            <h2>
+                Deploy your project.<br>
+                Fast & simple.
+            </h2>
+
+            <p>
+                Upload project kamu dalam format
+                ZIP atau HTML, masukkan hostname,
+                lalu ReyCloud akan menghubungkan
+                deployment ke Vercel dan custom domain.
+            </p>
+
+        </div>
+    </section>
+
+    <div class="grid">
+
+        <div>
+
+            <div class="card">
+
+                <div class="card-title">
+                    <div class="card-title-icon">
+                        🚀
+                    </div>
+
+                    <div>
+                        <h3>Create Deployment</h3>
+                        <p>
+                            Upload project untuk mulai deploy
+                        </p>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>
+                        HOSTNAME PROJECT
+                    </label>
+
+                    <input
+                        id="hostname"
+                        class="input"
+                        type="text"
+                        placeholder="contoh: reyshop"
+                        autocomplete="off"
+                    >
+
+                    <div class="hostname-preview">
+                        Domain:
+                        <strong>
+                            <span id="preview">
+                                reyshop
+                            </span>.legionteknologi.my.id
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="field">
+
+                    <label>
+                        PROJECT FILE
+                    </label>
+
+                    <div
+                        class="upload-box"
+                        id="uploadBox"
+                    >
+
+                        <input
+                            id="fileInput"
+                            type="file"
+                            accept=".zip,.html,.htm"
+                            hidden
+                        >
+
+                        <div class="upload-icon">
+                            ↑
+                        </div>
+
+                        <h4>
+                            Upload ZIP atau HTML
+                        </h4>
+
+                        <p>
+                            Klik atau drag & drop file di sini
+                        </p>
+
+                    </div>
+
+                    <div
+                        class="file-info"
+                        id="fileInfo"
+                    >
+
+                        <div class="file-icon">
+                            📦
+                        </div>
+
+                        <div class="file-text">
+                            <div
+                                class="file-name"
+                                id="fileName"
+                            >
+                                -
+                            </div>
+
+                            <div
+                                class="file-size"
+                                id="fileSize"
+                            >
+                                -
+                            </div>
+                        </div>
+
+                        <button
+                            class="remove-file"
+                            id="removeFile"
+                            type="button"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="deploy-btn"
+                    id="deployBtn"
+                    disabled
+                >
+                    ▲ Deploy to Vercel
+                </button>
+
+                <div
+                    class="error"
+                    id="errorBox"
+                ></div>
+
+            </div>
+
+            <div
+                class="card status-card"
+                id="statusCard"
+            >
+
+                <div class="status-header">
+
+                    <div class="status-title">
+                        Deployment Progress
+                    </div>
+
+                    <div
+                        class="status-badge"
+                        id="statusBadge"
+                    >
+                        Starting
+                    </div>
+
+                </div>
+
+                <div class="progress">
+                    <div
+                        class="progress-bar"
+                        id="progressBar"
+                    ></div>
+                </div>
+
+                <div class="steps">
+
+                    <div
+                        class="step"
+                        id="stepUpload"
+                    >
+                        <span class="step-dot"></span>
+                        Upload project
+                    </div>
+
+                    <div
+                        class="step"
+                        id="stepDetect"
+                    >
+                        <span class="step-dot"></span>
+                        Detect framework
+                    </div>
+
+                    <div
+                        class="step"
+                        id="stepDeploy"
+                    >
+                        <span class="step-dot"></span>
+                        Deploy ke Vercel
+                    </div>
+
+                    <div
+                        class="step"
+                        id="stepDomain"
+                    >
+                        <span class="step-dot"></span>
+                        Connect Cloudflare domain
+                    </div>
+
+                    <div
+                        class="step"
+                        id="stepReady"
+                    >
+                        <span class="step-dot"></span>
+                        Deployment ready
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div
+                class="card result"
+                id="resultCard"
+            >
+
+                <div class="result-head">
+
+                    <div class="success-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <h3>
+                            Deployment Berhasil
+                        </h3>
+
+                        <p>
+                            Project kamu sudah online.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="url-box">
+
+                    <div class="url-label">
+                        VERCEL URL
+                    </div>
+
+                    <div
+                        class="url"
+                        id="vercelUrl"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+                <div class="url-box">
+
+                    <div class="url-label">
+                        CLOUDFLARE CUSTOM DOMAIN
+                    </div>
+
+                    <div
+                        class="url custom"
+                        id="customUrl"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+                <div class="result-actions">
+
+                    <a
+                        id="openUrl"
+                        href="#"
+                        target="_blank"
+                        class="action primary"
+                    >
+                        🌐 Buka Website
+                    </a>
+
+                    <a
+                        href="/dashboard.html"
+                        class="action"
+                    >
+                        ← Kembali ke Dashboard
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div>
+
+            <div class="card">
+
+                <div class="card-title">
+                    <div class="card-title-icon">
+                        ⚡
+                    </div>
+
+                    <div>
+                        <h3>Deployment Stack</h3>
+                        <p>
+                            Infrastructure
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-list">
+
+                    <div class="info">
+                        <div class="info-icon">
+                            ▲
+                        </div>
+
+                        <div class="info-text">
+                            <strong>Vercel</strong>
+                            <span>
+                                Hosting & deployment
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div class="info-icon">
+                            ☁
+                        </div>
+
+                        <div class="info-text">
+                            <strong>Cloudflare</strong>
+                            <span>
+                                DNS & custom domain
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div class="info-icon">
+                            ⚡
+                        </div>
+
+                        <div class="info-text">
+                            <strong>Fast Deploy</strong>
+                            <span>
+                                Automated deployment
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div class="info-icon">
+                            🔒
+                        </div>
+
+                        <div class="info-text">
+                            <strong>HTTPS</strong>
+                            <span>
+                                Secure connection
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="cloudflare-line">
+                    <strong>
+                        ☁ Cloudflare Integration
+                    </strong>
+
+                    <p>
+                        Custom hostname akan diarahkan
+                        ke deployment setelah konfigurasi
+                        domain selesai.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        ReyCloud Deploy ·
+        <span>Vercel × Cloudflare</span>
+    </div>
+
+</div>
+
+<script>
+const API_BASE =
+    window.API_BASE ||
+    "api.legionteknologi.my.id";
+
+const hostnameInput =
+    document.getElementById(
+        "hostname"
+    );
+
+const preview =
+    document.getElementById(
+        "preview"
+    );
+
+const uploadBox =
+    document.getElementById(
+        "uploadBox"
+    );
+
+const fileInput =
+    document.getElementById(
+        "fileInput"
+    );
+
+const fileInfo =
+    document.getElementById(
+        "fileInfo"
+    );
+
+const fileName =
+    document.getElementById(
+        "fileName"
+    );
+
+const fileSize =
+    document.getElementById(
+        "fileSize"
+    );
+
+const removeFile =
+    document.getElementById(
+        "removeFile"
+    );
+
+const deployBtn =
+    document.getElementById(
+        "deployBtn"
+    );
+
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
+
+const statusCard =
+    document.getElementById(
+        "statusCard"
+    );
+
+const resultCard =
+    document.getElementById(
+        "resultCard"
+    );
+
+const progressBar =
+    document.getElementById(
+        "progressBar"
+    );
+
+const statusBadge =
+    document.getElementById(
+        "statusBadge"
+    );
+
+const selectedFile =
+    {
+        value:null
+    };
+
+function cleanHostname(
+    value
+){
+    return String(
+        value || ""
+    )
+    .toLowerCase()
+    .trim()
+    .replace(
+        /[^a-z0-9-]/g,
+        "-"
+    )
+    .replace(
+        /-+/g,
+        "-"
+    )
+    .replace(
+        /^-|-$/g,
+        ""
+    );
+}
+
+function formatBytes(
+    bytes
+){
+    if(!bytes){
+        return "0 B";
+    }
+
+    const units = [
+        "B",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+    let size =
+        Number(bytes);
+
+    let index = 0;
+
+    while(
+        size >= 1024 &&
+        index <
+        units.length - 1
+    ){
+        size /= 1024;
+        index++;
+    }
+
+    return (
+        size.toFixed(2) +
+        " " +
+        units[index]
+    );
+}
+
+function updateButton(){
+    deployBtn.disabled =
+        !selectedFile.value ||
+        !cleanHostname(
+            hostnameInput.value
+        );
+}
+
+function showError(
+    message
+){
+    errorBox.textContent =
+        "❌ " + message;
+
+    errorBox.classList.add(
+        "active"
+    );
+}
+
+function hideError(){
+    errorBox.classList.remove(
+        "active"
+    );
+}
+
+function selectFile(
+    file
+){
+    if(!file){
+        return;
+    }
+
+    const name =
+        file.name.toLowerCase();
+
+    const valid =
+        name.endsWith(".zip") ||
+        name.endsWith(".html") ||
+        name.endsWith(".htm");
+
+    if(!valid){
+        showError(
+            "File harus ZIP, HTML atau HTM."
+        );
+
+        return;
+    }
+
+    selectedFile.value =
+        file;
+
+    fileName.textContent =
+        file.name;
+
+    fileSize.textContent =
+        formatBytes(
+            file.size
+        );
+
+    fileInfo.classList.add(
+        "active"
+    );
+
+    hideError();
+    updateButton();
+}
+
+hostnameInput.addEventListener(
+    "input",
+    () => {
+
+        const hostname =
+            cleanHostname(
+                hostnameInput.value
+            );
+
+        preview.textContent =
+            hostname ||
+            "project";
+
+        updateButton();
+    }
+);
+
+uploadBox.addEventListener(
+    "click",
+    () => {
+        fileInput.click();
+    }
+);
+
+fileInput.addEventListener(
+    "change",
+    () => {
+        selectFile(
+            fileInput.files[0]
+        );
+    }
+);
+
+uploadBox.addEventListener(
+    "dragover",
+    event => {
+        event.preventDefault();
+
+        uploadBox.classList.add(
+            "drag"
+        );
+    }
+);
+
+uploadBox.addEventListener(
+    "dragleave",
+    () => {
+        uploadBox.classList.remove(
+            "drag"
+        );
+    }
+);
+
+uploadBox.addEventListener(
+    "drop",
+    event => {
+
+        event.preventDefault();
+
+        uploadBox.classList.remove(
+            "drag"
+        );
+
+        selectFile(
+            event.dataTransfer.files[0]
+        );
+    }
+);
+
+removeFile.addEventListener(
+    "click",
+    () => {
+
+        selectedFile.value =
+            null;
+
+        fileInput.value =
+            "";
+
+        fileInfo.classList.remove(
+            "active"
+        );
+
+        updateButton();
+    }
+);
+
+function setStep(
+    id,
+    state
+){
+    const element =
+        document.getElementById(
+            id
+        );
+
+    if(!element){
+        return;
+    }
+
+    element.classList.remove(
+        "active",
+        "done"
+    );
+
+    if(state === "active"){
+        element.classList.add(
+            "active"
+        );
+    }
+
+    if(state === "done"){
+        element.classList.add(
+            "done"
+        );
+    }
+}
+
+function progress(
+    value,
+    status
+){
+    progressBar.style.width =
+        value + "%";
+
+    statusBadge.textContent =
+        status;
+}
+
+function resetSteps(){
+    [
+        "stepUpload",
+        "stepDetect",
+        "stepDeploy",
+        "stepDomain",
+        "stepReady"
+    ].forEach(
+        id => {
+            setStep(
+                id,
+                ""
+            );
+        }
+    );
+}
+
+async function deploy(){
+
+    hideError();
+
+    const hostname =
+        cleanHostname(
+            hostnameInput.value
+        );
+
+    const file =
+        selectedFile.value;
+
+    if(!hostname){
+        showError(
+            "Hostname wajib diisi."
+        );
+
+        return;
+    }
+
+    if(
+        !/^[a-z0-9][a-z0-9-]{1,62}$/
+        .test(hostname)
+    ){
+        showError(
+            "Hostname tidak valid."
+        );
+
+        return;
+    }
+
+    if(!file){
+        showError(
+            "Silakan pilih file terlebih dahulu."
+        );
+
+        return;
+    }
+
+    deployBtn.disabled =
+        true;
+
+    statusCard.classList.add(
+        "active"
+    );
+
+    resultCard.classList.remove(
+        "active"
+    );
+
+    resetSteps();
+
+    progress(
+        10,
+        "Uploading"
+    );
+
+    setStep(
+        "stepUpload",
+        "active"
+    );
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "file",
+        file
+    );
+
+    formData.append(
+        "hostname",
+        hostname
+    );
+
+    try{
+
+        await fakeStep(
+            25
+        );
+
+        setStep(
+            "stepUpload",
+            "done"
+        );
+
+        setStep(
+            "stepDetect",
+            "active"
+        );
+
+        progress(
+            35,
+            "Detecting"
+        );
+
+        await fakeStep(
+            30
+        );
+
+        setStep(
+            "stepDetect",
+            "done"
+        );
+
+        setStep(
+            "stepDeploy",
+            "active"
+        );
+
+        progress(
+            55,
+            "Deploying"
+        );
+
+        const response =
+            await fetch(
+                API_BASE +
+                "/api/deploy",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
+
+        const data =
+            await response
+                .json()
+                .catch(
+                    () => ({})
+                );
+
+        if(!response.ok ||
+            data.status === false
+        ){
+            throw new Error(
+                data.message ||
+                "Deployment gagal."
+            );
+        }
+
+        setStep(
+            "stepDeploy",
+            "done"
+        );
+
+        progress(
+            75,
+            "Connecting Domain"
+        );
+
+        setStep(
+            "stepDomain",
+            "active"
+        );
+
+        await fakeStep(
+            35
+        );
+
+        setStep(
+            "stepDomain",
+            "done"
+        );
+
+        setStep(
+            "stepReady",
+            "done"
+        );
+
+        progress(
+            100,
+            "Ready"
+        );
+
+        const vercelUrl =
+            data.result?.vercelUrl ||
+            data.result?.url ||
+            data.vercelUrl ||
+            data.url ||
+            "";
+
+        const customDomain =
+            data.result?.customDomain ||
+            data.customDomain ||
+            (
+                hostname +
+                ".legionteknologi.my.id"
+            );
+
+        document.getElementById(
+            "vercelUrl"
+        ).textContent =
+            vercelUrl ||
+            "-";
+
+        document.getElementById(
+            "customUrl"
+        ).textContent =
+            customDomain
+                .startsWith("http")
+                ? customDomain
+                : "https://" +
+                  customDomain;
+
+        const openUrl =
+            document.getElementById(
+                "openUrl"
+            );
+
+        openUrl.href =
+            vercelUrl ||
+            (
+                customDomain
+                    .startsWith("http")
+                    ? customDomain
+                    : "https://" +
+                      customDomain
+            );
+
+        resultCard.classList.add(
+            "active"
+        );
+
+        resultCard.scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+        });
+
+    }catch(error){
+
+        console.error(
+            "[DEPLOY ERROR]",
+            error
+        );
+
+        showError(
+            error.message ||
+            "Deployment gagal."
+        );
+
+        progress(
+            0,
+            "Failed"
+        );
+
+    }finally{
+
+        deployBtn.disabled =
+            false;
+    }
+}
+
+function fakeStep(
+    ms
+){
+    return new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                ms
+            )
+    );
+}
+
+deployBtn.addEventListener(
+    "click",
+    deploy
+);
+</script>
+
+</body>
+</html>
