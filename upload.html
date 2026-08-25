@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>ReyCloud — Upload</title>
+
+<style>
+:root{
+    --bg:#fafafa;
+    --card:#ffffff;
+    --text:#171717;
+    --muted:#737373;
+    --border:#e5e5e5;
+    --soft:#f5f5f5;
+    --black:#000;
+    --green:#16a34a;
+    --red:#dc2626;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    background:
+        radial-gradient(
+            circle at 50% -20%,
+            #ffffff 0,
+            #fafafa 42%,
+            #f5f5f5 100%
+        );
+    color:var(--text);
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.container{
+    width:min(960px,calc(100% - 32px));
+    margin:auto;
+}
+
+/* NAVBAR */
+
+.navbar{
+    height:64px;
+    border-bottom:1px solid rgba(0,0,0,.08);
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(18px);
+    position:sticky;
+    top:0;
+    z-index:50;
+}
+
+.nav-inner{
+    height:100%;
+    width:min(1120px,calc(100% - 32px));
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    text-decoration:none;
+    color:var(--text);
+}
+
+.brand-icon{
+    width:27px;
+    height:27px;
+    border-radius:7px;
+    background:#000;
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-size:12px;
+    font-weight:800;
+}
+
+.brand-name{
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:-.3px;
+}
+
+.brand-name span{
+    color:#a3a3a3;
+    font-weight:500;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.nav-link{
+    text-decoration:none;
+    color:#525252;
+    font-size:12px;
+    font-weight:600;
+    padding:8px 11px;
+    border-radius:8px;
+    transition:.2s;
+}
+
+.nav-link:hover{
+    background:#f5f5f5;
+    color:#000;
+}
+
+/* HERO */
+
+.hero{
+    text-align:center;
+    padding:78px 20px 48px;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:6px 10px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:600;
+    color:#525252;
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+
+.badge-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#22c55e;
+}
+
+.hero h1{
+    margin-top:19px;
+    font-size:clamp(34px,6vw,52px);
+    line-height:1.05;
+    letter-spacing:-2.8px;
+    font-weight:800;
+}
+
+.hero p{
+    max-width:570px;
+    margin:17px auto 0;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7;
+}
+
+/* UPLOAD CARD */
+
+.upload-card{
+    max-width:680px;
+    margin:auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:
+        0 1px 2px rgba(0,0,0,.03),
+        0 12px 40px rgba(0,0,0,.04);
+    overflow:hidden;
+}
+
+.card-top{
+    padding:18px 20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card-title{
+    font-size:13px;
+    font-weight:700;
+}
+
+.card-status{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#737373;
+    font-size:11px;
+}
+
+.card-status-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#22c55e;
+}
+
+/* DROP */
+
+.upload-area{
+    padding:20px;
+}
+
+.drop-zone{
+    border:1px dashed #d4d4d4;
+    border-radius:11px;
+    background:#fafafa;
+    min-height:270px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    cursor:pointer;
+    transition:
+        border-color .2s,
+        background .2s,
+        transform .2s;
+}
+
+.drop-zone:hover{
+    border-color:#a3a3a3;
+    background:#f7f7f7;
+}
+
+.drop-zone.drag{
+    border-color:#000;
+    background:#f5f5f5;
+    transform:scale(.995);
+}
+
+.upload-content{
+    padding:25px;
+}
+
+.upload-icon{
+    width:46px;
+    height:46px;
+    margin:auto;
+    border:1px solid #d4d4d4;
+    background:#fff;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    font-size:20px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+
+.upload-content h2{
+    margin-top:14px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.upload-content p{
+    margin-top:6px;
+    color:#a3a3a3;
+    font-size:11px;
+}
+
+.upload-content strong{
+    color:#171717;
+}
+
+/* FILE */
+
+.file-info{
+    display:none;
+    margin-top:12px;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fafafa;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+.file-info.show{
+    display:flex;
+}
+
+.file-details{
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.file-icon{
+    flex:0 0 34px;
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    background:#fff;
+    border:1px solid var(--border);
+    display:grid;
+    place-items:center;
+    font-size:14px;
+}
+
+.file-text{
+    min-width:0;
+}
+
+.file-name{
+    font-size:12px;
+    font-weight:700;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.file-size{
+    margin-top:3px;
+    color:#a3a3a3;
+    font-size:10px;
+}
+
+.remove-btn{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:#fff;
+    color:#737373;
+    padding:7px 9px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:600;
+}
+
+.remove-btn:hover{
+    background:#f5f5f5;
+    color:#171717;
+}
+
+/* BUTTON */
+
+.upload-btn{
+    width:100%;
+    height:44px;
+    margin-top:12px;
+    border:0;
+    border-radius:9px;
+    background:#000;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.upload-btn:hover{
+    background:#262626;
+}
+
+.upload-btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+/* PROGRESS */
+
+.progress-wrap{
+    display:none;
+    margin-top:14px;
+}
+
+.progress-wrap.show{
+    display:block;
+}
+
+.progress-info{
+    display:flex;
+    justify-content:space-between;
+    color:#737373;
+    font-size:10px;
+    margin-bottom:6px;
+}
+
+.progress{
+    height:5px;
+    background:#e5e5e5;
+    border-radius:99px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#000;
+    border-radius:99px;
+    transition:width .15s;
+}
+
+/* STATUS */
+
+.status{
+    display:none;
+    margin-top:12px;
+    padding:10px 12px;
+    border-radius:8px;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.status.show{
+    display:block;
+}
+
+.status.success{
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    color:#166534;
+}
+
+.status.error{
+    background:#fef2f2;
+    border:1px solid #fecaca;
+    color:#991b1b;
+}
+
+/* RESULT */
+
+.result{
+    display:none;
+    margin-top:14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.result.show{
+    display:block;
+}
+
+.result-header{
+    padding:12px 13px;
+    background:#fafafa;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.result-title{
+    font-size:11px;
+    font-weight:700;
+}
+
+.result-success{
+    font-size:10px;
+    color:#16a34a;
+    font-weight:600;
+}
+
+.result-body{
+    padding:13px;
+}
+
+.link-row{
+    display:flex;
+    gap:7px;
+}
+
+.link-input{
+    min-width:0;
+    flex:1;
+    height:40px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fafafa;
+    padding:0 10px;
+    outline:none;
+    color:#404040;
+    font-size:11px;
+}
+
+.copy-btn{
+    height:40px;
+    padding:0 13px;
+    border:0;
+    border-radius:8px;
+    background:#000;
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+}
+
+.copy-btn:hover{
+    background:#262626;
+}
+
+.result-meta{
+    margin-top:8px;
+    color:#a3a3a3;
+    font-size:10px;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    padding:42px 20px 35px;
+    color:#a3a3a3;
+    font-size:10px;
+}
+
+.footer-line{
+    width:100%;
+    max-width:680px;
+    height:1px;
+    background:#e5e5e5;
+    margin:0 auto 25px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .container{
+        width:calc(100% - 20px);
+    }
+
+    .nav-link{
+        display:none;
+    }
+
+    .hero{
+        padding:55px 10px 35px;
+    }
+
+    .hero h1{
+        letter-spacing:-1.8px;
+    }
+
+    .hero p{
+        font-size:13px;
+    }
+
+    .upload-area{
+        padding:13px;
+    }
+
+    .drop-zone{
+        min-height:230px;
+    }
+
+    .card-top{
+        padding:15px;
+    }
+
+    .file-info{
+        align-items:flex-start;
+    }
+
+    .link-row{
+        flex-direction:column;
+    }
+
+    .copy-btn{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="nav-inner">
+
+        <a
+            href="dashboard.html"
+            class="brand"
+        >
+            <div class="brand-icon">
+                R
+            </div>
+
+            <div class="brand-name">
+                ReyCloud
+                <span>/ Upload</span>
+            </div>
+        </a>
+
+        <div class="nav-right">
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <section class="hero">
+
+        <div class="badge">
+            <span class="badge-dot"></span>
+            ReyCloud Upload Service
+        </div>
+
+        <h1>
+            Upload.
+            <br>
+            Get a link.
+        </h1>
+
+        <p>
+            Upload file dengan cepat dan dapatkan
+            direct link yang siap digunakan.
+        </p>
+
+    </section>
+
+
+    <section class="upload-card">
+
+        <div class="card-top">
+
+            <div class="card-title">
+                File Upload
+            </div>
+
+            <div class="card-status">
+                <span class="card-status-dot"></span>
+                API Online
+            </div>
+
+        </div>
+
+
+        <div class="upload-area">
+
+            <div
+                class="drop-zone"
+                id="dropZone"
+            >
+
+                <div class="upload-content">
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+                    <h2>
+                        Drop file di sini
+                    </h2>
+
+                    <p>
+                        atau
+                        <strong>
+                            klik untuk memilih file
+                        </strong>
+                    </p>
+
+                    <p>
+                        Tidak ada preview file
+                    </p>
+
+                    <input
+                        type="file"
+                        id="fileInput"
+                        hidden
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="file-info"
+                id="fileInfo"
+            >
+
+                <div class="file-details">
+
+                    <div class="file-icon">
+                        ▣
+                    </div>
+
+                    <div class="file-text">
+
+                        <div
+                            class="file-name"
+                            id="fileName"
+                        >
+                            -
+                        </div>
+
+                        <div
+                            class="file-size"
+                            id="fileSize"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="remove-btn"
+                    id="removeBtn"
+                    type="button"
+                >
+                    Remove
+                </button>
+
+            </div>
+
+
+            <button
+                class="upload-btn"
+                id="uploadBtn"
+                type="button"
+                disabled
+            >
+                Upload File
+            </button>
+
+
+            <div
+                class="progress-wrap"
+                id="progressWrap"
+            >
+
+                <div class="progress-info">
+
+                    <span>
+                        Uploading file...
+                    </span>
+
+                    <span id="progressText">
+                        0%
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        id="progressBar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="status"
+                id="status"
+            ></div>
+
+
+            <div
+                class="result"
+                id="result"
+            >
+
+                <div class="result-header">
+
+                    <div class="result-title">
+                        Upload complete
+                    </div>
+
+                    <div class="result-success">
+                        ● Success
+                    </div>
+
+                </div>
+
+                <div class="result-body">
+
+                    <div class="link-row">
+
+                        <input
+                            class="link-input"
+                            id="resultLink"
+                            type="text"
+                            readonly
+                        >
+
+                        <button
+                            class="copy-btn"
+                            id="copyBtn"
+                            type="button"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="result-meta"
+                        id="resultMeta"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <footer class="footer">
+
+        <div class="footer-line"></div>
+
+        ReyCloud © 2026
+
+    </footer>
+
+</main>
+
+
+<script>
+
+const API_UPLOAD =
+    "https://api.legionteknologi.my.id/upload";
+
+const fileInput =
+    document.getElementById("fileInput");
+
+const dropZone =
+    document.getElementById("dropZone");
+
+const fileInfo =
+    document.getElementById("fileInfo");
+
+const fileName =
+    document.getElementById("fileName");
+
+const fileSize =
+    document.getElementById("fileSize");
+
+const uploadBtn =
+    document.getElementById("uploadBtn");
+
+const removeBtn =
+    document.getElementById("removeBtn");
+
+const progressWrap =
+    document.getElementById("progressWrap");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const progressText =
+    document.getElementById("progressText");
+
+const status =
+    document.getElementById("status");
+
+const result =
+    document.getElementById("result");
+
+const resultLink =
+    document.getElementById("resultLink");
+
+const resultMeta =
+    document.getElementById("resultMeta");
+
+const copyBtn =
+    document.getElementById("copyBtn");
+
+let selectedFile = null;
+
+
+/* SIZE */
+
+function formatSize(bytes){
+
+    if(
+        !Number.isFinite(bytes) ||
+        bytes < 0
+    ){
+        return "0 B";
+    }
+
+    if(bytes < 1024){
+        return `${bytes} B`;
+    }
+
+    if(bytes < 1024 ** 2){
+        return `${(bytes / 1024).toFixed(2)} KB`;
+    }
+
+    if(bytes < 1024 ** 3){
+        return `${(bytes / 1024 ** 2).toFixed(2)} MB`;
+    }
+
+    return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
+}
+
+
+/* STATUS */
+
+function showStatus(
+    message,
+    type
+){
+
+    status.textContent =
+        message;
+
+    status.className =
+        `status show ${type}`;
+}
+
+function clearStatus(){
+
+    status.textContent =
+        "";
+
+    status.className =
+        "status";
+}
+
+
+/* FILE */
+
+function setFile(file){
+
+    if(!file){
+        return;
+    }
+
+    selectedFile =
+        file;
+
+    fileName.textContent =
+        file.name;
+
+    fileSize.textContent =
+        formatSize(
+            file.size
+        );
+
+    fileInfo.classList.add(
+        "show"
+    );
+
+    uploadBtn.disabled =
+        false;
+
+    result.classList.remove(
+        "show"
+    );
+
+    progressWrap.classList.remove(
+        "show"
+    );
+
+    progressBar.style.width =
+        "0%";
+
+    progressText.textContent =
+        "0%";
+
+    clearStatus();
+}
+
+function removeFile(){
+
+    selectedFile =
+        null;
+
+    fileInput.value =
+        "";
+
+    fileInfo.classList.remove(
+        "show"
+    );
+
+    uploadBtn.disabled =
+        true;
+
+    result.classList.remove(
+        "show"
+    );
+
+    progressWrap.classList.remove(
+        "show"
+    );
+
+    clearStatus();
+}
+
+
+/* SELECT */
+
+dropZone.addEventListener(
+    "click",
+    () => {
+
+        fileInput.click();
+
+    }
+);
+
+fileInput.addEventListener(
+    "change",
+    () => {
+
+        const file =
+            fileInput.files?.[0];
+
+        setFile(file);
+
+    }
+);
+
+
+/* DRAG */
+
+dropZone.addEventListener(
+    "dragover",
+    event => {
+
+        event.preventDefault();
+
+        dropZone.classList.add(
+            "drag"
+        );
+
+    }
+);
+
+dropZone.addEventListener(
+    "dragleave",
+    () => {
+
+        dropZone.classList.remove(
+            "drag"
+        );
+
+    }
+);
+
+dropZone.addEventListener(
+    "drop",
+    event => {
+
+        event.preventDefault();
+
+        dropZone.classList.remove(
+            "drag"
+        );
+
+        const file =
+            event.dataTransfer
+                ?.files?.[0];
+
+        setFile(file);
+
+    }
+);
+
+
+removeBtn.addEventListener(
+    "click",
+    removeFile
+);
+
+
+/* RESPONSE */
+
+function extractLink(data){
+
+    return (
+        data?.result?.url ||
+        data?.result?.link ||
+        data?.url ||
+        data?.link ||
+        (
+            typeof data?.result ===
+            "string"
+                ? data.result
+                : ""
+        )
+    );
+
+}
+
+
+/* UPLOAD */
+
+function uploadFile(){
+
+    if(!selectedFile){
+
+        showStatus(
+            "Pilih file terlebih dahulu.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    const xhr =
+        new XMLHttpRequest();
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "file",
+        selectedFile
+    );
+
+    uploadBtn.disabled =
+        true;
+
+    removeBtn.disabled =
+        true;
+
+    result.classList.remove(
+        "show"
+    );
+
+    progressWrap.classList.add(
+        "show"
+    );
+
+    progressBar.style.width =
+        "0%";
+
+    progressText.textContent =
+        "0%";
+
+    showStatus(
+        "Uploading...",
+        "success"
+    );
+
+
+    xhr.open(
+        "POST",
+        API_UPLOAD,
+        true
+    );
+
+
+    xhr.upload.addEventListener(
+        "progress",
+        event => {
+
+            if(
+                !event.lengthComputable
+            ){
+                return;
+            }
+
+            const percent =
+                Math.round(
+                    (
+                        event.loaded /
+                        event.total
+                    ) * 100
+                );
+
+            progressBar.style.width =
+                `${percent}%`;
+
+            progressText.textContent =
+                `${percent}%`;
+
+        }
+    );
+
+
+    xhr.onreadystatechange =
+        function(){
+
+            if(
+                xhr.readyState !==
+                XMLHttpRequest.DONE
+            ){
+                return;
+            }
+
+            removeBtn.disabled =
+                false;
+
+            uploadBtn.disabled =
+                false;
+
+
+            let data;
+
+            try{
+
+                data =
+                    JSON.parse(
+                        xhr.responseText
+                    );
+
+            }catch{
+
+                showStatus(
+                    `Response server tidak valid (HTTP ${xhr.status}).`,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if(
+                xhr.status < 200 ||
+                xhr.status >= 300
+            ){
+
+                showStatus(
+                    data?.message ||
+                    `Upload gagal (HTTP ${xhr.status}).`,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if(
+                data?.status === false
+            ){
+
+                showStatus(
+                    data.message ||
+                    "Upload gagal.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const link =
+                extractLink(data);
+
+
+            if(!link){
+
+                showStatus(
+                    "Upload berhasil, tetapi link tidak ditemukan.",
+                    "error"
+                );
+
+                console.error(
+                    "Upload response:",
+                    data
+                );
+
+                return;
+
+            }
+
+
+            progressBar.style.width =
+                "100%";
+
+            progressText.textContent =
+                "100%";
+
+
+            resultLink.value =
+                String(link);
+
+
+            resultMeta.textContent =
+                `${selectedFile.name} • ${formatSize(selectedFile.size)}`;
+
+
+            result.classList.add(
+                "show"
+            );
+
+
+            showStatus(
+                "Upload berhasil.",
+                "success"
+            );
+
+        };
+
+
+    xhr.onerror =
+        function(){
+
+            removeBtn.disabled =
+                false;
+
+            uploadBtn.disabled =
+                false;
+
+            showStatus(
+                "Tidak dapat terhubung ke server upload. Cek API atau CORS.",
+                "error"
+            );
+
+        };
+
+
+    xhr.send(
+        formData
+    );
+
+}
+
+
+/* COPY */
+
+copyBtn.addEventListener(
+    "click",
+    async () => {
+
+        const link =
+            resultLink.value;
+
+        if(!link){
+            return;
+        }
+
+        try{
+
+            await navigator.clipboard.writeText(
+                link
+            );
+
+        }catch{
+
+            resultLink.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+        }
+
+        copyBtn.textContent =
+            "Copied ✓";
+
+        setTimeout(
+            () => {
+
+                copyBtn.textContent =
+                    "Copy";
+
+            },
+            1500
+        );
+
+    }
+);
+
+
+uploadBtn.addEventListener(
+    "click",
+    uploadFile
+);
+
+</script>
+
+</body>
+</html>
