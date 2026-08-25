@@ -24,8 +24,6 @@ body{
     display:flex;
 }
 
-/* SIDEBAR */
-
 .sidebar{
     width:250px;
     background:#fff;
@@ -153,8 +151,6 @@ body{
     margin-top:2px;
 }
 
-/* MAIN */
-
 .main{
     width:calc(100% - 250px);
     margin-left:250px;
@@ -196,13 +192,16 @@ body{
     box-shadow:0 0 0 3px #dcfce7;
 }
 
+.status-dot.offline{
+    background:#ef4444;
+    box-shadow:0 0 0 3px #fee2e2;
+}
+
 .content{
     max-width:1050px;
     margin:auto;
     padding:30px;
 }
-
-/* HEADER */
 
 .chat-header{
     background:#111827;
@@ -250,8 +249,6 @@ body{
     font-size:13px;
     margin-top:7px;
 }
-
-/* CHAT */
 
 .chat-box{
     background:#fff;
@@ -353,9 +350,8 @@ body{
 .empty p{
     font-size:12px;
     margin-top:4px;
+    max-width:300px;
 }
-
-/* MESSAGE */
 
 .message{
     display:flex;
@@ -395,6 +391,7 @@ body{
     align-items:center;
     gap:7px;
     margin-bottom:4px;
+    flex-wrap:wrap;
 }
 
 .message.mine .message-meta{
@@ -437,8 +434,6 @@ body{
     border-color:#111827;
     color:#fff;
 }
-
-/* INPUT */
 
 .chat-input{
     padding:13px;
@@ -497,8 +492,6 @@ body{
     color:#9ca3af;
     font-size:10px;
 }
-
-/* MOBILE */
 
 .mobile-menu{
     display:none;
@@ -594,12 +587,15 @@ body{
 
         <div class="logo">
             <div class="logo-icon">R</div>
+
             <div class="logo-text">
                 ReyCloud <span>Panel</span>
             </div>
         </div>
 
-        <div class="nav-title">Menu</div>
+        <div class="nav-title">
+            Menu
+        </div>
 
         <nav class="nav">
 
@@ -626,10 +622,18 @@ body{
         </nav>
 
         <div class="sidebar-user">
+
             <div class="user-mini">
-                <div class="avatar" id="sidebarAvatar">R</div>
+
+                <div
+                    class="avatar"
+                    id="sidebarAvatar"
+                >
+                    R
+                </div>
 
                 <div class="user-info">
+
                     <strong id="sidebarUsername">
                         User
                     </strong>
@@ -637,8 +641,11 @@ body{
                     <span id="sidebarRole">
                         member
                     </span>
+
                 </div>
+
             </div>
+
         </div>
 
     </aside>
@@ -648,7 +655,13 @@ body{
 
         <header class="topbar">
 
-            <div style="display:flex;align-items:center;gap:10px">
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    gap:10px
+                "
+            >
 
                 <button
                     class="mobile-menu"
@@ -665,8 +678,16 @@ body{
             </div>
 
             <div class="status">
-                <span class="status-dot"></span>
-                API Connected
+
+                <span
+                    class="status-dot"
+                    id="statusDot"
+                ></span>
+
+                <span id="statusText">
+                    Connecting...
+                </span>
+
             </div>
 
         </header>
@@ -675,10 +696,15 @@ body{
         <section class="content">
 
             <div class="chat-header">
-                <h1>💬 Public Chat</h1>
+
+                <h1>
+                    💬 Public Chat
+                </h1>
+
                 <p>
                     Ngobrol bersama pengguna ReyCloud lainnya.
                 </p>
+
             </div>
 
 
@@ -693,6 +719,7 @@ body{
                         </div>
 
                         <div>
+
                             <strong>
                                 ReyCloud Community
                             </strong>
@@ -700,6 +727,7 @@ body{
                             <small id="messageCount">
                                 Memuat pesan...
                             </small>
+
                         </div>
 
                     </div>
@@ -707,6 +735,7 @@ body{
                     <button
                         class="refresh-btn"
                         id="refreshBtn"
+                        type="button"
                     >
                         ↻ Refresh
                     </button>
@@ -720,6 +749,7 @@ body{
                 >
 
                     <div class="empty">
+
                         <div class="empty-icon">
                             ⏳
                         </div>
@@ -731,6 +761,7 @@ body{
                         <p>
                             Tunggu sebentar
                         </p>
+
                     </div>
 
                 </div>
@@ -782,6 +813,7 @@ body{
 
 
 <script>
+
 const API_BASE =
     "https://api.legionteknologi.my.id";
 
@@ -791,48 +823,88 @@ const API_CHAT =
 let currentUser = null;
 let loading = false;
 let lastMessagesHash = "";
+let initialized = false;
 
 
 /* =========================
-   USER
+   STORAGE
 ========================= */
 
 function getUser(){
 
-    try{
+    const possibleKeys = [
+        "user",
+        "currentUser",
+        "reycloud_user",
+        "loginUser"
+    ];
 
-        const raw =
-            localStorage.getItem("user");
+    for(
+        const key of possibleKeys
+    ){
 
-        if(!raw){
-            return null;
+        try{
+
+            const raw =
+                localStorage.getItem(key);
+
+            if(!raw){
+                continue;
+            }
+
+            const parsed =
+                JSON.parse(raw);
+
+            if(
+                parsed &&
+                parsed.result &&
+                parsed.result.user
+            ){
+                return parsed.result.user;
+            }
+
+            if(
+                parsed &&
+                parsed.user
+            ){
+                return parsed.user;
+            }
+
+            if(
+                parsed &&
+                parsed.username
+            ){
+                return parsed;
+            }
+
+        }catch(error){
+
+            console.error(
+                `[STORAGE ERROR] ${key}`,
+                error
+            );
+
         }
 
-        const parsed =
-            JSON.parse(raw);
-
-        if(parsed?.user){
-            return parsed.user;
-        }
-
-        return parsed;
-
-    }catch(error){
-
-        console.error(
-            "LocalStorage user error:",
-            error
-        );
-
-        return null;
     }
+
+    return null;
 }
 
+
+/* =========================
+   USER SETUP
+========================= */
 
 function setupUser(){
 
     currentUser =
         getUser();
+
+    console.log(
+        "[REYCLOUD USER]",
+        currentUser
+    );
 
     if(!currentUser){
 
@@ -847,12 +919,16 @@ function setupUser(){
     }
 
     const username =
-        currentUser.username ||
-        "User";
+        String(
+            currentUser.username ||
+            "User"
+        ).trim();
 
     const role =
-        currentUser.role ||
-        "member";
+        String(
+            currentUser.role ||
+            "member"
+        ).trim();
 
     document.getElementById(
         "sidebarUsername"
@@ -862,7 +938,7 @@ function setupUser(){
     document.getElementById(
         "sidebarRole"
     ).textContent =
-        role;
+        formatRole(role);
 
     document.getElementById(
         "sidebarAvatar"
@@ -876,19 +952,40 @@ function setupUser(){
 
 
 /* =========================
-   FORMAT
+   HTML SECURITY
 ========================= */
 
 function escapeHTML(value){
 
-    return String(value || "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
+
+/* =========================
+   FORMAT
+========================= */
 
 function formatTime(date){
 
@@ -918,9 +1015,50 @@ function formatRole(role){
     return String(
         role || "member"
     )
-        .replace(/\b\w/g,c =>
-            c.toUpperCase()
+        .replace(
+            /\b\w/g,
+            char =>
+                char.toUpperCase()
         );
+}
+
+
+/* =========================
+   API STATUS
+========================= */
+
+function setApiStatus(
+    online
+){
+
+    const dot =
+        document.getElementById(
+            "statusDot"
+        );
+
+    const text =
+        document.getElementById(
+            "statusText"
+        );
+
+    if(online){
+
+        dot.classList.remove(
+            "offline"
+        );
+
+        text.textContent =
+            "API Connected";
+
+    }else{
+
+        dot.classList.add(
+            "offline"
+        );
+
+        text.textContent =
+            "API Offline";
+    }
 }
 
 
@@ -945,21 +1083,41 @@ async function loadMessages(
                 API_CHAT,
                 {
                     method:"GET",
-                    cache:"no-store"
+                    cache:"no-store",
+                    headers:{
+                        "Accept":
+                            "application/json"
+                    }
                 }
             );
 
-        const data =
-            await response.json();
+        let data = null;
 
-        if(!response.ok ||
+        try{
+
+            data =
+                await response.json();
+
+        }catch{
+
+            throw new Error(
+                `Server mengembalikan response tidak valid (${response.status})`
+            );
+
+        }
+
+        if(
+            !response.ok ||
             !data.status
         ){
+
             throw new Error(
                 data.message ||
-                "Gagal mengambil chat"
+                `Gagal mengambil chat (${response.status})`
             );
         }
+
+        setApiStatus(true);
 
         const messages =
             Array.isArray(
@@ -1002,10 +1160,18 @@ async function loadMessages(
             error
         );
 
+        setApiStatus(false);
+
+        document.getElementById(
+            "messageCount"
+        ).textContent =
+            "Gagal terhubung";
+
         document.getElementById(
             "messages"
         ).innerHTML = `
             <div class="empty">
+
                 <div class="empty-icon">
                     ⚠️
                 </div>
@@ -1019,6 +1185,7 @@ async function loadMessages(
                         error.message
                     )}
                 </p>
+
             </div>
         `;
 
@@ -1047,6 +1214,7 @@ function renderMessages(
 
         container.innerHTML = `
             <div class="empty">
+
                 <div class="empty-icon">
                     💬
                 </div>
@@ -1058,6 +1226,7 @@ function renderMessages(
                 <p>
                     Jadilah orang pertama yang mengirim pesan.
                 </p>
+
             </div>
         `;
 
@@ -1072,82 +1241,92 @@ function renderMessages(
 
     container.innerHTML =
         messages
-            .map(chat => {
+            .map(
+                chat => {
 
-                const isMine =
-                    String(
-                        chat.username || ""
-                    ).toLowerCase() ===
-                    String(
-                        currentUser?.username || ""
-                    ).toLowerCase();
+                    const usernameRaw =
+                        String(
+                            chat.username ||
+                            "User"
+                        );
 
-                const username =
-                    escapeHTML(
-                        chat.username ||
-                        "User"
-                    );
+                    const currentUsername =
+                        String(
+                            currentUser?.username ||
+                            ""
+                        );
 
-                const role =
-                    escapeHTML(
-                        formatRole(
-                            chat.role
-                        )
-                    );
+                    const isMine =
+                        usernameRaw
+                            .toLowerCase() ===
+                        currentUsername
+                            .toLowerCase();
 
-                const message =
-                    escapeHTML(
-                        chat.message
-                    );
+                    const username =
+                        escapeHTML(
+                            usernameRaw
+                        );
 
-                const initial =
-                    String(
-                        chat.username ||
-                        "U"
-                    )
-                        .charAt(0)
-                        .toUpperCase();
+                    const role =
+                        escapeHTML(
+                            formatRole(
+                                chat.role
+                            )
+                        );
 
-                return `
-                    <div class="message ${
-                        isMine
-                            ? "mine"
-                            : ""
-                    }">
+                    const message =
+                        escapeHTML(
+                            chat.message
+                        );
 
-                        <div class="message-avatar">
-                            ${escapeHTML(initial)}
-                        </div>
+                    const initial =
+                        usernameRaw
+                            .charAt(0)
+                            .toUpperCase();
 
-                        <div class="message-content">
+                    return `
+                        <div class="message ${
+                            isMine
+                                ? "mine"
+                                : ""
+                        }">
 
-                            <div class="message-meta">
+                            <div class="message-avatar">
+                                ${escapeHTML(
+                                    initial
+                                )}
+                            </div>
 
-                                <span class="message-name">
-                                    ${username}
-                                </span>
+                            <div class="message-content">
 
-                                <span class="role">
-                                    ${role}
-                                </span>
+                                <div class="message-meta">
 
-                                <span class="message-time">
-                                    ${formatTime(
-                                        chat.createdAt
-                                    )}
-                                </span>
+                                    <span class="message-name">
+                                        ${username}
+                                    </span>
+
+                                    <span class="role">
+                                        ${role}
+                                    </span>
+
+                                    <span class="message-time">
+                                        ${formatTime(
+                                            chat.createdAt
+                                        )}
+                                    </span>
+
+                                </div>
+
+                                <div class="bubble">
+                                    ${message}
+                                </div>
 
                             </div>
 
-                            <div class="bubble">
-                                ${message}
-                            </div>
-
                         </div>
-
-                    </div>
-                `;
-            })
+                    `;
+                }
+            )
             .join("");
 
     if(
@@ -1155,12 +1334,15 @@ function renderMessages(
         wasBottom
     ){
 
-        requestAnimationFrame(() => {
+        requestAnimationFrame(
+            () => {
 
-            container.scrollTop =
-                container.scrollHeight;
+                container.scrollTop =
+                    container.scrollHeight;
 
-        });
+            }
+        );
+
     }
 }
 
@@ -1172,6 +1354,11 @@ function renderMessages(
 async function sendMessage(){
 
     if(!currentUser){
+
+        alert(
+            "Session login tidak ditemukan."
+        );
+
         return;
     }
 
@@ -1201,6 +1388,15 @@ async function sendMessage(){
         return;
     }
 
+    if(!currentUser.username){
+
+        alert(
+            "Username login tidak ditemukan."
+        );
+
+        return;
+    }
+
     button.disabled = true;
 
     try{
@@ -1213,6 +1409,9 @@ async function sendMessage(){
 
                     headers:{
                         "Content-Type":
+                            "application/json",
+
+                        "Accept":
                             "application/json"
                     },
 
@@ -1226,8 +1425,20 @@ async function sendMessage(){
                 }
             );
 
-        const data =
-            await response.json();
+        let data = null;
+
+        try{
+
+            data =
+                await response.json();
+
+        }catch{
+
+            throw new Error(
+                `Response server tidak valid (${response.status})`
+            );
+
+        }
 
         if(
             !response.ok ||
@@ -1236,9 +1447,11 @@ async function sendMessage(){
 
             throw new Error(
                 data.message ||
-                "Gagal mengirim pesan"
+                `Gagal mengirim pesan (${response.status})`
             );
         }
+
+        setApiStatus(true);
 
         input.value = "";
 
@@ -1256,6 +1469,8 @@ async function sendMessage(){
             "[CHAT POST]",
             error
         );
+
+        setApiStatus(false);
 
         alert(
             error.message ||
@@ -1298,12 +1513,14 @@ document.getElementById(
     sendMessage
 );
 
+
 document.getElementById(
     "messageInput"
 ).addEventListener(
     "input",
     updateCharCount
 );
+
 
 document.getElementById(
     "messageInput"
@@ -1320,8 +1537,10 @@ document.getElementById(
 
             sendMessage();
         }
+
     }
 );
+
 
 document.getElementById(
     "refreshBtn"
@@ -1331,7 +1550,7 @@ document.getElementById(
 
         lastMessagesHash = "";
 
-        loadMessages();
+        loadMessages(true);
     }
 );
 
@@ -1347,9 +1566,43 @@ document.getElementById(
     () => {
 
         document
-            .getElementById("sidebar")
+            .getElementById(
+                "sidebar"
+            )
             .classList
-            .toggle("open");
+            .toggle(
+                "open"
+            );
+
+    }
+);
+
+
+/* =========================
+   AUTO CLOSE SIDEBAR
+========================= */
+
+document.querySelectorAll(
+    ".nav a"
+).forEach(
+    link => {
+
+        link.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .getElementById(
+                        "sidebar"
+                    )
+                    .classList
+                    .remove(
+                        "open"
+                    );
+
+            }
+        );
+
     }
 );
 
@@ -1358,19 +1611,45 @@ document.getElementById(
    INIT
 ========================= */
 
-if(
-    setupUser()
-){
+function init(){
+
+    if(initialized){
+        return;
+    }
+
+    initialized = true;
+
+    const loggedIn =
+        setupUser();
+
+    if(!loggedIn){
+        return;
+    }
+
+    updateCharCount();
 
     loadMessages(true);
 
     setInterval(
         () => {
-            loadMessages(false);
+
+            if(
+                document.visibilityState ===
+                "visible"
+            ){
+
+                loadMessages(false);
+
+            }
+
         },
         3000
     );
 }
+
+
+init();
+
 </script>
 
 </body>
