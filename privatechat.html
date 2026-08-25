@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Chat - ReyCloud</title>
+<title>Server Status - ReyCloud</title>
 
 <style>
 *{
@@ -13,613 +13,415 @@
 }
 
 body{
-    font-family:Arial,sans-serif;
-    background:#f5f6f8;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f7fa;
     color:#111827;
-    height:100vh;
-    overflow:hidden;
+    min-height:100vh;
 }
 
-button,
-input,
-textarea{
+button{
     font-family:inherit;
 }
 
 .app{
-    display:flex;
-    height:100vh;
-}
-
-.sidebar{
-    width:330px;
-    background:#fff;
-    border-right:1px solid #e5e7eb;
-    display:flex;
-    flex-direction:column;
-}
-
-.sidebar-header{
+    max-width:1100px;
+    margin:auto;
     padding:20px;
-    border-bottom:1px solid #eee;
 }
 
-.sidebar-header h2{
-    font-size:21px;
-    margin-bottom:14px;
-}
-
-.search{
-    width:100%;
-    padding:12px 14px;
-    border:1px solid #ddd;
-    border-radius:12px;
-    outline:none;
-    font-size:14px;
-}
-
-.search:focus{
-    border-color:#111827;
-}
-
-.conversations{
-    flex:1;
-    overflow-y:auto;
-}
-
-.conversation{
+.header{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:18px;
     display:flex;
     align-items:center;
-    gap:12px;
-    padding:14px 16px;
-    cursor:pointer;
-    border-bottom:1px solid #f3f4f6;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:18px;
+    box-shadow:0 4px 18px rgba(0,0,0,.04);
 }
 
-.conversation:hover{
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.logo{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    background:#111827;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.title h1{
+    font-size:20px;
+}
+
+.title p{
+    color:#6b7280;
+    font-size:13px;
+    margin-top:4px;
+}
+
+.back-btn{
+    border:0;
+    background:#111827;
+    color:#fff;
+    padding:11px 15px;
+    border-radius:11px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.back-btn:hover{
+    opacity:.9;
+}
+
+.status-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 4px 18px rgba(0,0,0,.04);
+}
+
+.status-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.status-main{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.status-dot{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#9ca3af;
+    box-shadow:0 0 0 6px rgba(156,163,175,.12);
+}
+
+.status-dot.online{
+    background:#16a34a;
+    box-shadow:0 0 0 6px rgba(22,163,74,.12);
+}
+
+.status-dot.offline{
+    background:#dc2626;
+    box-shadow:0 0 0 6px rgba(220,38,38,.12);
+}
+
+.status-title{
+    font-size:19px;
+    font-weight:bold;
+}
+
+.status-message{
+    color:#6b7280;
+    font-size:13px;
+    margin-top:4px;
+}
+
+.ping{
+    background:#f3f4f6;
+    border-radius:10px;
+    padding:9px 12px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.ping.good{
+    color:#15803d;
+}
+
+.ping.medium{
+    color:#b45309;
+}
+
+.ping.bad{
+    color:#dc2626;
+}
+
+.refresh-info{
+    margin-top:18px;
+    padding-top:15px;
+    border-top:1px solid #f0f0f0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    color:#6b7280;
+    font-size:12px;
+}
+
+.refresh-btn{
+    border:1px solid #e5e7eb;
+    background:#fff;
+    padding:8px 12px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.refresh-btn:hover{
     background:#f9fafb;
 }
 
-.conversation.active{
-    background:#eef2ff;
+.grid{
+    display:grid;
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+    gap:16px;
 }
 
-.avatar{
-    width:46px;
-    height:46px;
-    border-radius:50%;
-    object-fit:cover;
-    background:#e5e7eb;
-    flex-shrink:0;
-}
-
-.avatar-fallback{
-    width:46px;
-    height:46px;
-    border-radius:50%;
-    background:#111827;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:bold;
-    flex-shrink:0;
-}
-
-.conv-info{
-    min-width:0;
-    flex:1;
-}
-
-.conv-top{
-    display:flex;
-    justify-content:space-between;
-    gap:8px;
-}
-
-.conv-name{
-    font-weight:bold;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.conv-time{
-    font-size:11px;
-    color:#9ca3af;
-}
-
-.conv-bottom{
-    display:flex;
-    justify-content:space-between;
-    gap:8px;
-    margin-top:5px;
-}
-
-.last-message{
-    color:#6b7280;
-    font-size:13px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.unread{
-    background:#111827;
-    color:white;
-    min-width:20px;
-    height:20px;
-    padding:0 6px;
-    border-radius:10px;
-    font-size:11px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.chat{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    min-width:0;
-}
-
-.chat-header{
-    height:72px;
+.card{
     background:#fff;
-    border-bottom:1px solid #e5e7eb;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 4px 18px rgba(0,0,0,.04);
+}
+
+.card.full{
+    grid-column:1 / -1;
+}
+
+.card-header{
     display:flex;
     align-items:center;
-    gap:12px;
-    padding:12px 18px;
+    gap:10px;
+    margin-bottom:18px;
 }
 
-.chat-user-info{
-    flex:1;
-    min-width:0;
+.card-icon{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+    background:#f3f4f6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
 }
 
-.chat-user-name{
-    font-weight:bold;
+.card-header h2{
     font-size:16px;
 }
 
-.chat-user-role{
-    font-size:12px;
-    color:#6b7280;
+.card-header p{
+    color:#9ca3af;
+    font-size:11px;
     margin-top:3px;
 }
 
-.messages{
-    flex:1;
-    overflow-y:auto;
-    padding:20px;
+.info-list{
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:0;
 }
 
-.empty{
-    margin:auto;
-    text-align:center;
-    color:#9ca3af;
-}
-
-.empty h3{
-    color:#6b7280;
-    margin-bottom:5px;
-}
-
-.message-row{
+.info-row{
     display:flex;
-    width:100%;
-}
-
-.message-row.mine{
-    justify-content:flex-end;
-}
-
-.message{
-    max-width:min(75%,520px);
-    padding:10px 12px;
-    border-radius:15px;
-    background:#fff;
-    box-shadow:0 1px 3px rgba(0,0,0,.05);
-    position:relative;
-}
-
-.message.mine{
-    background:#111827;
-    color:white;
-    border-bottom-right-radius:4px;
-}
-
-.message:not(.mine){
-    border-bottom-left-radius:4px;
-}
-
-.reply-box{
-    border-left:3px solid #9ca3af;
-    background:rgba(0,0,0,.05);
-    padding:7px 9px;
-    margin-bottom:7px;
-    border-radius:6px;
-    font-size:12px;
-}
-
-.mine .reply-box{
-    background:rgba(255,255,255,.1);
-    border-color:#fff;
-}
-
-.reply-name{
-    font-weight:bold;
-    margin-bottom:3px;
-}
-
-.message-text{
-    white-space:pre-wrap;
-    word-break:break-word;
-    line-height:1.4;
-    font-size:14px;
-}
-
-.message-image{
-    max-width:100%;
-    max-height:300px;
-    border-radius:10px;
-    display:block;
-    margin-bottom:7px;
-    cursor:pointer;
-}
-
-.message-meta{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:6px;
-    margin-top:5px;
-    font-size:10px;
-    opacity:.65;
-}
-
-.message-actions{
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-    margin-top:7px;
-}
-
-.action-btn{
-    border:0;
-    background:rgba(0,0,0,.06);
-    padding:5px 8px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:11px;
-}
-
-.action-btn:hover{
-    background:rgba(0,0,0,.12);
-}
-
-.mine .action-btn{
-    background:rgba(255,255,255,.12);
-    color:white;
-}
-
-.mine .action-btn:hover{
-    background:rgba(255,255,255,.2);
-}
-
-.reactions{
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-    margin-top:7px;
-}
-
-.reaction{
-    border:1px solid #e5e7eb;
-    background:#fff;
-    border-radius:20px;
-    padding:3px 7px;
-    font-size:12px;
-    cursor:pointer;
-    color:#111;
-}
-
-.reaction:hover{
-    background:#f3f4f6;
-}
-
-.composer{
-    background:#fff;
-    border-top:1px solid #e5e7eb;
-    padding:12px;
-}
-
-.reply-preview{
-    display:none;
-    padding:8px 10px;
-    margin-bottom:8px;
-    background:#f3f4f6;
-    border-radius:10px;
-    font-size:12px;
-}
-
-.reply-preview.show{
-    display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    padding:11px 0;
+    border-bottom:1px solid #f3f4f6;
 }
 
-.reply-preview button{
-    border:0;
-    background:none;
-    cursor:pointer;
-    font-size:18px;
+.info-row:last-child{
+    border-bottom:0;
 }
 
-.image-preview{
-    display:none;
-    margin-bottom:8px;
-    position:relative;
-}
-
-.image-preview.show{
-    display:inline-block;
-}
-
-.image-preview img{
-    width:80px;
-    height:80px;
-    object-fit:cover;
-    border-radius:10px;
-}
-
-.remove-image{
-    position:absolute;
-    top:-7px;
-    right:-7px;
-    width:22px;
-    height:22px;
-    border:0;
-    border-radius:50%;
-    background:#111827;
-    color:#fff;
-    cursor:pointer;
-}
-
-.composer-row{
-    display:flex;
-    align-items:flex-end;
-    gap:8px;
-}
-
-.composer textarea{
-    flex:1;
-    resize:none;
-    min-height:44px;
-    max-height:130px;
-    border:1px solid #ddd;
-    border-radius:14px;
-    padding:12px;
-    outline:none;
-    font-family:inherit;
-}
-
-.composer textarea:focus{
-    border-color:#111827;
-}
-
-.icon-btn{
-    width:44px;
-    height:44px;
-    border:0;
-    border-radius:12px;
-    background:#f3f4f6;
-    cursor:pointer;
-    font-size:18px;
-}
-
-.icon-btn:hover{
-    background:#e5e7eb;
-}
-
-.send-btn{
-    width:44px;
-    height:44px;
-    border:0;
-    border-radius:12px;
-    background:#111827;
-    color:white;
-    cursor:pointer;
-    font-size:18px;
-}
-
-.send-btn:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
-.mobile-back{
-    display:none;
-    border:0;
-    background:none;
-    font-size:22px;
-    cursor:pointer;
-}
-
-.new-chat{
-    margin-top:10px;
-    width:100%;
-    border:0;
-    background:#111827;
-    color:#fff;
-    padding:11px;
-    border-radius:11px;
-    cursor:pointer;
-}
-
-.new-chat:hover{
-    background:#1f2937;
-}
-
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:20;
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    background:#fff;
-    width:100%;
-    max-width:400px;
-    border-radius:18px;
-    padding:20px;
-}
-
-.modal-box h3{
-    margin-bottom:14px;
-}
-
-.modal-input{
-    width:100%;
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    outline:none;
-}
-
-.modal-input:focus{
-    border-color:#111827;
-}
-
-.username-status{
-    margin-top:9px;
-    font-size:12px;
-    min-height:18px;
-}
-
-.user-preview{
-    display:none;
-    margin-top:10px;
-    padding:10px;
-    border:1px solid #eee;
-    border-radius:12px;
-    align-items:center;
-    gap:10px;
-}
-
-.user-preview-info{
-    min-width:0;
-}
-
-.user-preview-name{
-    font-weight:bold;
-    font-size:14px;
-}
-
-.user-preview-role{
-    font-size:12px;
+.info-label{
     color:#6b7280;
-    margin-top:3px;
-}
-
-.modal-actions{
-    display:flex;
-    gap:8px;
-    margin-top:14px;
-}
-
-.modal-actions button{
-    flex:1;
-    padding:11px;
-    border:0;
-    border-radius:10px;
-    cursor:pointer;
-}
-
-.cancel{
-    background:#f3f4f6;
-}
-
-.confirm{
-    background:#111827;
-    color:white;
-}
-
-.confirm:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
-.loading{
-    padding:25px;
-    text-align:center;
-    color:#9ca3af;
-}
-
-.toast{
-    position:fixed;
-    bottom:25px;
-    left:50%;
-    transform:translateX(-50%) translateY(20px);
-    background:#111827;
-    color:#fff;
-    padding:11px 16px;
-    border-radius:10px;
-    opacity:0;
-    pointer-events:none;
-    transition:.25s;
-    z-index:50;
     font-size:13px;
 }
 
-.toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
+.info-value{
+    text-align:right;
+    font-size:13px;
+    font-weight:bold;
+    word-break:break-word;
+}
+
+.muted{
+    color:#9ca3af;
+    font-weight:normal;
+}
+
+.memory-summary{
+    margin-bottom:18px;
+}
+
+.memory-bar{
+    width:100%;
+    height:12px;
+    background:#eef0f3;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.memory-fill{
+    height:100%;
+    width:0%;
+    border-radius:20px;
+    background:#111827;
+    transition:.4s ease;
+}
+
+.memory-percent{
+    display:flex;
+    justify-content:space-between;
+    margin-top:8px;
+    font-size:12px;
+    color:#6b7280;
+}
+
+.uptime-box{
+    background:#f8fafc;
+    border:1px solid #eef0f3;
+    border-radius:14px;
+    padding:15px;
+    display:grid;
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+    gap:12px;
+}
+
+.uptime-item{
+    background:#fff;
+    border:1px solid #eef0f3;
+    border-radius:11px;
+    padding:13px;
+}
+
+.uptime-label{
+    font-size:11px;
+    color:#9ca3af;
+}
+
+.uptime-value{
+    margin-top:5px;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.footer{
+    text-align:center;
+    color:#9ca3af;
+    font-size:12px;
+    padding:20px 0 5px;
+}
+
+.loading{
+    color:#9ca3af;
+    font-size:13px;
+}
+
+.error-box{
+    background:#fef2f2;
+    border:1px solid #fecaca;
+    color:#b91c1c;
+    padding:13px;
+    border-radius:11px;
+    font-size:13px;
+    margin-top:15px;
 }
 
 @media(max-width:700px){
 
-    .sidebar{
-        width:100%;
+    .app{
+        padding:12px;
     }
 
-    .chat{
-        display:none;
-        width:100%;
-    }
-
-    .app.chat-open .sidebar{
-        display:none;
-    }
-
-    .app.chat-open .chat{
-        display:flex;
-    }
-
-    .mobile-back{
-        display:block;
-    }
-
-    .message{
-        max-width:85%;
-    }
-
-    .messages{
+    .header{
         padding:14px;
+    }
+
+    .header-left{
+        min-width:0;
+    }
+
+    .logo{
+        width:42px;
+        height:42px;
+        font-size:19px;
+    }
+
+    .title h1{
+        font-size:17px;
+    }
+
+    .title p{
+        font-size:11px;
+    }
+
+    .back-btn{
+        padding:9px 11px;
+        font-size:11px;
+    }
+
+    .status-card{
+        padding:17px;
+    }
+
+    .status-top{
+        align-items:flex-start;
+    }
+
+    .status-title{
+        font-size:16px;
+    }
+
+    .ping{
+        font-size:11px;
+        white-space:nowrap;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .card.full{
+        grid-column:auto;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+    .info-row{
+        gap:10px;
+    }
+
+    .info-label,
+    .info-value{
+        font-size:12px;
+    }
+
+    .uptime-box{
+        grid-template-columns:1fr;
+    }
+
+    .refresh-info{
+        align-items:flex-start;
+        flex-direction:column;
     }
 }
 </style>
@@ -627,1931 +429,1286 @@ textarea{
 
 <body>
 
-<div class="app" id="app">
+<div class="app">
 
-    <aside class="sidebar">
+    <header class="header">
 
-        <div class="sidebar-header">
+        <div class="header-left">
 
-            <h2>Private Chat</h2>
+            <div class="logo">
+                R
+            </div>
 
-            <input
-                id="searchInput"
-                class="search"
-                placeholder="Cari username..."
-                autocomplete="off"
+            <div class="title">
+                <h1>Server Status</h1>
+                <p>ReyCloud API Monitoring</p>
+            </div>
+
+        </div>
+
+        <button
+            class="back-btn"
+            onclick="goDashboard()"
+        >
+            ← Dashboard
+        </button>
+
+    </header>
+
+    <section class="status-card">
+
+        <div class="status-top">
+
+            <div class="status-main">
+
+                <div
+                    id="statusDot"
+                    class="status-dot"
+                ></div>
+
+                <div>
+
+                    <div
+                        id="statusTitle"
+                        class="status-title"
+                    >
+                        Memeriksa server...
+                    </div>
+
+                    <div
+                        id="statusMessage"
+                        class="status-message"
+                    >
+                        Menghubungkan ke ReyCloud API
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div
+                id="ping"
+                class="ping"
             >
-
-            <button
-                class="new-chat"
-                onclick="openNewChat()"
-            >
-                + Chat Baru
-            </button>
+                PING: -
+            </div>
 
         </div>
 
         <div
-            id="conversationList"
-            class="conversations"
-        >
-            <div class="loading">
-                Memuat conversation...
-            </div>
-        </div>
+            id="errorBox"
+            class="error-box"
+            style="display:none"
+        ></div>
 
-    </aside>
+        <div class="refresh-info">
 
-    <main class="chat">
-
-        <header class="chat-header">
+            <span>
+                Auto refresh setiap
+                <b id="refreshSeconds">5</b>
+                detik
+                • Terakhir update:
+                <b id="lastUpdate">-</b>
+            </span>
 
             <button
-                class="mobile-back"
-                onclick="closeChat()"
+                class="refresh-btn"
+                onclick="loadStatus()"
             >
-                ←
+                ↻ Refresh Sekarang
             </button>
 
-            <div id="headerAvatar"></div>
+        </div>
 
-            <div class="chat-user-info">
+    </section>
 
-                <div
-                    id="chatUsername"
-                    class="chat-user-name"
-                >
-                    Pilih chat
+    <div class="grid">
+
+        <!-- SYSTEM -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <div class="card-icon">
+                    🖥️
                 </div>
 
-                <div
-                    id="chatRole"
-                    class="chat-user-role"
-                >
-                    Belum ada conversation
+                <div>
+                    <h2>Informasi Sistem</h2>
+                    <p>System Runtime</p>
                 </div>
 
             </div>
 
-        </header>
+            <div class="info-list">
 
-        <section
-            id="messages"
-            class="messages"
-        >
+                <div class="info-row">
+                    <span class="info-label">
+                        OS
+                    </span>
+                    <span
+                        id="os"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
 
-            <div class="empty">
+                <div class="info-row">
+                    <span class="info-label">
+                        Platform
+                    </span>
+                    <span
+                        id="platform"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
 
-                <h3>
-                    Private Chat
-                </h3>
+                <div class="info-row">
+                    <span class="info-label">
+                        Architecture
+                    </span>
+                    <span
+                        id="architecture"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
 
-                <p>
-                    Pilih conversation untuk mulai chat.
-                </p>
+                <div class="info-row">
+                    <span class="info-label">
+                        Hostname
+                    </span>
+                    <span
+                        id="hostname"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        NodeJS
+                    </span>
+                    <span
+                        id="node"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Engine V8
+                    </span>
+                    <span
+                        id="v8"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
 
             </div>
 
         </section>
 
-        <div class="composer">
 
-            <div
-                id="replyPreview"
-                class="reply-preview"
-            >
+        <!-- CPU -->
 
-                <span id="replyText"></span>
+        <section class="card">
 
-                <button
-                    onclick="cancelReply()"
-                >
-                    ×
-                </button>
+            <div class="card-header">
 
-            </div>
+                <div class="card-icon">
+                    💻
+                </div>
 
-            <div
-                id="imagePreview"
-                class="image-preview"
-            >
-
-                <img
-                    id="previewImage"
-                    alt="Preview"
-                >
-
-                <button
-                    class="remove-image"
-                    onclick="removeImage()"
-                >
-                    ×
-                </button>
+                <div>
+                    <h2>Informasi CPU</h2>
+                    <p>Processor & Load</p>
+                </div>
 
             </div>
 
-            <div class="composer-row">
+            <div class="info-list">
 
-                <input
-                    type="file"
-                    id="imageInput"
-                    accept="image/*"
-                    hidden
-                >
+                <div class="info-row">
+                    <span class="info-label">
+                        Model
+                    </span>
+                    <span
+                        id="cpuModel"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
 
-                <button
-                    class="icon-btn"
-                    onclick="document.getElementById('imageInput').click()"
-                >
-                    📷
-                </button>
+                <div class="info-row">
+                    <span class="info-label">
+                        Cores
+                    </span>
+                    <span
+                        id="cpuCores"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
 
-                <textarea
-                    id="messageInput"
-                    placeholder="Tulis pesan..."
-                    rows="1"
-                ></textarea>
+                <div class="info-row">
+                    <span class="info-label">
+                        Speed
+                    </span>
+                    <span
+                        id="cpuSpeed"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
 
-                <button
-                    id="sendButton"
-                    class="send-btn"
-                    onclick="sendMessage()"
-                >
-                    ➤
-                </button>
+                <div class="info-row">
+                    <span class="info-label">
+                        Load Avg 1m
+                    </span>
+                    <span
+                        id="load1"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Load Avg 5m
+                    </span>
+                    <span
+                        id="load5"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Load Avg 15m
+                    </span>
+                    <span
+                        id="load15"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
 
             </div>
 
-        </div>
+        </section>
 
-    </main>
 
-</div>
+        <!-- MEMORY -->
 
-<div
-    id="newChatModal"
-    class="modal"
->
+        <section class="card">
 
-    <div class="modal-box">
+            <div class="card-header">
 
-        <h3>
-            Mulai Private Chat
-        </h3>
+                <div class="card-icon">
+                    🧠
+                </div>
 
-        <input
-            id="targetUsername"
-            class="modal-input"
-            placeholder="Username tujuan"
-            autocomplete="off"
-        >
+                <div>
+                    <h2>Penggunaan Memori</h2>
+                    <p>RAM Server</p>
+                </div>
 
-        <div
-            id="usernameStatus"
-            class="username-status"
-        ></div>
+            </div>
 
-        <div
-            id="userPreview"
-            class="user-preview"
-        ></div>
+            <div class="memory-summary">
 
-        <div class="modal-actions">
+                <div class="memory-bar">
 
-            <button
-                class="cancel"
-                onclick="closeNewChat()"
-            >
-                Batal
-            </button>
+                    <div
+                        id="memoryFill"
+                        class="memory-fill"
+                    ></div>
 
-            <button
-                id="createChatButton"
-                class="confirm"
-                onclick="createChat()"
-                disabled
-            >
-                Mulai Chat
-            </button>
+                </div>
 
-        </div>
+                <div class="memory-percent">
+
+                    <span>
+                        Penggunaan RAM
+                    </span>
+
+                    <b id="memoryPercent">
+                        -
+                    </b>
+
+                </div>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Total RAM
+                    </span>
+                    <span
+                        id="ramTotal"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Dipakai
+                    </span>
+                    <span
+                        id="ramUsed"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Sisa Bebas
+                    </span>
+                    <span
+                        id="ramFree"
+                        class="info-value muted"
+                    >
+                        Menunggu data backend...
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        RSS NodeJS
+                    </span>
+                    <span
+                        id="rss"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- NODE MEMORY -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <div class="card-icon">
+                    📦
+                </div>
+
+                <div>
+                    <h2>Memori NodeJS</h2>
+                    <p>Process Memory Usage</p>
+                </div>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-row">
+                    <span class="info-label">
+                        RSS
+                    </span>
+                    <span
+                        id="nodeRss"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Heap Total
+                    </span>
+                    <span
+                        id="heapTotal"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Heap Used
+                    </span>
+                    <span
+                        id="heapUsed"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        External
+                    </span>
+                    <span
+                        id="external"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Heap Usage
+                    </span>
+                    <span
+                        id="heapPercent"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- UPTIME -->
+
+        <section class="card full">
+
+            <div class="card-header">
+
+                <div class="card-icon">
+                    ⏱️
+                </div>
+
+                <div>
+                    <h2>Waktu Aktif</h2>
+                    <p>Server Uptime</p>
+                </div>
+
+            </div>
+
+            <div class="uptime-box">
+
+                <div class="uptime-item">
+
+                    <div class="uptime-label">
+                        Uptime Server
+                    </div>
+
+                    <div
+                        id="serverUptime"
+                        class="uptime-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+                <div class="uptime-item">
+
+                    <div class="uptime-label">
+                        Timestamp Server
+                    </div>
+
+                    <div
+                        id="serverTimestamp"
+                        class="uptime-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RAW API -->
+
+        <section class="card full">
+
+            <div class="card-header">
+
+                <div class="card-icon">
+                    🔌
+                </div>
+
+                <div>
+                    <h2>API Response</h2>
+                    <p>Data yang diterima dari backend</p>
+                </div>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-row">
+                    <span class="info-label">
+                        API Message
+                    </span>
+
+                    <span
+                        id="apiMessage"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        API Status
+                    </span>
+
+                    <span
+                        id="apiStatus"
+                        class="info-value"
+                    >
+                        -
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">
+                        Endpoint
+                    </span>
+
+                    <span class="info-value">
+                        /api/status
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
 
     </div>
 
-</div>
+    <footer class="footer">
+        ReyCloud • Server Monitoring
+    </footer>
 
-<div
-    id="toast"
-    class="toast"
-></div>
+</div>
 
 <script>
 
-const API =
-    window.API_URL ||
-    "";
+const API_URL =
+    "https://api.legionteknologi.my.id";
 
-const USER_API =
-    window.USER_API_URL ||
-    "/api/users";
+const STATUS_ENDPOINT =
+    API_URL + "/api/status";
 
-const currentUser =
-    localStorage.getItem("username") ||
-    localStorage.getItem("user") ||
-    "";
+const REFRESH_TIME =
+    5000;
 
-let activeRoom = null;
-let activeOtherUser = null;
-let conversations = [];
-let currentMessages = [];
-let replyMessage = null;
-let selectedImage = null;
-let validatedUser = null;
-let usernameCheckTimer = null;
+let refreshTimer = null;
 
-const app =
-    document.getElementById("app");
-
-const conversationList =
-    document.getElementById(
-        "conversationList"
-    );
-
-const messagesEl =
-    document.getElementById(
-        "messages"
-    );
-
-const searchInput =
-    document.getElementById(
-        "searchInput"
-    );
-
-const messageInput =
-    document.getElementById(
-        "messageInput"
-    );
-
-const imageInput =
-    document.getElementById(
-        "imageInput"
-    );
-
-const targetUsernameInput =
-    document.getElementById(
-        "targetUsername"
-    );
-
-const usernameStatus =
-    document.getElementById(
-        "usernameStatus"
-    );
-
-const userPreview =
-    document.getElementById(
-        "userPreview"
-    );
-
-const createChatButton =
-    document.getElementById(
-        "createChatButton"
-    );
-
-function escapeHtml(value){
-
-    return String(
-        value ?? ""
-    )
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function $(id){
+    return document.getElementById(id);
 }
 
-function usernameKey(value){
-
-    return String(
-        value || ""
-    )
-    .trim()
-    .toLowerCase();
-}
-
-function formatTime(date){
-
-    if(!date){
-        return "";
-    }
-
-    const d =
-        new Date(date);
-
-    if(
-        Number.isNaN(
-            d.getTime()
-        )
-    ){
-        return "";
-    }
-
-    return d.toLocaleTimeString(
-        "id-ID",
-        {
-            hour:"2-digit",
-            minute:"2-digit"
-        }
-    );
-}
-
-function formatDate(date){
-
-    if(!date){
-        return "";
-    }
-
-    const d =
-        new Date(date);
-
-    if(
-        Number.isNaN(
-            d.getTime()
-        )
-    ){
-        return "";
-    }
-
-    return d.toLocaleDateString(
-        "id-ID",
-        {
-            day:"2-digit",
-            month:"short"
-        }
-    );
-}
-
-function showToast(message){
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-    toast.textContent =
-        message;
-
-    toast.classList.add(
-        "show"
-    );
-
-    setTimeout(
-        () => {
-            toast.classList.remove(
-                "show"
-            );
-        },
-        2500
-    );
-}
-
-function avatarHtml(user){
-
-    const username =
-        user?.username ||
-        "?";
-
-    const first =
-        String(username)[0]
-            ?.toUpperCase() ||
-        "?";
-
-    if(user?.avatar){
-
-        return `
-            <img
-                class="avatar"
-                src="${escapeHtml(user.avatar)}"
-                alt="${escapeHtml(username)}"
-                onerror="
-                    this.style.display='none';
-                    this.nextElementSibling.style.display='flex';
-                "
-            >
-
-            <div
-                class="avatar-fallback"
-                style="display:none"
-            >
-                ${escapeHtml(first)}
-            </div>
-        `;
-    }
-
-    return `
-        <div class="avatar-fallback">
-            ${escapeHtml(first)}
-        </div>
-    `;
-}
-
-async function api(
-    url,
-    options = {}
+function setText(
+    id,
+    value,
+    fallback = "-"
 ){
 
-    const fetchOptions = {
-        ...options,
-        headers:{
-            ...(options.body instanceof FormData
-                ? {}
-                : {
-                    "Content-Type":
-                        "application/json"
-                }),
-            ...(options.headers || {})
-        }
-    };
+    const el = $(id);
 
-    const response =
-        await fetch(
-            API + url,
-            fetchOptions
-        );
-
-    let data;
-
-    try{
-
-        data =
-            await response.json();
-
-    }catch{
-
-        data = {
-            status:false,
-            message:
-                "Response server tidak valid"
-        };
-    }
-
-    if(!response.ok){
-
-        throw new Error(
-            data.message ||
-            `HTTP ${response.status}`
-        );
-    }
-
-    return data;
-}
-
-async function loadConversations(){
-
-    if(!currentUser){
-
-        conversationList.innerHTML = `
-            <div class="loading">
-                Silakan login terlebih dahulu.
-            </div>
-        `;
-
+    if(!el){
         return;
-    }
-
-    try{
-
-        const data =
-            await api(
-                `/api/private/conversations/${encodeURIComponent(currentUser)}`
-            );
-
-        conversations =
-            Array.isArray(data.result)
-                ? data.result
-                : [];
-
-        renderConversations();
-
-    }catch(error){
-
-        console.error(error);
-
-        conversationList.innerHTML = `
-            <div class="loading">
-                ${escapeHtml(
-                    error.message
-                )}
-            </div>
-        `;
-    }
-}
-
-function renderConversations(){
-
-    const query =
-        usernameKey(
-            searchInput.value
-        );
-
-    const filtered =
-        conversations.filter(
-            room => {
-
-                const other =
-                    room.otherUser?.username ||
-                    "";
-
-                return usernameKey(
-                    other
-                ).includes(query);
-            }
-        );
-
-    if(!filtered.length){
-
-        conversationList.innerHTML = `
-            <div class="loading">
-                Belum ada conversation.
-            </div>
-        `;
-
-        return;
-    }
-
-    conversationList.innerHTML =
-        filtered.map(
-            room => {
-
-                const other =
-                    room.otherUser ||
-                    {
-                        username:"Unknown"
-                    };
-
-                const active =
-                    activeRoom?.id ===
-                    room.id;
-
-                const unread =
-                    Number(
-                        room.unread || 0
-                    );
-
-                return `
-                    <div
-                        class="conversation ${active ? "active" : ""}"
-                        onclick="openConversation('${escapeHtml(room.id)}')"
-                    >
-
-                        ${avatarHtml(other)}
-
-                        <div class="conv-info">
-
-                            <div class="conv-top">
-
-                                <div class="conv-name">
-                                    ${escapeHtml(
-                                        other.username
-                                    )}
-                                </div>
-
-                                <div class="conv-time">
-                                    ${formatDate(
-                                        room.lastMessageAt ||
-                                        room.createdAt
-                                    )}
-                                </div>
-
-                            </div>
-
-                            <div class="conv-bottom">
-
-                                <div class="last-message">
-                                    ${escapeHtml(
-                                        room.lastMessage ||
-                                        "Belum ada pesan"
-                                    )}
-                                </div>
-
-                                ${
-                                    unread > 0
-                                        ? `
-                                            <div class="unread">
-                                                ${
-                                                    unread > 99
-                                                        ? "99+"
-                                                        : unread
-                                                }
-                                            </div>
-                                        `
-                                        : ""
-                                }
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                `;
-            }
-        ).join("");
-}
-
-async function openConversation(roomId){
-
-    const room =
-        conversations.find(
-            item =>
-                item.id ===
-                roomId
-        );
-
-    if(!room){
-        return;
-    }
-
-    activeRoom =
-        room;
-
-    activeOtherUser =
-        room.otherUser;
-
-    app.classList.add(
-        "chat-open"
-    );
-
-    renderHeader();
-
-    await loadMessages();
-
-    await markRead();
-
-    await loadConversations();
-}
-
-function renderHeader(){
-
-    const user =
-        activeOtherUser ||
-        {};
-
-    document.getElementById(
-        "chatUsername"
-    ).textContent =
-        user.username ||
-        "Private Chat";
-
-    document.getElementById(
-        "chatRole"
-    ).textContent =
-        user.role ||
-        "member";
-
-    document.getElementById(
-        "headerAvatar"
-    ).innerHTML =
-        avatarHtml(user);
-}
-
-async function loadMessages(){
-
-    if(!activeRoom){
-        return;
-    }
-
-    try{
-
-        const data =
-            await api(
-                `/api/private/${encodeURIComponent(activeRoom.id)}/messages?username=${encodeURIComponent(currentUser)}`
-            );
-
-        currentMessages =
-            Array.isArray(data.result)
-                ? data.result
-                : [];
-
-        renderMessages();
-
-    }catch(error){
-
-        console.error(error);
-
-        messagesEl.innerHTML = `
-            <div class="empty">
-                ${escapeHtml(
-                    error.message
-                )}
-            </div>
-        `;
-    }
-}
-
-function renderMessages(){
-
-    if(!currentMessages.length){
-
-        messagesEl.innerHTML = `
-            <div class="empty">
-                <h3>Belum ada pesan</h3>
-                <p>Mulai percakapan sekarang 👋</p>
-            </div>
-        `;
-
-        return;
-    }
-
-    messagesEl.innerHTML =
-        currentMessages.map(
-            message => {
-
-                const mine =
-                    usernameKey(
-                        message.sender
-                    ) ===
-                    usernameKey(
-                        currentUser
-                    );
-
-                const reply =
-                    message.replyTo;
-
-                const reactions =
-                    Array.isArray(
-                        message.reactions
-                    )
-                        ? message.reactions
-                        : [];
-
-                return `
-                    <div
-                        class="message-row ${mine ? "mine" : ""}"
-                    >
-
-                        <div
-                            class="message ${mine ? "mine" : ""}"
-                        >
-
-                            ${
-                                reply
-                                    ? `
-                                        <div class="reply-box">
-
-                                            <div class="reply-name">
-                                                ${escapeHtml(
-                                                    reply.sender
-                                                )}
-                                            </div>
-
-                                            <div>
-                                                ${
-                                                    reply.message
-                                                        ? escapeHtml(
-                                                            reply.message
-                                                        )
-                                                        : "📷 Foto"
-                                                }
-                                            </div>
-
-                                        </div>
-                                    `
-                                    : ""
-                            }
-
-                            ${
-                                message.image
-                                    ? `
-                                        <img
-                                            class="message-image"
-                                            src="${escapeHtml(message.image)}"
-                                            alt="Gambar"
-                                            onclick="window.open('${escapeHtml(message.image)}','_blank')"
-                                        >
-                                    `
-                                    : ""
-                            }
-
-                            ${
-                                message.message
-                                    ? `
-                                        <div class="message-text">
-                                            ${escapeHtml(
-                                                message.message
-                                            )}
-                                        </div>
-                                    `
-                                    : ""
-                            }
-
-                            ${
-                                reactions.length
-                                    ? `
-                                        <div class="reactions">
-
-                                            ${reactions.map(
-                                                reaction => `
-
-                                                    <button
-                                                        class="reaction"
-                                                        onclick="toggleReaction('${escapeHtml(message.id)}','${escapeHtml(reaction.emoji)}')"
-                                                    >
-
-                                                        ${escapeHtml(
-                                                            reaction.emoji
-                                                        )}
-
-                                                        ${
-                                                            reaction.users?.length ||
-                                                            0
-                                                        }
-
-                                                    </button>
-
-                                                `
-                                            ).join("")}
-
-                                        </div>
-                                    `
-                                    : ""
-                            }
-
-                            <div class="message-meta">
-
-                                ${formatTime(
-                                    message.createdAt
-                                )}
-
-                            </div>
-
-                            <div class="message-actions">
-
-                                <button
-                                    class="action-btn"
-                                    onclick="replyToMessage('${escapeHtml(message.id)}')"
-                                >
-                                    ↩ Reply
-                                </button>
-
-                                <button
-                                    class="action-btn"
-                                    onclick="toggleReaction('${escapeHtml(message.id)}','❤️')"
-                                >
-                                    ❤️
-                                </button>
-
-                                <button
-                                    class="action-btn"
-                                    onclick="toggleReaction('${escapeHtml(message.id)}','👍')"
-                                >
-                                    👍
-                                </button>
-
-                                <button
-                                    class="action-btn"
-                                    onclick="toggleReaction('${escapeHtml(message.id)}','😂')"
-                                >
-                                    😂
-                                </button>
-
-                                ${
-                                    mine
-                                        ? `
-                                            <button
-                                                class="action-btn"
-                                                onclick="deleteMessage('${escapeHtml(message.id)}')"
-                                            >
-                                                🗑
-                                            </button>
-                                        `
-                                        : ""
-                                }
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                `;
-            }
-        ).join("");
-
-    scrollMessages();
-}
-
-function scrollMessages(){
-
-    requestAnimationFrame(
-        () => {
-
-            messagesEl.scrollTop =
-                messagesEl.scrollHeight;
-
-        }
-    );
-}
-
-function replyToMessage(messageId){
-
-    const message =
-        currentMessages.find(
-            item =>
-                item.id ===
-                messageId
-        );
-
-    if(!message){
-        return;
-    }
-
-    replyMessage =
-        message;
-
-    document.getElementById(
-        "replyText"
-    ).textContent =
-        `${message.sender}: ${
-            message.message ||
-            "📷 Foto"
-        }`;
-
-    document.getElementById(
-        "replyPreview"
-    ).classList.add(
-        "show"
-    );
-
-    messageInput.focus();
-}
-
-function cancelReply(){
-
-    replyMessage =
-        null;
-
-    document.getElementById(
-        "replyPreview"
-    ).classList.remove(
-        "show"
-    );
-
-    document.getElementById(
-        "replyText"
-    ).textContent =
-        "";
-}
-
-imageInput.addEventListener(
-    "change",
-    () => {
-
-        const file =
-            imageInput.files?.[0];
-
-        if(!file){
-            return;
-        }
-
-        if(
-            !file.type.startsWith(
-                "image/"
-            )
-        ){
-
-            showToast(
-                "File harus berupa gambar"
-            );
-
-            imageInput.value =
-                "";
-
-            return;
-        }
-
-        if(
-            file.size >
-            5 * 1024 * 1024
-        ){
-
-            showToast(
-                "Ukuran gambar maksimal 5MB"
-            );
-
-            imageInput.value =
-                "";
-
-            return;
-        }
-
-        selectedImage =
-            file;
-
-        const reader =
-            new FileReader();
-
-        reader.onload =
-            event => {
-
-                document.getElementById(
-                    "previewImage"
-                ).src =
-                    event.target.result;
-
-                document.getElementById(
-                    "imagePreview"
-                ).classList.add(
-                    "show"
-                );
-            };
-
-        reader.readAsDataURL(
-            file
-        );
-    }
-);
-
-function removeImage(){
-
-    selectedImage =
-        null;
-
-    imageInput.value =
-        "";
-
-    document.getElementById(
-        "imagePreview"
-    ).classList.remove(
-        "show"
-    );
-
-    document.getElementById(
-        "previewImage"
-    ).src =
-        "";
-}
-
-async function uploadImage(file){
-
-    const formData =
-        new FormData();
-
-    formData.append(
-        "file",
-        file
-    );
-
-    const response =
-        await fetch(
-            API + "/upload",
-            {
-                method:"POST",
-                body:formData
-            }
-        );
-
-    let data;
-
-    try{
-
-        data =
-            await response.json();
-
-    }catch{
-
-        throw new Error(
-            "Response upload tidak valid"
-        );
     }
 
     if(
-        !response.ok ||
-        !data.status
+        value === undefined ||
+        value === null ||
+        value === ""
     ){
 
-        throw new Error(
-            data.message ||
-            "Upload gambar gagal"
+        el.textContent =
+            fallback;
+
+        el.classList.add(
+            "muted"
         );
+
+        return;
     }
+
+    el.textContent =
+        value;
+
+    el.classList.remove(
+        "muted"
+    );
+}
+
+function formatBytes(
+    bytes
+){
+
+    if(
+        bytes === undefined ||
+        bytes === null ||
+        Number.isNaN(
+            Number(bytes)
+        )
+    ){
+        return "-";
+    }
+
+    const value =
+        Number(bytes);
+
+    if(value === 0){
+        return "0 B";
+    }
+
+    const units = [
+        "B",
+        "KB",
+        "MB",
+        "GB",
+        "TB"
+    ];
+
+    const index =
+        Math.floor(
+            Math.log(value) /
+            Math.log(1024)
+        );
+
+    const safeIndex =
+        Math.min(
+            index,
+            units.length - 1
+        );
 
     return (
-        data.url ||
-        data.result?.url ||
-        data.result?.file?.url ||
-        ""
+        value /
+        Math.pow(
+            1024,
+            safeIndex
+        )
+    ).toFixed(
+        safeIndex === 0
+            ? 0
+            : 2
+    ) +
+    " " +
+    units[safeIndex];
+}
+
+function formatPercent(
+    value
+){
+
+    if(
+        value === undefined ||
+        value === null ||
+        Number.isNaN(
+            Number(value)
+        )
+    ){
+        return "-";
+    }
+
+    return Number(value)
+        .toFixed(1) + "%";
+}
+
+function formatTimestamp(
+    timestamp
+){
+
+    if(!timestamp){
+        return "-";
+    }
+
+    const date =
+        new Date(timestamp);
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+        return timestamp;
+    }
+
+    return date.toLocaleString(
+        "id-ID",
+        {
+            dateStyle:"medium",
+            timeStyle:"medium"
+        }
     );
 }
 
-async function sendMessage(){
+function formatPing(
+    ms
+){
 
-    if(!activeRoom){
-
-        showToast(
-            "Pilih conversation terlebih dahulu"
-        );
-
-        return;
+    if(ms < 100){
+        return "good";
     }
 
-    const message =
-        messageInput.value.trim();
+    if(ms < 300){
+        return "medium";
+    }
+
+    return "bad";
+}
+
+function formatUptime(
+    seconds
+){
 
     if(
-        !message &&
-        !selectedImage
+        seconds === undefined ||
+        seconds === null
     ){
-        return;
+        return "-";
     }
 
-    const sendButton =
-        document.getElementById(
-            "sendButton"
+    let total =
+        Math.floor(
+            Number(seconds)
         );
 
-    sendButton.disabled =
-        true;
+    const days =
+        Math.floor(
+            total / 86400
+        );
+
+    total %= 86400;
+
+    const hours =
+        Math.floor(
+            total / 3600
+        );
+
+    total %= 3600;
+
+    const minutes =
+        Math.floor(
+            total / 60
+        );
+
+    const secs =
+        total % 60;
+
+    return `${days}d ${hours}h ${minutes}m ${secs}s`;
+}
+
+function setStatus(
+    online,
+    message
+){
+
+    const dot =
+        $("statusDot");
+
+    const title =
+        $("statusTitle");
+
+    const msg =
+        $("statusMessage");
+
+    dot.classList.remove(
+        "online",
+        "offline"
+    );
+
+    if(online){
+
+        dot.classList.add(
+            "online"
+        );
+
+        title.textContent =
+            "ReyCloud API Online";
+
+        msg.textContent =
+            message ||
+            "Server berjalan normal";
+
+    }else{
+
+        dot.classList.add(
+            "offline"
+        );
+
+        title.textContent =
+            "ReyCloud API Offline";
+
+        msg.textContent =
+            message ||
+            "Tidak dapat terhubung ke server";
+    }
+}
+
+function updateStatusData(
+    data,
+    ping
+){
+
+    const server =
+        data.server ||
+        {};
+
+    const runtime =
+        data.runtime ||
+        {};
+
+    const memory =
+        data.memory ||
+        {};
+
+    setText(
+        "platform",
+        runtime.platform
+    );
+
+    setText(
+        "architecture",
+        runtime.architecture
+    );
+
+    setText(
+        "node",
+        runtime.node
+    );
+
+    setText(
+        "serverUptime",
+        server.uptimeFormatted ||
+        formatUptime(
+            server.uptime
+        )
+    );
+
+    setText(
+        "serverTimestamp",
+        formatTimestamp(
+            server.timestamp
+        )
+    );
+
+    setText(
+        "nodeRss",
+        formatBytes(
+            memory.rss
+        )
+    );
+
+    setText(
+        "rss",
+        formatBytes(
+            memory.rss
+        )
+    );
+
+    setText(
+        "heapTotal",
+        formatBytes(
+            memory.heapTotal
+        )
+    );
+
+    setText(
+        "heapUsed",
+        formatBytes(
+            memory.heapUsed
+        )
+    );
+
+    setText(
+        "external",
+        formatBytes(
+            memory.external
+        )
+    );
+
+    if(
+        memory.heapUsed !== undefined &&
+        memory.heapTotal
+    ){
+
+        const heapPercent =
+            (
+                Number(
+                    memory.heapUsed
+                ) /
+                Number(
+                    memory.heapTotal
+                )
+            ) * 100;
+
+        setText(
+            "heapPercent",
+            formatPercent(
+                heapPercent
+            )
+        );
+    }
+
+    /*
+     * Backend saat ini belum mengirim
+     * total RAM server.
+     *
+     * Jika nanti backend mengirim:
+     *
+     * memory.total
+     *
+     * maka otomatis digunakan.
+     */
+
+    if(
+        memory.total !== undefined
+    ){
+
+        const total =
+            Number(
+                memory.total
+            );
+
+        const used =
+            Number(
+                memory.used ??
+                (
+                    total -
+                    Number(
+                        memory.free || 0
+                    )
+                )
+            );
+
+        const free =
+            Number(
+                memory.free ??
+                (
+                    total -
+                    used
+                )
+            );
+
+        setText(
+            "ramTotal",
+            formatBytes(total)
+        );
+
+        setText(
+            "ramUsed",
+            formatBytes(used)
+        );
+
+        setText(
+            "ramFree",
+            formatBytes(free)
+        );
+
+        const percent =
+            total > 0
+                ? (
+                    used /
+                    total
+                ) * 100
+                : 0;
+
+        $("memoryFill")
+            .style.width =
+            Math.min(
+                Math.max(
+                    percent,
+                    0
+                ),
+                100
+            ) + "%";
+
+        $("memoryPercent")
+            .textContent =
+            formatPercent(
+                percent
+            );
+    }
+
+    /*
+     * Field berikut belum ada
+     * pada response backend sekarang.
+     *
+     * Kalau backend nanti menambahkan
+     * system.os
+     * system.hostname
+     * system.v8
+     * cpu.model
+     * cpu.cores
+     * cpu.speed
+     * cpu.load
+     *
+     * halaman ini langsung mendukung.
+     */
+
+    const system =
+        data.system ||
+        {};
+
+    const cpu =
+        data.cpu ||
+        {};
+
+    setText(
+        "os",
+        system.os ||
+        data.os
+    );
+
+    setText(
+        "hostname",
+        system.hostname ||
+        data.hostname
+    );
+
+    setText(
+        "v8",
+        system.v8 ||
+        data.v8
+    );
+
+    setText(
+        "cpuModel",
+        cpu.model ||
+        data.cpuModel
+    );
+
+    setText(
+        "cpuCores",
+        cpu.cores ||
+        data.cpuCores
+    );
+
+    setText(
+        "cpuSpeed",
+        cpu.speed ||
+        data.cpuSpeed
+    );
+
+    const load =
+        cpu.load ||
+        data.loadAvg ||
+        [];
+
+    if(Array.isArray(load)){
+
+        setText(
+            "load1",
+            load[0]
+        );
+
+        setText(
+            "load5",
+            load[1]
+        );
+
+        setText(
+            "load15",
+            load[2]
+        );
+
+    }else if(
+        typeof load === "object"
+    ){
+
+        setText(
+            "load1",
+            load["1m"]
+        );
+
+        setText(
+            "load5",
+            load["5m"]
+        );
+
+        setText(
+            "load15",
+            load["15m"]
+        );
+    }
+
+    $("ping").textContent =
+        `PING: ${ping}ms`;
+
+    $("ping").className =
+        "ping " +
+        formatPing(
+            ping
+        );
+
+    setText(
+        "apiMessage",
+        data.message
+    );
+
+    setText(
+        "apiStatus",
+        data.status
+            ? "ONLINE"
+            : "OFFLINE"
+    );
+}
+
+async function loadStatus(){
+
+    const start =
+        performance.now();
+
+    const errorBox =
+        $("errorBox");
+
+    errorBox.style.display =
+        "none";
 
     try{
 
-        let imageUrl =
-            "";
-
-        if(selectedImage){
-
-            showToast(
-                "Mengupload foto..."
-            );
-
-            imageUrl =
-                await uploadImage(
-                    selectedImage
-                );
-        }
-
-        const body = {
-
-            username:
-                currentUser,
-
-            message,
-
-            image:
-                imageUrl,
-
-            replyTo:
-                replyMessage?.id ||
-                ""
-
-        };
-
-        const data =
-            await api(
-                `/api/private/${encodeURIComponent(activeRoom.id)}/messages`,
+        const response =
+            await fetch(
+                STATUS_ENDPOINT,
                 {
-                    method:"POST",
-                    body:JSON.stringify(body)
+                    method:"GET",
+                    cache:"no-store"
                 }
             );
+
+        const ping =
+            Math.round(
+                performance.now() -
+                start
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+        }
+
+        const data =
+            await response.json();
 
         if(!data.status){
 
             throw new Error(
                 data.message ||
-                "Gagal mengirim pesan"
+                "API tidak aktif"
             );
         }
 
-        if(data.result){
-
-            currentMessages.push(
-                data.result
-            );
-        }
-
-        messageInput.value =
-            "";
-
-        messageInput.style.height =
-            "44px";
-
-        cancelReply();
-
-        removeImage();
-
-        renderMessages();
-
-        await loadConversations();
-
-    }catch(error){
-
-        console.error(error);
-
-        showToast(
-            error.message ||
-            "Gagal mengirim pesan"
+        setStatus(
+            true,
+            data.message
         );
 
-    }finally{
-
-        sendButton.disabled =
-            false;
-
-    }
-}
-
-async function deleteMessage(messageId){
-
-    if(
-        !confirm(
-            "Hapus pesan ini?"
-        )
-    ){
-        return;
-    }
-
-    try{
-
-        await api(
-            `/api/private/${encodeURIComponent(activeRoom.id)}/messages/${encodeURIComponent(messageId)}`,
-            {
-                method:"DELETE",
-                body:JSON.stringify({
-                    username:
-                        currentUser
-                })
-            }
+        updateStatusData(
+            data,
+            ping
         );
 
-        currentMessages =
-            currentMessages.filter(
-                message =>
-                    message.id !==
-                    messageId
-            );
-
-        renderMessages();
-
-        await loadConversations();
-
-        showToast(
-            "Pesan dihapus"
-        );
-
-    }catch(error){
-
-        showToast(
-            error.message ||
-            "Gagal menghapus pesan"
-        );
-    }
-}
-
-async function toggleReaction(
-    messageId,
-    emoji
-){
-
-    if(!activeRoom){
-        return;
-    }
-
-    try{
-
-        const message =
-            currentMessages.find(
-                item =>
-                    item.id ===
-                    messageId
-            );
-
-        if(!message){
-            return;
-        }
-
-        const reaction =
-            Array.isArray(
-                message.reactions
-            )
-                ? message.reactions.find(
-                    item =>
-                        item.emoji ===
-                        emoji
-                )
-                : null;
-
-        const userKey =
-            usernameKey(
-                currentUser
-            );
-
-        const users =
-            Array.isArray(
-                reaction?.users
-            )
-                ? reaction.users.map(
-                    usernameKey
-                )
-                : [];
-
-        const alreadyReacted =
-            users.includes(
-                userKey
-            );
-
-        if(alreadyReacted){
-
-            await api(
-                `/api/chat/${encodeURIComponent(messageId)}/reaction`,
-                {
-                    method:"DELETE",
-
-                    body:JSON.stringify({
-                        username:
-                            currentUser,
-
-                        emoji
-                    })
-                }
-            );
-
-        }else{
-
-            await api(
-                `/api/chat/${encodeURIComponent(messageId)}/reaction`,
-                {
-                    method:"POST",
-
-                    body:JSON.stringify({
-                        username:
-                            currentUser,
-
-                        emoji
-                    })
-                }
-            );
-        }
-
-        await loadMessages();
-
-    }catch(error){
-
-        console.error(error);
-
-        showToast(
-            error.message ||
-            "Gagal mengubah reaction"
-        );
-    }
-}
-
-async function markRead(){
-
-    if(!activeRoom){
-        return;
-    }
-
-    try{
-
-        await api(
-            `/api/private/${encodeURIComponent(activeRoom.id)}/read`,
-            {
-                method:"POST",
-
-                body:JSON.stringify({
-                    username:
-                        currentUser
-                })
-            }
-        );
+        $("lastUpdate")
+            .textContent =
+            new Date()
+                .toLocaleTimeString(
+                    "id-ID",
+                    {
+                        hour:"2-digit",
+                        minute:"2-digit",
+                        second:"2-digit"
+                    }
+                );
 
     }catch(error){
 
         console.error(
-            "READ ERROR",
+            "STATUS ERROR:",
             error
         );
+
+        setStatus(
+            false,
+            error.message
+        );
+
+        $("ping").textContent =
+            "PING: ERROR";
+
+        $("ping").className =
+            "ping bad";
+
+        errorBox.style.display =
+            "block";
+
+        errorBox.textContent =
+            "Gagal mengambil status server: " +
+            error.message;
     }
+
 }
 
-function setChatButton(enabled){
+function startAutoRefresh(){
 
-    createChatButton.disabled =
-        !enabled;
+    if(refreshTimer){
+        clearInterval(
+            refreshTimer
+        );
+    }
 
-    createChatButton.style.opacity =
-        enabled
-            ? "1"
-            : ".5";
-
-    createChatButton.style.cursor =
-        enabled
-            ? "pointer"
-            : "not-allowed";
+    refreshTimer =
+        setInterval(
+            loadStatus,
+            REFRESH_TIME
+        );
 }
 
-function resetUsernameValidation(){
+function goDashboard(){
 
-    validatedUser =
-        null;
-
-    usernameStatus.textContent =
-        "";
-
-    usernameStatus.style.color =
-        "#9ca3af";
-
-    userPreview.style.display =
-        "none";
-
-    userPreview.innerHTML =
-        "";
-
-    setChatButton(
-        false
-    );
+    window.location.href =
+        "dashboard.html";
 }
 
-async function checkUsername(
-    username
-){
+$("refreshSeconds")
+    .textContent =
+    REFRESH_TIME / 1000;
 
-    if(!username){
-        return;
-    }
+loadStatus();
 
-    if(
-        usernameKey(username) ===
-        usernameKey(currentUser)
-    ){
-
-        usernameStatus.textContent =
-            "❌ Tidak bisa chat dengan diri sendiri";
-
-        usernameStatus.style.color =
-            "#dc2626";
-
-        return;
-    }
-
-    try{
-
-        usernameStatus.textContent =
-            "Memeriksa username...";
-
-        usernameStatus.style.color =
-            "#6b7280";
-
-        const data =
-            await api(
-                `${USER_API}/${encodeURIComponent(username)}`
-            );
-
-        const user =
-            data.result ||
-            data.user ||
-            null;
-
-        if(
-            !data.status ||
-            !user
-        ){
-
-            throw new Error(
-                "Username tidak ditemukan"
-            );
-        }
-
-        if(
-            usernameKey(
-                user.username
-            ) ===
-            usernameKey(currentUser)
-        ){
-
-            throw new Error(
-                "Tidak bisa chat dengan diri sendiri"
-            );
-        }
-
-        validatedUser =
-            user;
-
-        usernameStatus.textContent =
-            "✓ Username ditemukan";
-
-        usernameStatus.style.color =
-            "#16a34a";
-
-        userPreview.style.display =
-            "flex";
-
-        userPreview.innerHTML = `
-
-            ${avatarHtml(user)}
-
-            <div class="user-preview-info">
-
-                <div class="user-preview-name">
-                    ${escapeHtml(
-                        user.username
-                    )}
-                </div>
-
-                <div class="user-preview-role">
-                    ${escapeHtml(
-                        user.role ||
-                        "member"
-                    )}
-                </div>
-
-            </div>
-
-        `;
-
-        setChatButton(
-            true
-        );
-
-    }catch(error){
-
-        validatedUser =
-            null;
-
-        usernameStatus.textContent =
-            "❌ " +
-            (
-                error.message ||
-                "Username tidak ditemukan"
-            );
-
-        usernameStatus.style.color =
-            "#dc2626";
-
-        userPreview.style.display =
-            "none";
-
-        userPreview.innerHTML =
-            "";
-
-        setChatButton(
-            false
-        );
-    }
-}
-
-targetUsernameInput.addEventListener(
-    "input",
-    () => {
-
-        clearTimeout(
-            usernameCheckTimer
-        );
-
-        resetUsernameValidation();
-
-        const username =
-            targetUsernameInput.value.trim();
-
-        if(!username){
-            return;
-        }
-
-        if(
-            usernameKey(username) ===
-            usernameKey(currentUser)
-        ){
-
-            usernameStatus.textContent =
-                "❌ Tidak bisa chat dengan diri sendiri";
-
-            usernameStatus.style.color =
-                "#dc2626";
-
-            return;
-        }
-
-        usernameStatus.textContent =
-            "Memeriksa username...";
-
-        usernameStatus.style.color =
-            "#6b7280";
-
-        usernameCheckTimer =
-            setTimeout(
-                () => {
-                    checkUsername(
-                        username
-                    );
-                },
-                500
-            );
-    }
-);
-
-async function createChat(){
-
-    const target =
-        targetUsernameInput.value.trim();
-
-    if(!target){
-
-        showToast(
-            "Username tujuan wajib diisi"
-        );
-
-        return;
-    }
-
-    if(!validatedUser){
-
-        showToast(
-            "Username belum valid"
-        );
-
-        return;
-    }
-
-    if(
-        usernameKey(
-            validatedUser.username
-        ) !==
-        usernameKey(target)
-    ){
-
-        showToast(
-            "Username belum valid"
-        );
-
-        return;
-    }
-
-    if(
-        usernameKey(target) ===
-        usernameKey(currentUser)
-    ){
-
-        showToast(
-            "Tidak bisa chat dengan diri sendiri"
-        );
-
-        return;
-    }
-
-    createChatButton.disabled =
-        true;
-
-    createChatButton.textContent =
-        "Membuat...";
-
-    try{
-
-        const data =
-            await api(
-                "/api/private/conversations",
-                {
-                    method:"POST",
-
-                    body:JSON.stringify({
-
-                        username:
-                            currentUser,
-
-                        targetUsername:
-                            validatedUser.username
-
-                    })
-                }
-            );
-
-        if(!data.status){
-
-            throw new Error(
-                data.message ||
-                "Gagal membuat chat"
-            );
-        }
-
-        closeNewChat();
-
-        await loadConversations();
-
-        if(data.result?.id){
-
-            await openConversation(
-                data.result.id
-            );
-
-            return;
-        }
-
-        const found =
-            conversations.find(
-                room =>
-                    usernameKey(
-                        room.otherUser?.username
-                    ) ===
-                    usernameKey(
-                        validatedUser.username
-                    )
-            );
-
-        if(found){
-
-            await openConversation(
-                found.id
-            );
-        }
-
-    }catch(error){
-
-        console.error(error);
-
-        showToast(
-            error.message ||
-            "Gagal membuat conversation"
-        );
-
-    }finally{
-
-        createChatButton.textContent =
-            "Mulai Chat";
-
-        setChatButton(
-            Boolean(
-                validatedUser
-            )
-        );
-    }
-}
-
-function openNewChat(){
-
-    document.getElementById(
-        "newChatModal"
-    ).classList.add(
-        "show"
-    );
-
-    targetUsernameInput.value =
-        "";
-
-    resetUsernameValidation();
-
-    setTimeout(
-        () => {
-            targetUsernameInput.focus();
-        },
-        100
-    );
-}
-
-function closeNewChat(){
-
-    document.getElementById(
-        "newChatModal"
-    ).classList.remove(
-        "show"
-    );
-
-    clearTimeout(
-        usernameCheckTimer
-    );
-
-    targetUsernameInput.value =
-        "";
-
-    resetUsernameValidation();
-}
-
-function closeChat(){
-
-    app.classList.remove(
-        "chat-open"
-    );
-
-    activeRoom =
-        null;
-
-    activeOtherUser =
-        null;
-
-    currentMessages =
-        [];
-
-    cancelReply();
-
-    removeImage();
-
-    document.getElementById(
-        "chatUsername"
-    ).textContent =
-        "Pilih chat";
-
-    document.getElementById(
-        "chatRole"
-    ).textContent =
-        "Belum ada conversation";
-
-    document.getElementById(
-        "headerAvatar"
-    ).innerHTML =
-        "";
-
-    messagesEl.innerHTML = `
-        <div class="empty">
-
-            <h3>
-                Private Chat
-            </h3>
-
-            <p>
-                Pilih conversation untuk mulai chat.
-            </p>
-
-        </div>
-    `;
-}
-
-searchInput.addEventListener(
-    "input",
-    renderConversations
-);
-
-messageInput.addEventListener(
-    "keydown",
-    event => {
-
-        if(
-            event.key === "Enter" &&
-            !event.shiftKey
-        ){
-
-            event.preventDefault();
-
-            sendMessage();
-        }
-    }
-);
-
-messageInput.addEventListener(
-    "input",
-    () => {
-
-        messageInput.style.height =
-            "auto";
-
-        messageInput.style.height =
-            Math.min(
-                messageInput.scrollHeight,
-                130
-            ) + "px";
-    }
-);
-
-document.getElementById(
-    "newChatModal"
-).addEventListener(
-    "click",
-    event => {
-
-        if(
-            event.target.id ===
-            "newChatModal"
-        ){
-
-            closeNewChat();
-        }
-    }
-);
-
-setInterval(
-    async () => {
-
-        if(!activeRoom){
-            await loadConversations();
-            return;
-        }
-
-        try{
-
-            await loadMessages();
-
-            await markRead();
-
-            await loadConversations();
-
-        }catch(error){
-
-            console.error(
-                "AUTO REFRESH ERROR",
-                error
-            );
-        }
-
-    },
-    5000
-);
-
-loadConversations();
+startAutoRefresh();
 
 </script>
 
