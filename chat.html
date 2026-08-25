@@ -23,6 +23,10 @@ button,input{
     font-family:inherit;
 }
 
+button{
+    -webkit-tap-highlight-color:transparent;
+}
+
 .app{
     min-height:100vh;
     display:flex;
@@ -37,7 +41,7 @@ button,input{
     left:0;
     top:0;
     bottom:0;
-    z-index:20;
+    z-index:50;
 }
 
 .logo{
@@ -170,7 +174,7 @@ button,input{
 
 .topbar{
     height:68px;
-    background:rgba(255,255,255,.9);
+    background:rgba(255,255,255,.92);
     backdrop-filter:blur(12px);
     border-bottom:1px solid #e5e7eb;
     display:flex;
@@ -179,7 +183,7 @@ button,input{
     padding:0 30px;
     position:sticky;
     top:0;
-    z-index:10;
+    z-index:20;
 }
 
 .page-title{
@@ -216,7 +220,7 @@ button,input{
 
 .chat-header{
     background:#111827;
-    color:white;
+    color:#fff;
     border-radius:16px;
     padding:26px;
     margin-bottom:18px;
@@ -318,7 +322,7 @@ button,input{
     padding:20px;
     display:flex;
     flex-direction:column;
-    gap:15px;
+    gap:16px;
     background:#fafafa;
 }
 
@@ -358,8 +362,20 @@ button,input{
 .message{
     display:flex;
     gap:10px;
-    max-width:80%;
+    max-width:82%;
     user-select:none;
+    animation:messageIn .18s ease;
+}
+
+@keyframes messageIn{
+    from{
+        opacity:0;
+        transform:translateY(4px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
 .message.mine{
@@ -368,9 +384,9 @@ button,input{
 }
 
 .message-avatar{
-    flex:0 0 34px;
-    width:34px;
-    height:34px;
+    flex:0 0 36px;
+    width:36px;
+    height:36px;
     border-radius:50%;
     background:#111827;
     color:#fff;
@@ -380,6 +396,12 @@ button,input{
     font-size:11px;
     font-weight:800;
     overflow:hidden;
+    cursor:pointer;
+    transition:.18s;
+}
+
+.message-avatar:hover{
+    transform:scale(1.06);
 }
 
 .message-avatar img{
@@ -408,6 +430,11 @@ button,input{
     font-size:12px;
     font-weight:750;
     color:#374151;
+    cursor:pointer;
+}
+
+.message-name:hover{
+    text-decoration:underline;
 }
 
 .role{
@@ -433,6 +460,7 @@ button,input{
     font-size:13px;
     line-height:1.5;
     word-break:break-word;
+    position:relative;
 }
 
 .message.mine .bubble{
@@ -480,10 +508,98 @@ button,input{
     white-space:nowrap;
 }
 
-.chat-input{
-    padding:13px;
-    border-top:1px solid #e5e7eb;
+.reactions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top:6px;
+}
+
+.message.mine .reactions{
+    justify-content:flex-end;
+}
+
+.reaction-btn{
+    border:1px solid #e5e7eb;
     background:#fff;
+    color:#374151;
+    border-radius:20px;
+    padding:3px 7px;
+    min-height:25px;
+    cursor:pointer;
+    font-size:11px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    transition:.16s;
+}
+
+.reaction-btn:hover{
+    background:#f3f4f6;
+    transform:translateY(-1px);
+}
+
+.reaction-btn.mine{
+    border-color:#9ca3af;
+    background:#f3f4f6;
+}
+
+.reaction-count{
+    font-weight:700;
+    color:#6b7280;
+}
+
+.add-reaction{
+    width:26px;
+    height:25px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:12px;
+    color:#6b7280;
+}
+
+.add-reaction:hover{
+    background:#f3f4f6;
+}
+
+.reaction-picker{
+    display:none;
+    position:absolute;
+    left:0;
+    bottom:calc(100% + 7px);
+    background:#fff;
+    border:1px solid #e5e7eb;
+    box-shadow:0 12px 30px rgba(0,0,0,.13);
+    border-radius:12px;
+    padding:6px;
+    z-index:30;
+    gap:3px;
+    white-space:nowrap;
+}
+
+.reaction-picker.show{
+    display:flex;
+}
+
+.message.mine .reaction-picker{
+    left:auto;
+    right:0;
+}
+
+.reaction-picker button{
+    border:0;
+    background:transparent;
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.reaction-picker button:hover{
+    background:#f3f4f6;
 }
 
 .reply-bar{
@@ -529,6 +645,12 @@ button,input{
     color:#6b7280;
 }
 
+.chat-input{
+    padding:13px;
+    border-top:1px solid #e5e7eb;
+    background:#fff;
+}
+
 .input-wrap{
     display:flex;
     gap:8px;
@@ -550,13 +672,17 @@ button,input{
     background:#fff;
 }
 
-.file-btn{
+.file-btn,
+.send-btn{
     width:45px;
-    border:1px solid #e5e7eb;
     border-radius:10px;
-    background:#fff;
     cursor:pointer;
-    font-size:17px;
+    font-size:16px;
+}
+
+.file-btn{
+    border:1px solid #e5e7eb;
+    background:#fff;
 }
 
 .file-btn:hover{
@@ -564,13 +690,9 @@ button,input{
 }
 
 .send-btn{
-    width:45px;
     border:0;
-    border-radius:10px;
     background:#111827;
     color:#fff;
-    cursor:pointer;
-    font-size:16px;
 }
 
 .send-btn:hover{
@@ -639,7 +761,7 @@ button,input{
     position:fixed;
     z-index:100;
     display:none;
-    min-width:150px;
+    min-width:160px;
     background:#fff;
     border:1px solid #e5e7eb;
     border-radius:12px;
@@ -671,18 +793,23 @@ button,input{
     color:#dc2626;
 }
 
-.image-viewer{
+.image-viewer,
+.profile-modal{
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.85);
     z-index:200;
     align-items:center;
     justify-content:center;
     padding:20px;
 }
 
-.image-viewer.show{
+.image-viewer{
+    background:rgba(0,0,0,.85);
+}
+
+.image-viewer.show,
+.profile-modal.show{
     display:flex;
 }
 
@@ -705,6 +832,148 @@ button,input{
     color:#111827;
     cursor:pointer;
     font-size:20px;
+}
+
+.profile-modal{
+    background:rgba(17,24,39,.55);
+    backdrop-filter:blur(5px);
+}
+
+.profile-card{
+    width:min(390px,94vw);
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 25px 70px rgba(0,0,0,.22);
+    position:relative;
+    animation:profileIn .2s ease;
+}
+
+@keyframes profileIn{
+    from{
+        opacity:0;
+        transform:scale(.96) translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+}
+
+.profile-cover{
+    height:105px;
+    background:#111827;
+    position:relative;
+    overflow:hidden;
+}
+
+.profile-cover:after{
+    content:"";
+    position:absolute;
+    width:170px;
+    height:170px;
+    right:-55px;
+    top:-90px;
+    border-radius:50%;
+    background:rgba(255,255,255,.06);
+}
+
+.profile-avatar{
+    width:82px;
+    height:82px;
+    border-radius:50%;
+    background:#111827;
+    color:#fff;
+    border:5px solid #fff;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    top:62px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    font-weight:800;
+    overflow:hidden;
+}
+
+.profile-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.profile-body{
+    padding:50px 22px 22px;
+    text-align:center;
+}
+
+.profile-username{
+    font-size:20px;
+    font-weight:800;
+    color:#111827;
+}
+
+.profile-role{
+    display:inline-flex;
+    margin-top:7px;
+    padding:4px 10px;
+    border-radius:20px;
+    background:#f3f4f6;
+    color:#6b7280;
+    font-size:10px;
+    font-weight:750;
+}
+
+.profile-info{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.profile-stat{
+    background:#f9fafb;
+    border:1px solid #f0f1f3;
+    border-radius:11px;
+    padding:11px 8px;
+}
+
+.profile-stat strong{
+    display:block;
+    font-size:13px;
+}
+
+.profile-stat span{
+    display:block;
+    color:#9ca3af;
+    font-size:10px;
+    margin-top:3px;
+}
+
+.profile-close{
+    width:100%;
+    margin-top:15px;
+    height:40px;
+    border:0;
+    border-radius:10px;
+    background:#111827;
+    color:#fff;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.profile-loading{
+    padding:45px 20px;
+    text-align:center;
+    color:#9ca3af;
+}
+
+.profile-error{
+    padding:45px 20px;
+    text-align:center;
+    color:#dc2626;
 }
 
 @media(max-width:800px){
@@ -784,6 +1053,11 @@ button,input{
 
     .reply-info span{
         max-width:220px;
+    }
+
+    .reaction-picker{
+        max-width:calc(100vw - 60px);
+        overflow-x:auto;
     }
 }
 </style>
@@ -1110,6 +1384,13 @@ button,input{
     </button>
 
     <button
+        id="profileAction"
+        type="button"
+    >
+        👤 Lihat Profil
+    </button>
+
+    <button
         id="deleteAction"
         class="delete-option"
         type="button"
@@ -1139,6 +1420,57 @@ button,input{
 
 </div>
 
+<div
+    class="profile-modal"
+    id="profileModal"
+>
+
+    <div class="profile-card">
+
+        <div class="profile-cover"></div>
+
+        <div
+            class="profile-avatar"
+            id="profileAvatar"
+        >
+            U
+        </div>
+
+        <div class="profile-body">
+
+            <div
+                class="profile-username"
+                id="profileUsername"
+            >
+                User
+            </div>
+
+            <div
+                class="profile-role"
+                id="profileRole"
+            >
+                Member
+            </div>
+
+            <div
+                class="profile-info"
+                id="profileInfo"
+            ></div>
+
+            <button
+                class="profile-close"
+                id="profileClose"
+                type="button"
+            >
+                Tutup
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script>
 
 const API_BASE =
@@ -1153,6 +1485,16 @@ const API_UPLOAD =
 
 const MAX_IMAGE_SIZE =
     5 * 1024 * 1024;
+
+const REACTIONS = [
+    "❤️",
+    "👍",
+    "😂",
+    "😮",
+    "😢",
+    "😡",
+    "🔥"
+];
 
 let currentUser = null;
 let loading = false;
@@ -1195,6 +1537,7 @@ function getUser(){
             ){
 
                 return parsed.result.user;
+
             }
 
             if(
@@ -1203,6 +1546,7 @@ function getUser(){
             ){
 
                 return parsed.user;
+
             }
 
             if(
@@ -1211,6 +1555,7 @@ function getUser(){
             ){
 
                 return parsed;
+
             }
 
         }catch(error){
@@ -1242,6 +1587,7 @@ function setupUser(){
             "index.html";
 
         return false;
+
     }
 
     const username =
@@ -1332,6 +1678,7 @@ function formatTime(date){
     ){
 
         return "-";
+
     }
 
     return d.toLocaleTimeString(
@@ -1476,6 +1823,179 @@ async function loadMessages(
 
 }
 
+function getReactionData(chat){
+
+    const list =
+        Array.isArray(
+            chat.reactions
+        )
+        ? chat.reactions
+        : [];
+
+    const summary = {};
+
+    list.forEach(
+        item => {
+
+            if(
+                !item ||
+                !item.reaction
+            ){
+                return;
+            }
+
+            if(
+                !summary[item.reaction]
+            ){
+
+                summary[item.reaction] = {
+                    count:0,
+                    users:[]
+                };
+
+            }
+
+            summary[
+                item.reaction
+            ].count++;
+
+            if(item.username){
+
+                summary[
+                    item.reaction
+                ].users.push(
+                    item.username
+                );
+
+            }
+
+        }
+    );
+
+    return {
+        list,
+        summary
+    };
+
+}
+
+function userHasReaction(
+    chat,
+    reaction
+){
+
+    const username =
+        String(
+            currentUser?.username ||
+            ""
+        ).toLowerCase();
+
+    const list =
+        Array.isArray(
+            chat.reactions
+        )
+        ? chat.reactions
+        : [];
+
+    return list.some(
+        item =>
+            String(
+                item?.username ||
+                ""
+            ).toLowerCase() ===
+            username &&
+            item?.reaction ===
+            reaction
+    );
+
+}
+
+function renderReactions(chat){
+
+    const data =
+        getReactionData(
+            chat
+        );
+
+    let html = "";
+
+    Object.entries(
+        data.summary
+    ).forEach(
+        ([emoji,item]) => {
+
+            const mine =
+                userHasReaction(
+                    chat,
+                    emoji
+                );
+
+            const users =
+                item.users
+                    .slice(0,8)
+                    .join(", ");
+
+            html += `
+                <button
+                    class="reaction-btn ${
+                        mine ? "mine" : ""
+                    }"
+                    type="button"
+                    data-reaction="${escapeHTML(
+                        emoji
+                    )}"
+                    title="${escapeHTML(
+                        users
+                    )}"
+                >
+                    <span>
+                        ${emoji}
+                    </span>
+
+                    <span class="reaction-count">
+                        ${item.count}
+                    </span>
+                </button>
+            `;
+
+        }
+    );
+
+    html += `
+        <button
+            class="add-reaction"
+            type="button"
+            title="Tambah reaction"
+        >
+            +
+        </button>
+    `;
+
+    return `
+        <div class="reactions">
+
+            ${html}
+
+            <div
+                class="reaction-picker"
+            >
+                ${REACTIONS.map(
+                    emoji => `
+                        <button
+                            type="button"
+                            data-reaction="${emoji}"
+                        >
+                            ${emoji}
+                        </button>
+                    `
+                ).join("")}
+            </div>
+
+        </div>
+    `;
+
+}
+
 function renderMessages(
     messages,
     forceScroll
@@ -1507,6 +2027,7 @@ function renderMessages(
         `;
 
         return;
+
     }
 
     const wasBottom =
@@ -1579,32 +2100,56 @@ function renderMessage(chat){
 
     if(chat.replyTo){
 
-        const replyMessage =
-            chat.replyTo.message ||
-            (
-                chat.replyTo.image
-                ? "🖼️ Foto"
-                : "-"
-            );
+        let replyObject =
+            null;
 
-        replyHTML = `
-            <div class="reply-preview">
+        if(
+            typeof chat.replyTo ===
+            "object"
+        ){
 
-                <strong>
-                    ${escapeHTML(
-                        chat.replyTo.username ||
-                        "User"
-                    )}
-                </strong>
+            replyObject =
+                chat.replyTo;
 
-                <span>
-                    ${escapeHTML(
-                        replyMessage
-                    )}
-                </span>
+        }else{
 
-            </div>
-        `;
+            replyObject =
+                findMessageById(
+                    chat.replyTo
+                );
+
+        }
+
+        if(replyObject){
+
+            const replyMessage =
+                replyObject.message ||
+                (
+                    replyObject.image
+                    ? "🖼️ Foto"
+                    : "-"
+                );
+
+            replyHTML = `
+                <div class="reply-preview">
+
+                    <strong>
+                        ${escapeHTML(
+                            replyObject.username ||
+                            "User"
+                        )}
+                    </strong>
+
+                    <span>
+                        ${escapeHTML(
+                            replyMessage
+                        )}
+                    </span>
+
+                </div>
+            `;
+
+        }
 
     }
 
@@ -1683,7 +2228,13 @@ function renderMessage(chat){
             )}"
         >
 
-            <div class="message-avatar">
+            <div
+                class="message-avatar"
+                data-profile="${escapeHTML(
+                    usernameRaw
+                )}"
+                title="Lihat profil"
+            >
                 ${avatarHTML}
             </div>
 
@@ -1691,7 +2242,12 @@ function renderMessage(chat){
 
                 <div class="message-meta">
 
-                    <span class="message-name">
+                    <span
+                        class="message-name"
+                        data-profile="${escapeHTML(
+                            usernameRaw
+                        )}"
+                    >
                         ${username}
                     </span>
 
@@ -1716,6 +2272,10 @@ function renderMessage(chat){
                     ${messageHTML}
 
                 </div>
+
+                ${renderReactions(
+                    chat
+                )}
 
             </div>
 
@@ -1808,6 +2368,29 @@ function bindMessageEvents(){
 
                 element
                     .querySelectorAll(
+                        "[data-profile]"
+                    )
+                    .forEach(
+                        profileElement => {
+
+                            profileElement.addEventListener(
+                                "click",
+                                event => {
+
+                                    event.stopPropagation();
+
+                                    openProfile(
+                                        profileElement.dataset.profile
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+
+                element
+                    .querySelectorAll(
                         ".chat-image"
                     )
                     .forEach(
@@ -1829,8 +2412,214 @@ function bindMessageEvents(){
                         }
                     );
 
+                const addButton =
+                    element.querySelector(
+                        ".add-reaction"
+                    );
+
+                const picker =
+                    element.querySelector(
+                        ".reaction-picker"
+                    );
+
+                if(
+                    addButton &&
+                    picker
+                ){
+
+                    addButton.addEventListener(
+                        "click",
+                        event => {
+
+                            event.stopPropagation();
+
+                            document
+                                .querySelectorAll(
+                                    ".reaction-picker.show"
+                                )
+                                .forEach(
+                                    other => {
+
+                                        if(
+                                            other !==
+                                            picker
+                                        ){
+
+                                            other.classList.remove(
+                                                "show"
+                                            );
+
+                                        }
+
+                                    }
+                                );
+
+                            picker.classList.toggle(
+                                "show"
+                            );
+
+                        }
+                    );
+
+                    picker
+                        .querySelectorAll(
+                            "button"
+                        )
+                        .forEach(
+                            button => {
+
+                                button.addEventListener(
+                                    "click",
+                                    event => {
+
+                                        event.stopPropagation();
+
+                                        const reaction =
+                                            button.dataset.reaction;
+
+                                        const chat =
+                                            findMessageById(
+                                                element.dataset.id
+                                            );
+
+                                        if(chat){
+
+                                            sendReaction(
+                                                chat,
+                                                reaction
+                                            );
+
+                                        }
+
+                                        picker.classList.remove(
+                                            "show"
+                                        );
+
+                                    }
+                                );
+
+                            }
+                        );
+
+                }
+
+                element
+                    .querySelectorAll(
+                        ".reaction-btn"
+                    )
+                    .forEach(
+                        button => {
+
+                            button.addEventListener(
+                                "click",
+                                event => {
+
+                                    event.stopPropagation();
+
+                                    const chat =
+                                        findMessageById(
+                                            element.dataset.id
+                                        );
+
+                                    if(!chat){
+                                        return;
+                                    }
+
+                                    const reaction =
+                                        button.dataset.reaction;
+
+                                    const mine =
+                                        userHasReaction(
+                                            chat,
+                                            reaction
+                                        );
+
+                                    sendReaction(
+                                        chat,
+                                        mine
+                                            ? ""
+                                            : reaction
+                                    );
+
+                                }
+                            );
+
+                        }
+                    );
+
             }
         );
+
+}
+
+async function sendReaction(
+    chat,
+    reaction
+){
+
+    if(!currentUser){
+
+        return;
+
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                `${API_CHAT}/${encodeURIComponent(
+                    chat.id
+                )}/reaction`,
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+                        "Accept":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify({
+                            username:
+                                currentUser.username,
+                            reaction
+                        })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            !data.status
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal memberikan reaction"
+            );
+
+        }
+
+        lastMessagesHash =
+            "";
+
+        await loadMessages();
+
+    }catch(error){
+
+        console.error(
+            "[REACTION]",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Gagal memberikan reaction"
+        );
+
+    }
 
 }
 
@@ -1874,13 +2663,13 @@ function showContextMenu(element){
     menu.style.left =
         Math.min(
             rect.left,
-            window.innerWidth - 170
+            window.innerWidth - 175
         ) + "px";
 
     menu.style.top =
         Math.min(
             rect.bottom + 5,
-            window.innerHeight - 100
+            window.innerHeight - 120
         ) + "px";
 
     menu.classList.add(
@@ -1923,6 +2712,28 @@ document.addEventListener(
             closeContextMenu();
 
         }
+
+        document
+            .querySelectorAll(
+                ".reaction-picker.show"
+            )
+            .forEach(
+                picker => {
+
+                    if(
+                        !picker.parentElement.contains(
+                            event.target
+                        )
+                    ){
+
+                        picker.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
 
     }
 );
@@ -1987,6 +2798,25 @@ document.getElementById(
             );
 
         }
+
+    }
+);
+
+document.getElementById(
+    "profileAction"
+).addEventListener(
+    "click",
+    () => {
+
+        if(contextTarget){
+
+            openProfile(
+                contextTarget.username
+            );
+
+        }
+
+        closeContextMenu();
 
     }
 );
@@ -2174,7 +3004,10 @@ async function uploadImage(file){
     const data =
         await response.json();
 
-    if(!response.ok){
+    if(
+        !response.ok ||
+        data.status === false
+    ){
 
         throw new Error(
             data.message ||
@@ -2647,11 +3480,299 @@ document.getElementById(
     }
 );
 
+async function openProfile(username){
+
+    if(!username){
+        return;
+    }
+
+    const modal =
+        document.getElementById(
+            "profileModal"
+        );
+
+    const avatar =
+        document.getElementById(
+            "profileAvatar"
+        );
+
+    const usernameElement =
+        document.getElementById(
+            "profileUsername"
+        );
+
+    const roleElement =
+        document.getElementById(
+            "profileRole"
+        );
+
+    const info =
+        document.getElementById(
+            "profileInfo"
+        );
+
+    usernameElement.textContent =
+        username;
+
+    roleElement.textContent =
+        "Loading...";
+
+    avatar.textContent =
+        username
+            .charAt(0)
+            .toUpperCase();
+
+    info.innerHTML = `
+        <div
+            class="profile-loading"
+            style="grid-column:1/-1"
+        >
+            Memuat profil...
+        </div>
+    `;
+
+    modal.classList.add(
+        "show"
+    );
+
+    try{
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/users/${encodeURIComponent(
+                    username
+                )}`,
+                {
+                    method:"GET",
+                    cache:"no-store"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            !data.status ||
+            !data.result
+        ){
+
+            throw new Error(
+                data.message ||
+                "Profil tidak ditemukan"
+            );
+
+        }
+
+        const user =
+            data.result;
+
+        const realUsername =
+            String(
+                user.username ||
+                username
+            );
+
+        const role =
+            String(
+                user.role ||
+                "member"
+            );
+
+        usernameElement.textContent =
+            realUsername;
+
+        roleElement.textContent =
+            formatRole(role);
+
+        if(user.avatar){
+
+            avatar.innerHTML = `
+                <img
+                    src="${escapeHTML(
+                        user.avatar
+                    )}"
+                    alt="Avatar"
+                >
+            `;
+
+        }else{
+
+            avatar.textContent =
+                realUsername
+                    .charAt(0)
+                    .toUpperCase();
+
+        }
+
+        const messageCount =
+            cachedMessages.filter(
+                chat =>
+                    String(
+                        chat.username ||
+                        ""
+                    ).toLowerCase() ===
+                    realUsername.toLowerCase()
+            ).length;
+
+        const joined =
+            user.createdAt ||
+            user.joinedAt ||
+            user.dateCreated ||
+            "";
+
+        info.innerHTML = `
+
+            <div class="profile-stat">
+
+                <strong>
+                    ${messageCount}
+                </strong>
+
+                <span>
+                    Pesan di chat
+                </span>
+
+            </div>
+
+            <div class="profile-stat">
+
+                <strong>
+                    ${escapeHTML(
+                        formatRole(role)
+                    )}
+                </strong>
+
+                <span>
+                    Role
+                </span>
+
+            </div>
+
+            <div class="profile-stat">
+
+                <strong>
+                    ${joined
+                        ? formatDate(joined)
+                        : "-"
+                    }
+                </strong>
+
+                <span>
+                    Bergabung
+                </span>
+
+            </div>
+
+            <div class="profile-stat">
+
+                <strong>
+                    ${realUsername
+                        .charAt(0)
+                        .toUpperCase()
+                    }
+                </strong>
+
+                <span>
+                    Username
+                </span>
+
+            </div>
+
+        `;
+
+    }catch(error){
+
+        console.error(
+            "[PROFILE]",
+            error
+        );
+
+        roleElement.textContent =
+            "User";
+
+        info.innerHTML = `
+            <div
+                class="profile-error"
+                style="grid-column:1/-1"
+            >
+                ${escapeHTML(
+                    error.message ||
+                    "Gagal mengambil profil"
+                )}
+            </div>
+        `;
+
+    }
+
+}
+
+function formatDate(date){
+
+    const d =
+        new Date(date);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+
+        return "-";
+
+    }
+
+    return d.toLocaleDateString(
+        "id-ID",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
+
+}
+
+function closeProfile(){
+
+    document.getElementById(
+        "profileModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+document.getElementById(
+    "profileClose"
+).addEventListener(
+    "click",
+    closeProfile
+);
+
+document.getElementById(
+    "profileModal"
+).addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target.id ===
+            "profileModal"
+        ){
+
+            closeProfile();
+
+        }
+
+    }
+);
+
 document.getElementById(
     "refreshAccount"
 ).addEventListener(
     "click",
-    () => {
+    async () => {
 
         const username =
             currentUser?.username;
@@ -2660,68 +3781,65 @@ document.getElementById(
             return;
         }
 
-        fetch(
-            `${API_BASE}/api/users/${encodeURIComponent(
-                username
-            )}`,
-            {
-                cache:"no-store"
-            }
-        )
-        .then(
-            response =>
-                response.json()
-        )
-        .then(
-            data => {
+        try{
 
-                if(
-                    !data.status ||
-                    !data.result
-                ){
-
-                    throw new Error(
-                        data.message ||
-                        "Gagal mengambil data user"
-                    );
-
-                }
-
-                currentUser =
-                    data.result;
-
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(
-                        currentUser
-                    )
+            const response =
+                await fetch(
+                    `${API_BASE}/api/users/${encodeURIComponent(
+                        username
+                    )}`,
+                    {
+                        cache:"no-store"
+                    }
                 );
 
-                localStorage.setItem(
-                    "userData",
-                    JSON.stringify(
-                        currentUser
-                    )
-                );
+            const data =
+                await response.json();
 
-                setupUser();
+            if(
+                !response.ok ||
+                !data.status ||
+                !data.result
+            ){
 
-                alert(
-                    "Data akun berhasil diperbarui."
+                throw new Error(
+                    data.message ||
+                    "Gagal mengambil data user"
                 );
 
             }
-        )
-        .catch(
-            error => {
 
-                alert(
-                    error.message ||
-                    "API tidak dapat dihubungi."
-                );
+            currentUser =
+                data.result;
 
-            }
-        );
+            localStorage.setItem(
+                "user",
+                JSON.stringify(
+                    currentUser
+                )
+            );
+
+            localStorage.setItem(
+                "userData",
+                JSON.stringify(
+                    currentUser
+                )
+            );
+
+            setupUser();
+
+            alert(
+                "Data akun berhasil diperbarui."
+            );
+
+        }catch(error){
+
+            alert(
+                error.message ||
+                "API tidak dapat dihubungi."
+            );
+
+        }
 
     }
 );
@@ -2758,6 +3876,35 @@ document.getElementById(
 ).addEventListener(
     "click",
     logout
+);
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key ===
+            "Escape"
+        ){
+
+            closeImage();
+            closeProfile();
+            closeContextMenu();
+
+            document
+                .querySelectorAll(
+                    ".reaction-picker.show"
+                )
+                .forEach(
+                    picker =>
+                        picker.classList.remove(
+                            "show"
+                        )
+                );
+
+        }
+
+    }
 );
 
 function init(){
@@ -2804,4 +3951,4 @@ init();
 </script>
 
 </body>
-</html>
+    </html>
