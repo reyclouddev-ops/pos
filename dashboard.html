@@ -41,8 +41,6 @@ button{
     min-height:100vh;
 }
 
-/* SIDEBAR */
-
 .sidebar{
     width:245px;
     background:#090c11;
@@ -144,15 +142,11 @@ button{
     color:#f85149;
 }
 
-/* MAIN */
-
 .main{
     margin-left:245px;
     width:calc(100% - 245px);
     min-height:100vh;
 }
-
-/* TOPBAR */
 
 .topbar{
     height:65px;
@@ -205,9 +199,14 @@ button{
     justify-content:center;
     font-size:12px;
     font-weight:800;
+    overflow:hidden;
 }
 
-/* CONTENT */
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
 
 .content{
     padding:30px;
@@ -235,8 +234,6 @@ button{
     margin-top:7px;
     font-size:13px;
 }
-
-/* BANNER */
 
 .hero-banner{
     position:relative;
@@ -304,8 +301,6 @@ button{
     margin-top:9px;
 }
 
-/* STATUS */
-
 .status-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -348,8 +343,6 @@ button{
     text-transform:capitalize;
 }
 
-/* GRID */
-
 .dashboard-grid{
     display:grid;
     grid-template-columns:1.4fr 1fr;
@@ -377,8 +370,6 @@ button{
 .card-body{
     padding:18px;
 }
-
-/* ACTIONS */
 
 .actions{
     display:grid;
@@ -418,8 +409,6 @@ button{
     margin-top:4px;
     line-height:1.5;
 }
-
-/* ACCOUNT */
 
 .info{
     display:flex;
@@ -466,8 +455,6 @@ button{
     border:1px solid rgba(248,81,73,.2);
 }
 
-/* MOBILE */
-
 .mobile-menu{
     display:none;
     width:35px;
@@ -479,8 +466,6 @@ button{
     cursor:pointer;
 }
 
-/* RESPONSIVE */
-
 @media(max-width:1000px){
 
     .status-grid{
@@ -490,7 +475,6 @@ button{
     .dashboard-grid{
         grid-template-columns:1fr;
     }
-
 }
 
 @media(max-width:760px){
@@ -567,7 +551,6 @@ button{
     .clock{
         display:none;
     }
-
 }
 
 @media(max-width:420px){
@@ -583,7 +566,6 @@ button{
     .hero-banner{
         height:215px;
     }
-
 }
 </style>
 </head>
@@ -592,490 +574,539 @@ button{
 
 <div class="app">
 
-    <aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
 
-        <div class="logo">
-            <div class="logo-icon">RC</div>
-            <div class="logo-text">
-                ReyCloud <span>Panel</span>
+    <div class="logo">
+        <div class="logo-icon">RC</div>
+
+        <div class="logo-text">
+            ReyCloud <span>Panel</span>
+        </div>
+    </div>
+
+    <div class="menu-title">
+        MAIN
+    </div>
+
+    <nav class="nav">
+
+        <button class="active">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </button>
+
+        <button onclick="openPage('cpanel.html')">
+            <span class="nav-icon">▣</span>
+            CPanel
+        </button>
+
+        <button onclick="openPage('cadmin.html')">
+            <span class="nav-icon">◈</span>
+            CAdmin
+        </button>
+
+        <button onclick="openPage('chat.html')">
+            <span class="nav-icon">☁</span>
+            Public Chat
+        </button>
+
+        <button onclick="openPage('privatechat.html')">
+            <span class="nav-icon">💬</span>
+            Private Chat
+        </button>
+
+    </nav>
+
+    <div class="menu-title">
+        ACCOUNT
+    </div>
+
+    <nav class="nav">
+
+        <button onclick="openPage('profile.html')">
+            <span class="nav-icon">👤</span>
+            Profile
+        </button>
+
+        <button onclick="refreshUser()">
+            <span class="nav-icon">↻</span>
+            Refresh Data
+        </button>
+
+        <button onclick="logout()">
+            <span class="nav-icon">↪</span>
+            Logout
+        </button>
+
+    </nav>
+
+    <div class="logout">
+        <button onclick="logout()">
+            <span class="nav-icon">⎋</span>
+            Keluar
+        </button>
+    </div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+
+    <div class="page-title">
+
+        <button
+            class="mobile-menu"
+            onclick="toggleSidebar()"
+        >
+            ☰
+        </button>
+
+        Dashboard
+
+    </div>
+
+    <div class="top-right">
+
+        <div class="clock">
+
+            <div
+                class="clock-time"
+                id="clock"
+            >
+                00:00:00
             </div>
+
+            <div
+                class="clock-date"
+                id="date"
+            >
+                Memuat...
+            </div>
+
         </div>
 
-        <div class="menu-title">
-            MAIN
+        <div
+            class="avatar"
+            id="avatar"
+        >
+            R
         </div>
 
-        <nav class="nav">
+    </div>
 
-            <button class="active">
-                <span class="nav-icon">⌂</span>
-                Dashboard
-            </button>
+</header>
 
-            <button onclick="openPage('cpanel.html')">
-                <span class="nav-icon">▣</span>
-                CPanel
-            </button>
+<section class="content">
 
-            <button onclick="openPage('cadmin.html')">
-                <span class="nav-icon">◈</span>
-                CAdmin
-            </button>
+<div class="welcome">
 
-            <button onclick="openPage('chat.html')">
-                <span class="nav-icon">☁</span>
-                Public Chat
-            </button>
+    <small>
+        Welcome back
+    </small>
 
-        </nav>
+    <h1 id="welcomeName">
+        Rey 👋
+    </h1>
 
-        <div class="menu-title">
-            ACCOUNT
+    <p>
+        Kelola layanan ReyCloud kamu dari satu dashboard.
+    </p>
+
+</div>
+
+<div class="hero-banner">
+
+    <video
+        class="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+    >
+        <source
+            src="https://files.catbox.moe/tg2yn9.mp4"
+            type="video/mp4"
+        >
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            REYCLOUD PANEL
         </div>
 
-        <nav class="nav">
+        <h2>
+            Solusi Hosting Digital
+        </h2>
 
-            <button onclick="refreshUser()">
-                <span class="nav-icon">↻</span>
-                Refresh Data
-            </button>
+        <p>
+            Kelola layanan hosting kamu
+            dengan cepat, simpel, dan modern.
+        </p>
 
-            <button onclick="logout()">
-                <span class="nav-icon">↪</span>
-                Logout
-            </button>
+    </div>
 
-        </nav>
+</div>
 
-        <div class="logout">
-            <button onclick="logout()">
-                <span class="nav-icon">⎋</span>
-                Keluar
-            </button>
+<div class="status-grid">
+
+    <div class="card stat">
+
+        <div class="stat-label">
+            Account Status
         </div>
 
-    </aside>
+        <div
+            class="stat-value"
+            id="status"
+        >
+            -
+        </div>
 
-    <main class="main">
+    </div>
 
-        <header class="topbar">
+    <div class="card stat">
 
-            <div class="page-title">
+        <div class="stat-label">
+            Role
+        </div>
 
-                <button
-                    class="mobile-menu"
-                    onclick="toggleSidebar()"
-                >
-                    ☰
-                </button>
+        <div
+            class="stat-value role"
+            id="role"
+        >
+            -
+        </div>
 
-                Dashboard
+    </div>
+
+    <div class="card stat">
+
+        <div class="stat-label">
+            Duration
+        </div>
+
+        <div
+            class="stat-value"
+            id="duration"
+        >
+            -
+        </div>
+
+    </div>
+
+    <div class="card stat">
+
+        <div class="stat-label">
+            Expired
+        </div>
+
+        <div
+            class="stat-value"
+            id="expired"
+        >
+            -
+        </div>
+
+    </div>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <div class="card-title">
+                Quick Actions
             </div>
 
-            <div class="top-right">
-
-                <div class="clock">
-                    <div
-                        class="clock-time"
-                        id="clock"
-                    >
-                        00:00:00
-                    </div>
-
-                    <div
-                        class="clock-date"
-                        id="date"
-                    >
-                        Memuat...
-                    </div>
-                </div>
-
-                <div
-                    class="avatar"
-                    id="avatar"
-                >
-                    R
-                </div>
-
+            <div class="card-subtitle">
+                Akses layanan ReyCloud
             </div>
 
-        </header>
+        </div>
 
-        <section class="content">
+    </div>
 
-            <div class="welcome">
+    <div class="card-body">
 
-                <small>
-                    Welcome back
-                </small>
+        <div class="actions">
 
-                <h1 id="welcomeName">
-                    Rey 👋
-                </h1>
+            <button
+                class="action"
+                onclick="openPage('cpanel.html')"
+            >
 
-                <p>
-                    Kelola layanan ReyCloud kamu dari satu dashboard.
-                </p>
+                <div class="action-icon">
+                    🖥️
+                </div>
 
+                <div class="action-title">
+                    Create CPanel
+                </div>
+
+                <div class="action-text">
+                    Buat panel hosting baru
+                    melalui API ReyCloud.
+                </div>
+
+            </button>
+
+            <button
+                class="action"
+                onclick="openPage('cadmin.html')"
+            >
+
+                <div class="action-icon">
+                    ⚙️
+                </div>
+
+                <div class="action-title">
+                    Create CAdmin
+                </div>
+
+                <div class="action-text">
+                    Buat akun administrator
+                    panel hosting.
+                </div>
+
+            </button>
+
+            <button
+                class="action"
+                onclick="openPage('chat.html')"
+            >
+
+                <div class="action-icon">
+                    🌐
+                </div>
+
+                <div class="action-title">
+                    Public Chat
+                </div>
+
+                <div class="action-text">
+                    Bergabung dengan chat
+                    komunitas ReyCloud.
+                </div>
+
+            </button>
+
+            <button
+                class="action"
+                onclick="openPage('privatechat.html')"
+            >
+
+                <div class="action-icon">
+                    💬
+                </div>
+
+                <div class="action-title">
+                    Private Chat
+                </div>
+
+                <div class="action-text">
+                    Chat langsung dengan
+                    user ReyCloud lainnya.
+                </div>
+
+            </button>
+
+            <button
+                class="action"
+                onclick="openPage('profile.html')"
+            >
+
+                <div class="action-icon">
+                    👤
+                </div>
+
+                <div class="action-title">
+                    My Profile
+                </div>
+
+                <div class="action-text">
+                    Lihat dan kelola profil
+                    serta foto akun kamu.
+                </div>
+
+            </button>
+
+            <button
+                class="action"
+                onclick="openPage('upload.html')"
+            >
+
+                <div class="action-icon">
+                    🖼️
+                </div>
+
+                <div class="action-title">
+                    Tourl
+                </div>
+
+                <div class="action-text">
+                    Unggah gambar kamu
+                    menjadi link.
+                </div>
+
+            </button>
+
+            <button
+                class="action"
+                onclick="openPage('deploy.html')"
+            >
+
+                <div class="action-icon">
+                    🚀
+                </div>
+
+                <div class="action-title">
+                    Deploy
+                </div>
+
+                <div class="action-text">
+                    Deploy project kamu
+                    melalui ReyCloud.
+                </div>
+
+            </button>
+
+            <button
+                class="action"
+                onclick="refreshUser()"
+            >
+
+                <div class="action-icon">
+                    🔄
+                </div>
+
+                <div class="action-title">
+                    Refresh Account
+                </div>
+
+                <div class="action-text">
+                    Perbarui data akun
+                    dari API ReyCloud.
+                </div>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+
+        <div>
+
+            <div class="card-title">
+                Account Information
             </div>
 
-            <!-- BANNER -->
-
-            <div class="hero-banner">
-
-                <video
-                    class="hero-video"
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    preload="metadata"
-                >
-                    <source
-                        src="https://files.catbox.moe/tg2yn9.mp4"
-                        type="video/mp4"
-                    >
-                </video>
-
-                <div class="hero-overlay"></div>
-
-                <div class="hero-content">
-
-                    <div class="hero-badge">
-                        REYCLOUD PANEL
-                    </div>
-
-                    <h2>
-                        Solusi Hosting Digital
-                    </h2>
-
-                    <p>
-                        Kelola layanan hosting kamu
-                        dengan cepat, simpel, dan modern.
-                    </p>
-
-                </div>
-
+            <div class="card-subtitle">
+                Informasi akun kamu
             </div>
 
-            <!-- STATUS -->
+        </div>
 
-            <div class="status-grid">
+    </div>
 
-                <div class="card stat">
+    <div class="card-body">
 
-                    <div class="stat-label">
-                        Account Status
-                    </div>
+        <div class="info">
 
-                    <div
-                        class="stat-value"
-                        id="status"
-                    >
-                        -
-                    </div>
+            <span>
+                User ID
+            </span>
 
-                </div>
+            <span id="userId">
+                -
+            </span>
 
-                <div class="card stat">
+        </div>
 
-                    <div class="stat-label">
-                        Role
-                    </div>
+        <div class="info">
 
-                    <div
-                        class="stat-value role"
-                        id="role"
-                    >
-                        -
-                    </div>
+            <span>
+                Username
+            </span>
 
-                </div>
+            <span id="username">
+                -
+            </span>
 
-                <div class="card stat">
+        </div>
 
-                    <div class="stat-label">
-                        Duration
-                    </div>
+        <div class="info">
 
-                    <div
-                        class="stat-value"
-                        id="duration"
-                    >
-                        -
-                    </div>
+            <span>
+                Role
+            </span>
 
-                </div>
+            <span id="accountRole">
+                -
+            </span>
 
-                <div class="card stat">
+        </div>
 
-                    <div class="stat-label">
-                        Expired
-                    </div>
+        <div class="info">
 
-                    <div
-                        class="stat-value"
-                        id="expired"
-                    >
-                        -
-                    </div>
+            <span>
+                Status
+            </span>
 
-                </div>
+            <span id="accountStatus">
+                -
+            </span>
 
-            </div>
+        </div>
 
-            <!-- LOWER GRID -->
+        <div class="info">
 
-            <div class="dashboard-grid">
+            <span>
+                Created
+            </span>
 
-                <!-- ACTIONS -->
+            <span id="createdAt">
+                -
+            </span>
 
-                <div class="card">
+        </div>
 
-                    <div class="card-header">
+        <div class="info">
 
-                        <div>
-                            <div class="card-title">
-                                Quick Actions
-                            </div>
+            <span>
+                Expired
+            </span>
 
-                            <div class="card-subtitle">
-                                Akses layanan ReyCloud
-                            </div>
-                        </div>
+            <span id="expiresAt">
+                -
+            </span>
 
-                    </div>
+        </div>
 
-                    <div class="card-body">
+    </div>
 
-                        <div class="actions">
+</div>
 
-                            <button
-                                class="action"
-                                onclick="openPage('cpanel.html')"
-                            >
+</div>
 
-                                <div class="action-icon">
-                                    🖥️
-                                </div>
+</section>
 
-                                <div class="action-title">
-                                    Create CPanel
-                                </div>
-
-                                <div class="action-text">
-                                    Buat panel hosting baru
-                                    melalui API ReyCloud.
-                                </div>
-
-                            </button>
-
-                            <button
-                                class="action"
-                                onclick="openPage('cadmin.html')"
-                            >
-
-                                <div class="action-icon">
-                                    ⚙️
-                                </div>
-
-                                <div class="action-title">
-                                    Create CAdmin
-                                </div>
-
-                                <div class="action-text">
-                                    Buat akun administrator
-                                    panel hosting.
-                                </div>
-
-                            </button>
-
-                            <button
-                                class="action"
-                                onclick="openPage('chat.html')"
-                            >
-
-                                <div class="action-icon">
-                                    💬
-                                </div>
-
-                                <div class="action-title">
-                                    Public Chat
-                                </div>
-
-                                <div class="action-text">
-                                    Bergabung dengan chat
-                                    komunitas ReyCloud.
-                                </div>
-
-                            </button>
-
-                            <button
-                                class="action"
-                                onclick="openPage('upload.html')"
-                            >
-
-                                <div class="action-icon">
-                                    🌐
-                                </div>
-
-                                <div class="action-title">
-                                    Tourl
-                                </div>
-
-                                <div class="action-text">
-                                    Unggah Gambar Mu Jadi Link
-                                </div>
-
-                            </button>
-
-                            <button
-                                class="action"
-                                onclick="openPage('deploy.html')"
-                            >
-
-                                <div class="action-icon">
-                                    🚀
-                                </div>
-
-                                <div class="action-title">
-                                    Deploy
-                                </div>
-
-                                <div class="action-text">
-                                    Deploy Projeck Mu Disini
-                                </div>
-
-                            </button>
-
-
-                            <button
-                                class="action"
-                                onclick="refreshUser()"
-                            >
-
-                                <div class="action-icon">
-                                    🔄
-                                </div>
-
-                                <div class="action-title">
-                                    Refresh Account
-                                </div>
-
-                                <div class="action-text">
-                                    Perbarui data akun
-                                    dari browser.
-                                </div>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!-- ACCOUNT -->
-
-                <div class="card">
-
-                    <div class="card-header">
-
-                        <div>
-                            <div class="card-title">
-                                Account Information
-                            </div>
-
-                            <div class="card-subtitle">
-                                Informasi akun kamu
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <div class="info">
-
-                            <span>
-                                User ID
-                            </span>
-
-                            <span id="userId">
-                                -
-                            </span>
-
-                        </div>
-
-                        <div class="info">
-
-                            <span>
-                                Username
-                            </span>
-
-                            <span id="username">
-                                -
-                            </span>
-
-                        </div>
-
-                        <div class="info">
-
-                            <span>
-                                Role
-                            </span>
-
-                            <span id="accountRole">
-                                -
-                            </span>
-
-                        </div>
-
-                        <div class="info">
-
-                            <span>
-                                Status
-                            </span>
-
-                            <span id="accountStatus">
-                                -
-                            </span>
-
-                        </div>
-
-                        <div class="info">
-
-                            <span>
-                                Created
-                            </span>
-
-                            <span id="createdAt">
-                                -
-                            </span>
-
-                        </div>
-
-                        <div class="info">
-
-                            <span>
-                                Expired
-                            </span>
-
-                            <span id="expiresAt">
-                                -
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
+</main>
 
 </div>
 
@@ -1091,7 +1122,8 @@ function getUser(){
         "user",
         "currentUser",
         "userData",
-        "reycloud_user"
+        "reycloud_user",
+        "loginUser"
     ];
 
     for(
@@ -1101,7 +1133,9 @@ function getUser(){
         const value =
             localStorage.getItem(key);
 
-        if(!value) continue;
+        if(!value){
+            continue;
+        }
 
         try{
 
@@ -1113,15 +1147,18 @@ function getUser(){
                 typeof data === "object"
             ){
 
-                if(data.user){
-                    return data.user;
-                }
-
                 if(data.result?.user){
                     return data.result.user;
                 }
 
-                return data;
+                if(data.user){
+                    return data.user;
+                }
+
+                if(data.username){
+                    return data;
+                }
+
             }
 
         }catch{
@@ -1168,7 +1205,6 @@ function formatDate(date){
             year:"numeric"
         }
     );
-
 }
 
 function formatDateTime(date){
@@ -1198,7 +1234,6 @@ function formatDateTime(date){
             minute:"2-digit"
         }
     );
-
 }
 
 function initials(name){
@@ -1211,7 +1246,65 @@ function initials(name){
         .trim()
         .slice(0,1)
         .toUpperCase();
+}
 
+function getAvatarUrl(){
+
+    return (
+        user?.avatar ||
+        user?.avatarUrl ||
+        user?.image ||
+        user?.photo ||
+        user?.profilePicture ||
+        ""
+    );
+}
+
+function renderAvatar(){
+
+    const avatar =
+        document.getElementById(
+            "avatar"
+        );
+
+    const url =
+        getAvatarUrl();
+
+    if(url){
+
+        avatar.innerHTML = `
+            <img
+                src="${escapeHTML(url)}"
+                alt="Avatar"
+                onerror="this.remove()"
+            >
+        `;
+
+        avatar.insertAdjacentHTML(
+            "beforeend",
+            `<span style="display:none">${initials(user?.username)}</span>`
+        );
+
+    }else{
+
+        avatar.textContent =
+            initials(
+                user?.username
+            );
+
+    }
+}
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 }
 
 function loadUser(){
@@ -1225,21 +1318,18 @@ function loadUser(){
             "index.html";
 
         return;
-
     }
 
     const username =
-        user.username || "User";
+        user.username ||
+        "User";
 
     document.getElementById(
         "welcomeName"
     ).textContent =
         `${username} 👋`;
 
-    document.getElementById(
-        "avatar"
-    ).textContent =
-        initials(username);
+    renderAvatar();
 
     document.getElementById(
         "userId"
@@ -1288,7 +1378,8 @@ function loadUser(){
         );
 
     const status =
-        user.status || "unknown";
+        user.status ||
+        "unknown";
 
     const statusElement =
         document.getElementById(
@@ -1313,13 +1404,12 @@ function loadUser(){
     }else{
 
         statusElement.innerHTML =
-            `<span style="color:#f85149">●</span> ${status}`;
+            `<span style="color:#f85149">●</span> ${escapeHTML(status)}`;
 
         accountStatus.innerHTML =
-            `<span class="badge badge-expired">${status.toUpperCase()}</span>`;
+            `<span class="badge badge-expired">${escapeHTML(status).toUpperCase()}</span>`;
 
     }
-
 }
 
 function refreshUser(){
@@ -1332,11 +1422,18 @@ function refreshUser(){
         loadUser();
 
         return;
-
     }
 
     fetch(
-        `${API_BASE}/api/users/${encodeURIComponent(username)}`
+        `${API_BASE}/api/users/${encodeURIComponent(username)}`,
+        {
+            method:"GET",
+            cache:"no-store",
+            headers:{
+                "Accept":
+                    "application/json"
+            }
+        }
     )
     .then(
         response =>
@@ -1356,7 +1453,6 @@ function refreshUser(){
                 );
 
                 return;
-
             }
 
             user =
@@ -1364,16 +1460,17 @@ function refreshUser(){
 
             localStorage.setItem(
                 "user",
-                JSON.stringify(
-                    user
-                )
+                JSON.stringify(user)
             );
 
             localStorage.setItem(
                 "userData",
-                JSON.stringify(
-                    user
-                )
+                JSON.stringify(user)
+            );
+
+            localStorage.setItem(
+                "currentUser",
+                JSON.stringify(user)
             );
 
             loadUser();
@@ -1381,7 +1478,12 @@ function refreshUser(){
         }
     )
     .catch(
-        () => {
+        error => {
+
+            console.error(
+                "[REFRESH USER]",
+                error
+            );
 
             alert(
                 "API tidak dapat dihubungi."
@@ -1389,37 +1491,24 @@ function refreshUser(){
 
         }
     );
-
 }
 
 function openPage(page){
 
     window.location.href =
         page;
-
 }
 
 function logout(){
 
-    localStorage.removeItem(
-        "user"
-    );
-
-    localStorage.removeItem(
-        "userData"
-    );
-
-    localStorage.removeItem(
-        "currentUser"
-    );
-
-    localStorage.removeItem(
-        "reycloud_user"
-    );
+    localStorage.removeItem("user");
+    localStorage.removeItem("userData");
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("reycloud_user");
+    localStorage.removeItem("loginUser");
 
     window.location.href =
         "index.html";
-
 }
 
 function updateClock(){
@@ -1451,7 +1540,6 @@ function updateClock(){
                 year:"numeric"
             }
         );
-
 }
 
 function toggleSidebar(){
@@ -1460,8 +1548,33 @@ function toggleSidebar(){
         .getElementById("sidebar")
         .classList
         .toggle("open");
-
 }
+
+document
+    .querySelectorAll(".nav button")
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    if(
+                        window.innerWidth <= 760
+                    ){
+
+                        document
+                            .getElementById("sidebar")
+                            .classList
+                            .remove("open");
+
+                    }
+
+                }
+            );
+
+        }
+    );
 
 loadUser();
 updateClock();
