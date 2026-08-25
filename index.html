@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#05080d">
+<title>ReyCloud</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #05080d;
+    --card: #0b111a;
+    --input: #070c13;
+    --border: rgba(255,255,255,.08);
+    --text: #f5f7fa;
+    --muted: #7f8a9b;
+    --primary: #00d9ff;
+    --primary-dark: #001014;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(0,217,255,.12),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(0,100,255,.10),
+            transparent 35%
+        ),
+        var(--bg);
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 430px;
+}
+
+.card {
+    width: 100%;
+    overflow: hidden;
+    background:
+        rgba(11,17,26,.96);
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.55);
+}
+
+/* BANNER */
+
+.banner {
+    position: relative;
+    width: 100%;
+    height: 185px;
+    overflow: hidden;
+    background: #03070b;
+}
+
+.banner video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.05),
+            rgba(0,0,0,.18) 45%,
+            rgba(5,8,13,.95)
+        );
+    pointer-events: none;
+}
+
+.banner-content {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 18px;
+    z-index: 2;
+}
+
+.banner-title {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -.5px;
+}
+
+.banner-subtitle {
+    margin-top: 4px;
+    color: #d4dbe4;
+    font-size: 11px;
+}
+
+/* CONTENT */
+
+.content {
+    padding: 25px;
+}
+
+.brand {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.brand h1 {
+    font-size: 29px;
+    font-weight: 900;
+    letter-spacing: -.8px;
+}
+
+.brand h1 span {
+    color: var(--primary);
+}
+
+.brand p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* FORM */
+
+.form {
+    display: none;
+}
+
+.form.active {
+    display: block;
+    animation: formIn .25s ease;
+}
+
+@keyframes formIn {
+    from {
+        opacity: 0;
+        transform: translateY(7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form h2 {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.form-description {
+    margin-top: 6px;
+    margin-bottom: 21px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* MESSAGE */
+
+.message {
+    display: none;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border-radius: 11px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.message.show {
+    display: block;
+}
+
+.message.error {
+    color: #ffaaaa;
+    background: rgba(255,60,60,.08);
+    border: 1px solid rgba(255,60,60,.18);
+}
+
+.message.success {
+    color: #8affb3;
+    background: rgba(40,255,120,.07);
+    border: 1px solid rgba(40,255,120,.18);
+}
+
+/* INPUT */
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 7px;
+    color: #cbd4df;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.field input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid #253142;
+    outline: none;
+    border-radius: 11px;
+    background: var(--input);
+    color: white;
+    font-size: 13px;
+    transition: .2s;
+}
+
+.field input:focus {
+    border-color: var(--primary);
+    box-shadow:
+        0 0 0 3px rgba(0,217,255,.07);
+}
+
+.field input::placeholder {
+    color: #505b6a;
+}
+
+/* BUTTON */
+
+.main-button {
+    width: 100%;
+    height: 48px;
+    margin-top: 4px;
+    border: none;
+    border-radius: 11px;
+    background: var(--primary);
+    color: var(--primary-dark);
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition:
+        transform .2s,
+        filter .2s,
+        opacity .2s;
+}
+
+.main-button:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+.main-button:active {
+    transform: translateY(0);
+}
+
+.main-button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* SWITCH */
+
+.switch {
+    margin-top: 19px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.switch button {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* LOADING */
+
+.loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.spinner {
+    width: 13px;
+    height: 13px;
+    border: 2px solid rgba(0,16,20,.25);
+    border-top-color: var(--primary-dark);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* FOOTER */
+
+.footer {
+    padding: 0 0 20px;
+    text-align: center;
+    color: #4f5968;
+    font-size: 11px;
+}
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .card {
+        border-radius: 21px;
+    }
+
+    .banner {
+        height: 165px;
+    }
+
+    .content {
+        padding: 22px;
+    }
+
+    .brand {
+        margin-bottom: 22px;
+    }
+
+    .brand h1 {
+        font-size: 27px;
+    }
+
+    .banner-title {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <div class="card">
+
+        <div class="banner">
+
+            <video
+                id="bannerVideo"
+                src="https://files.catbox.moe/tg2yn9.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata">
+            </video>
+
+            <div class="banner-content">
+
+                <div class="banner-title">
+                    ReyCloud
+                </div>
+
+                <div class="banner-subtitle">
+                    Digital Hosting Platform
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="content">
+
+            <div class="brand">
+
+                <h1>
+                    Rey<span>Cloud</span>
+                </h1>
+
+                <p>
+                    Solusi Hosting Digital Terpercaya
+                </p>
+
+            </div>
+
+            <div
+                id="message"
+                class="message">
+            </div>
+
+            <!-- LOGIN -->
+
+            <section
+                id="loginForm"
+                class="form active">
+
+                <h2>
+                    Welcome Back 👋
+                </h2>
+
+                <p class="form-description">
+                    Login ke akun ReyCloud kamu.
+                </p>
+
+                <form
+                    id="loginFormElement"
+                    onsubmit="login(event)">
+
+                    <div class="field">
+
+                        <label>
+                            Username
+                        </label>
+
+                        <input
+                            id="loginUsername"
+                            type="text"
+                            placeholder="Masukkan username"
+                            autocomplete="username"
+                            minlength="3"
+                            maxlength="30"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input
+                            id="loginPassword"
+                            type="password"
+                            placeholder="Masukkan password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+                    <button
+                        id="loginButton"
+                        class="main-button"
+                        type="submit">
+
+                        Login
+
+                    </button>
+
+                </form>
+
+                <div class="switch">
+
+                    Belum punya akun?
+
+                    <button
+                        type="button"
+                        onclick="showRegister()">
+
+                        Register
+
+                    </button>
+
+                </div>
+
+            </section>
+
+            <!-- REGISTER -->
+
+            <section
+                id="registerForm"
+                class="form">
+
+                <h2>
+                    Buat Akun 🚀
+                </h2>
+
+                <p class="form-description">
+                    Buat akun ReyCloud baru.
+                </p>
+
+                <form
+                    id="registerFormElement"
+                    onsubmit="register(event)">
+
+                    <div class="field">
+
+                        <label>
+                            Username
+                        </label>
+
+                        <input
+                            id="registerUsername"
+                            type="text"
+                            placeholder="Buat username"
+                            autocomplete="username"
+                            minlength="3"
+                            maxlength="30"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input
+                            id="registerPassword"
+                            type="password"
+                            placeholder="Buat password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Konfirmasi Password
+                        </label>
+
+                        <input
+                            id="registerConfirm"
+                            type="password"
+                            placeholder="Ulangi password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+                    <button
+                        id="registerButton"
+                        class="main-button"
+                        type="submit">
+
+                        Register
+
+                    </button>
+
+                </form>
+
+                <div class="switch">
+
+                    Sudah punya akun?
+
+                    <button
+                        type="button"
+                        onclick="showLogin()">
+
+                        Login
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 ReyCloud
+    </div>
+
+</div>
+
+<script>
+
+const API =
+    "https://api.legionteknologi.my.id";
+
+const message =
+    document.getElementById("message");
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        `message show ${type}`;
+}
+
+function hideMessage() {
+
+    message.textContent = "";
+
+    message.className =
+        "message";
+}
+
+function showLogin() {
+
+    hideMessage();
+
+    document
+        .getElementById("registerForm")
+        .classList.remove("active");
+
+    document
+        .getElementById("loginForm")
+        .classList.add("active");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function showRegister() {
+
+    hideMessage();
+
+    document
+        .getElementById("loginForm")
+        .classList.remove("active");
+
+    document
+        .getElementById("registerForm")
+        .classList.add("active");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+async function requestAPI(
+    endpoint,
+    body
+) {
+
+    let response;
+
+    try {
+
+        response =
+            await fetch(
+                `${API}${endpoint}`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(body)
+                }
+            );
+
+    } catch {
+
+        throw new Error(
+            "Tidak dapat terhubung ke server API."
+        );
+    }
+
+    let data;
+
+    try {
+
+        data =
+            await response.json();
+
+    } catch {
+
+        throw new Error(
+            "Response API tidak valid."
+        );
+    }
+
+    if (
+        !response.ok ||
+        data.status === false ||
+        data.success === false
+    ) {
+
+        throw new Error(
+            data.message ||
+            data.error ||
+            "Request gagal."
+        );
+    }
+
+    return data;
+}
+
+async function login(event) {
+
+    event.preventDefault();
+
+    hideMessage();
+
+    const username =
+        document
+            .getElementById("loginUsername")
+            .value
+            .trim();
+
+    const password =
+        document
+            .getElementById("loginPassword")
+            .value;
+
+    const button =
+        document.getElementById(
+            "loginButton"
+        );
+
+    button.disabled = true;
+
+    button.innerHTML = `
+        <span class="loading">
+            <span class="spinner"></span>
+            Login...
+        </span>
+    `;
+
+    try {
+
+        const data =
+            await requestAPI(
+                "/api/login",
+                {
+                    username,
+                    password
+                }
+            );
+
+        if (data.token) {
+
+            localStorage.setItem(
+                "reycloud_token",
+                data.token
+            );
+
+        }
+
+        if (data.user) {
+
+            localStorage.setItem(
+                "reycloud_user",
+                JSON.stringify(
+                    data.user
+                )
+            );
+
+        }
+
+        showMessage(
+            data.message ||
+            "Login berhasil! 🚀",
+            "success"
+        );
+
+        setTimeout(() => {
+
+            window.location.href =
+                "/dashboard.html";
+
+        }, 800);
+
+    } catch (error) {
+
+        showMessage(
+            error.message ||
+            "Login gagal.",
+            "error"
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Login";
+
+    }
+}
+
+async function register(event) {
+
+    event.preventDefault();
+
+    hideMessage();
+
+    const username =
+        document
+            .getElementById("registerUsername")
+            .value
+            .trim();
+
+    const password =
+        document
+            .getElementById("registerPassword")
+            .value;
+
+    const confirm =
+        document
+            .getElementById("registerConfirm")
+            .value;
+
+    const button =
+        document.getElementById(
+            "registerButton"
+        );
+
+    if (username.length < 3) {
+
+        showMessage(
+            "Username minimal 3 karakter.",
+            "error"
+        );
+
+        return;
+    }
+
+    if (password.length < 6) {
+
+        showMessage(
+            "Password minimal 6 karakter.",
+            "error"
+        );
+
+        return;
+    }
+
+    if (password !== confirm) {
+
+        showMessage(
+            "Konfirmasi password tidak sama.",
+            "error"
+        );
+
+        return;
+    }
+
+    button.disabled = true;
+
+    button.innerHTML = `
+        <span class="loading">
+            <span class="spinner"></span>
+            Membuat akun...
+        </span>
+    `;
+
+    try {
+
+        const data =
+            await requestAPI(
+                "/api/register",
+                {
+                    username,
+                    password
+                }
+            );
+
+        showMessage(
+            data.message ||
+            "Registrasi berhasil! Silakan login.",
+            "success"
+        );
+
+        document
+            .getElementById(
+                "registerFormElement"
+            )
+            .reset();
+
+        setTimeout(() => {
+
+            showLogin();
+
+            document
+                .getElementById(
+                    "loginUsername"
+                )
+                .value =
+                    username;
+
+            document
+                .getElementById(
+                    "loginPassword"
+                )
+                .focus();
+
+        }, 1000);
+
+    } catch (error) {
+
+        showMessage(
+            error.message ||
+            "Registrasi gagal.",
+            "error"
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Register";
+
+    }
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const video =
+            document.getElementById(
+                "bannerVideo"
+            );
+
+        video.play().catch(() => {});
+
+    }
+);
+
+</script>
+
+</body>
+</html>
