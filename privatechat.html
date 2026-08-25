@@ -20,6 +20,12 @@ body{
     overflow:hidden;
 }
 
+button,
+input,
+textarea{
+    font-family:inherit;
+}
+
 .app{
     display:flex;
     height:100vh;
@@ -199,6 +205,11 @@ body{
     color:#9ca3af;
 }
 
+.empty h3{
+    color:#6b7280;
+    margin-bottom:5px;
+}
+
 .message-row{
     display:flex;
     width:100%;
@@ -274,6 +285,7 @@ body{
 
 .message-actions{
     display:flex;
+    flex-wrap:wrap;
     gap:5px;
     margin-top:7px;
 }
@@ -287,9 +299,17 @@ body{
     font-size:11px;
 }
 
+.action-btn:hover{
+    background:rgba(0,0,0,.12);
+}
+
 .mine .action-btn{
     background:rgba(255,255,255,.12);
     color:white;
+}
+
+.mine .action-btn:hover{
+    background:rgba(255,255,255,.2);
 }
 
 .reactions{
@@ -307,6 +327,10 @@ body{
     font-size:12px;
     cursor:pointer;
     color:#111;
+}
+
+.reaction:hover{
+    background:#f3f4f6;
 }
 
 .composer{
@@ -385,6 +409,10 @@ body{
     font-family:inherit;
 }
 
+.composer textarea:focus{
+    border-color:#111827;
+}
+
 .icon-btn{
     width:44px;
     height:44px;
@@ -393,6 +421,10 @@ body{
     background:#f3f4f6;
     cursor:pointer;
     font-size:18px;
+}
+
+.icon-btn:hover{
+    background:#e5e7eb;
 }
 
 .send-btn{
@@ -430,6 +462,10 @@ body{
     cursor:pointer;
 }
 
+.new-chat:hover{
+    background:#1f2937;
+}
+
 .modal{
     position:fixed;
     inset:0;
@@ -465,6 +501,41 @@ body{
     outline:none;
 }
 
+.modal-input:focus{
+    border-color:#111827;
+}
+
+.username-status{
+    margin-top:9px;
+    font-size:12px;
+    min-height:18px;
+}
+
+.user-preview{
+    display:none;
+    margin-top:10px;
+    padding:10px;
+    border:1px solid #eee;
+    border-radius:12px;
+    align-items:center;
+    gap:10px;
+}
+
+.user-preview-info{
+    min-width:0;
+}
+
+.user-preview-name{
+    font-weight:bold;
+    font-size:14px;
+}
+
+.user-preview-role{
+    font-size:12px;
+    color:#6b7280;
+    margin-top:3px;
+}
+
 .modal-actions{
     display:flex;
     gap:8px;
@@ -486,6 +557,11 @@ body{
 .confirm{
     background:#111827;
     color:white;
+}
+
+.confirm:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
 
 .loading{
@@ -541,6 +617,10 @@ body{
     .message{
         max-width:85%;
     }
+
+    .messages{
+        padding:14px;
+    }
 }
 </style>
 </head>
@@ -552,12 +632,14 @@ body{
     <aside class="sidebar">
 
         <div class="sidebar-header">
+
             <h2>Private Chat</h2>
 
             <input
                 id="searchInput"
                 class="search"
                 placeholder="Cari username..."
+                autocomplete="off"
             >
 
             <button
@@ -566,6 +648,7 @@ body{
             >
                 + Chat Baru
             </button>
+
         </div>
 
         <div
@@ -593,6 +676,7 @@ body{
             <div id="headerAvatar"></div>
 
             <div class="chat-user-info">
+
                 <div
                     id="chatUsername"
                     class="chat-user-name"
@@ -606,6 +690,7 @@ body{
                 >
                     Belum ada conversation
                 </div>
+
             </div>
 
         </header>
@@ -614,10 +699,19 @@ body{
             id="messages"
             class="messages"
         >
+
             <div class="empty">
-                <h3>Private Chat</h3>
-                <p>Pilih conversation untuk mulai chat.</p>
+
+                <h3>
+                    Private Chat
+                </h3>
+
+                <p>
+                    Pilih conversation untuk mulai chat.
+                </p>
+
             </div>
+
         </section>
 
         <div class="composer">
@@ -626,6 +720,7 @@ body{
                 id="replyPreview"
                 class="reply-preview"
             >
+
                 <span id="replyText"></span>
 
                 <button
@@ -633,13 +728,18 @@ body{
                 >
                     ×
                 </button>
+
             </div>
 
             <div
                 id="imagePreview"
                 class="image-preview"
             >
-                <img id="previewImage">
+
+                <img
+                    id="previewImage"
+                    alt="Preview"
+                >
 
                 <button
                     class="remove-image"
@@ -647,6 +747,7 @@ body{
                 >
                     ×
                 </button>
+
             </div>
 
             <div class="composer-row">
@@ -691,15 +792,29 @@ body{
     id="newChatModal"
     class="modal"
 >
+
     <div class="modal-box">
 
-        <h3>Mulai Private Chat</h3>
+        <h3>
+            Mulai Private Chat
+        </h3>
 
         <input
             id="targetUsername"
             class="modal-input"
             placeholder="Username tujuan"
+            autocomplete="off"
         >
+
+        <div
+            id="usernameStatus"
+            class="username-status"
+        ></div>
+
+        <div
+            id="userPreview"
+            class="user-preview"
+        ></div>
 
         <div class="modal-actions">
 
@@ -711,8 +826,10 @@ body{
             </button>
 
             <button
+                id="createChatButton"
                 class="confirm"
                 onclick="createChat()"
+                disabled
             >
                 Mulai Chat
             </button>
@@ -720,6 +837,7 @@ body{
         </div>
 
     </div>
+
 </div>
 
 <div
@@ -728,9 +846,14 @@ body{
 ></div>
 
 <script>
+
 const API =
     window.API_URL ||
     "";
+
+const USER_API =
+    window.USER_API_URL ||
+    "/api/users";
 
 const currentUser =
     localStorage.getItem("username") ||
@@ -743,6 +866,8 @@ let conversations = [];
 let currentMessages = [];
 let replyMessage = null;
 let selectedImage = null;
+let validatedUser = null;
+let usernameCheckTimer = null;
 
 const app =
     document.getElementById("app");
@@ -772,7 +897,28 @@ const imageInput =
         "imageInput"
     );
 
+const targetUsernameInput =
+    document.getElementById(
+        "targetUsername"
+    );
+
+const usernameStatus =
+    document.getElementById(
+        "usernameStatus"
+    );
+
+const userPreview =
+    document.getElementById(
+        "userPreview"
+    );
+
+const createChatButton =
+    document.getElementById(
+        "createChatButton"
+    );
+
 function escapeHtml(value){
+
     return String(
         value ?? ""
     )
@@ -784,6 +930,7 @@ function escapeHtml(value){
 }
 
 function usernameKey(value){
+
     return String(
         value || ""
     )
@@ -792,6 +939,7 @@ function usernameKey(value){
 }
 
 function formatTime(date){
+
     if(!date){
         return "";
     }
@@ -817,6 +965,7 @@ function formatTime(date){
 }
 
 function formatDate(date){
+
     if(!date){
         return "";
     }
@@ -842,6 +991,7 @@ function formatDate(date){
 }
 
 function showToast(message){
+
     const toast =
         document.getElementById(
             "toast"
@@ -855,49 +1005,51 @@ function showToast(message){
     );
 
     setTimeout(
-        () =>
+        () => {
             toast.classList.remove(
                 "show"
-            ),
+            );
+        },
         2500
     );
 }
 
-function avatarHtml(
-    user,
-    sizeClass = ""
-){
+function avatarHtml(user){
+
+    const username =
+        user?.username ||
+        "?";
+
+    const first =
+        String(username)[0]
+            ?.toUpperCase() ||
+        "?";
+
     if(user?.avatar){
+
         return `
             <img
-                class="avatar ${sizeClass}"
+                class="avatar"
                 src="${escapeHtml(user.avatar)}"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+                alt="${escapeHtml(username)}"
+                onerror="
+                    this.style.display='none';
+                    this.nextElementSibling.style.display='flex';
+                "
             >
+
             <div
-                class="avatar-fallback ${sizeClass}"
+                class="avatar-fallback"
                 style="display:none"
             >
-                ${escapeHtml(
-                    String(
-                        user.username ||
-                        "?"
-                    )[0]
-                        .toUpperCase()
-                )}
+                ${escapeHtml(first)}
             </div>
         `;
     }
 
     return `
-        <div class="avatar-fallback ${sizeClass}">
-            ${escapeHtml(
-                String(
-                    user?.username ||
-                    "?"
-                )[0]
-                    .toUpperCase()
-            )}
+        <div class="avatar-fallback">
+            ${escapeHtml(first)}
         </div>
     `;
 }
@@ -906,25 +1058,35 @@ async function api(
     url,
     options = {}
 ){
+
+    const fetchOptions = {
+        ...options,
+        headers:{
+            ...(options.body instanceof FormData
+                ? {}
+                : {
+                    "Content-Type":
+                        "application/json"
+                }),
+            ...(options.headers || {})
+        }
+    };
+
     const response =
         await fetch(
             API + url,
-            {
-                headers:{
-                    "Content-Type":
-                        "application/json",
-                    ...(options.headers || {})
-                },
-                ...options
-            }
+            fetchOptions
         );
 
     let data;
 
     try{
+
         data =
             await response.json();
+
     }catch{
+
         data = {
             status:false,
             message:
@@ -933,6 +1095,7 @@ async function api(
     }
 
     if(!response.ok){
+
         throw new Error(
             data.message ||
             `HTTP ${response.status}`
@@ -945,11 +1108,13 @@ async function api(
 async function loadConversations(){
 
     if(!currentUser){
+
         conversationList.innerHTML = `
             <div class="loading">
                 Silakan login terlebih dahulu.
             </div>
         `;
+
         return;
     }
 
@@ -961,9 +1126,7 @@ async function loadConversations(){
             );
 
         conversations =
-            Array.isArray(
-                data.result
-            )
+            Array.isArray(data.result)
                 ? data.result
                 : [];
 
@@ -1000,9 +1163,7 @@ function renderConversations(){
 
                 return usernameKey(
                     other
-                ).includes(
-                    query
-                );
+                ).includes(query);
             }
         );
 
@@ -1076,7 +1237,11 @@ function renderConversations(){
                                     unread > 0
                                         ? `
                                             <div class="unread">
-                                                ${unread > 99 ? "99+" : unread}
+                                                ${
+                                                    unread > 99
+                                                        ? "99+"
+                                                        : unread
+                                                }
                                             </div>
                                         `
                                         : ""
@@ -1092,9 +1257,7 @@ function renderConversations(){
         ).join("");
 }
 
-async function openConversation(
-    roomId
-){
+async function openConversation(roomId){
 
     const room =
         conversations.find(
@@ -1156,12 +1319,6 @@ async function loadMessages(){
         return;
     }
 
-    messagesEl.innerHTML = `
-        <div class="loading">
-            Memuat pesan...
-        </div>
-    `;
-
     try{
 
         const data =
@@ -1170,9 +1327,7 @@ async function loadMessages(){
             );
 
         currentMessages =
-            Array.isArray(
-                data.result
-            )
+            Array.isArray(data.result)
                 ? data.result
                 : [];
 
@@ -1269,6 +1424,7 @@ function renderMessages(){
                                         <img
                                             class="message-image"
                                             src="${escapeHtml(message.image)}"
+                                            alt="Gambar"
                                             onclick="window.open('${escapeHtml(message.image)}','_blank')"
                                         >
                                     `
@@ -1291,26 +1447,40 @@ function renderMessages(){
                                 reactions.length
                                     ? `
                                         <div class="reactions">
+
                                             ${reactions.map(
                                                 reaction => `
+
                                                     <button
                                                         class="reaction"
                                                         onclick="toggleReaction('${escapeHtml(message.id)}','${escapeHtml(reaction.emoji)}')"
                                                     >
-                                                        ${escapeHtml(reaction.emoji)}
-                                                        ${reaction.users?.length || 0}
+
+                                                        ${escapeHtml(
+                                                            reaction.emoji
+                                                        )}
+
+                                                        ${
+                                                            reaction.users?.length ||
+                                                            0
+                                                        }
+
                                                     </button>
+
                                                 `
                                             ).join("")}
+
                                         </div>
                                     `
                                     : ""
                             }
 
                             <div class="message-meta">
+
                                 ${formatTime(
                                     message.createdAt
                                 )}
+
                             </div>
 
                             <div class="message-actions">
@@ -1334,6 +1504,13 @@ function renderMessages(){
                                     onclick="toggleReaction('${escapeHtml(message.id)}','👍')"
                                 >
                                     👍
+                                </button>
+
+                                <button
+                                    class="action-btn"
+                                    onclick="toggleReaction('${escapeHtml(message.id)}','😂')"
+                                >
+                                    😂
                                 </button>
 
                                 ${
@@ -1365,15 +1542,15 @@ function scrollMessages(){
 
     requestAnimationFrame(
         () => {
+
             messagesEl.scrollTop =
                 messagesEl.scrollHeight;
+
         }
     );
 }
 
-function replyToMessage(
-    messageId
-){
+function replyToMessage(messageId){
 
     const message =
         currentMessages.find(
@@ -1439,11 +1616,13 @@ imageInput.addEventListener(
                 "image/"
             )
         ){
+
             showToast(
                 "File harus berupa gambar"
             );
 
-            imageInput.value = "";
+            imageInput.value =
+                "";
 
             return;
         }
@@ -1452,11 +1631,13 @@ imageInput.addEventListener(
             file.size >
             5 * 1024 * 1024
         ){
+
             showToast(
                 "Ukuran gambar maksimal 5MB"
             );
 
-            imageInput.value = "";
+            imageInput.value =
+                "";
 
             return;
         }
@@ -1508,9 +1689,7 @@ function removeImage(){
         "";
 }
 
-async function uploadImage(
-    file
-){
+async function uploadImage(file){
 
     const formData =
         new FormData();
@@ -1529,10 +1708,25 @@ async function uploadImage(
             }
         );
 
-    const data =
-        await response.json();
+    let data;
 
-    if(!response.ok || !data.status){
+    try{
+
+        data =
+            await response.json();
+
+    }catch{
+
+        throw new Error(
+            "Response upload tidak valid"
+        );
+    }
+
+    if(
+        !response.ok ||
+        !data.status
+    ){
+
         throw new Error(
             data.message ||
             "Upload gambar gagal"
@@ -1550,6 +1744,7 @@ async function uploadImage(
 async function sendMessage(){
 
     if(!activeRoom){
+
         showToast(
             "Pilih conversation terlebih dahulu"
         );
@@ -1558,8 +1753,7 @@ async function sendMessage(){
     }
 
     const message =
-        messageInput.value
-            .trim();
+        messageInput.value.trim();
 
     if(
         !message &&
@@ -1594,6 +1788,7 @@ async function sendMessage(){
         }
 
         const body = {
+
             username:
                 currentUser,
 
@@ -1605,6 +1800,7 @@ async function sendMessage(){
             replyTo:
                 replyMessage?.id ||
                 ""
+
         };
 
         const data =
@@ -1612,30 +1808,38 @@ async function sendMessage(){
                 `/api/private/${encodeURIComponent(activeRoom.id)}/messages`,
                 {
                     method:"POST",
-                    body:JSON.stringify(
-                        body
-                    )
+                    body:JSON.stringify(body)
                 }
             );
 
-        if(data.status){
+        if(!data.status){
+
+            throw new Error(
+                data.message ||
+                "Gagal mengirim pesan"
+            );
+        }
+
+        if(data.result){
 
             currentMessages.push(
                 data.result
             );
-
-            messageInput.value =
-                "";
-
-            cancelReply();
-
-            removeImage();
-
-            renderMessages();
-
-            await loadConversations();
-
         }
+
+        messageInput.value =
+            "";
+
+        messageInput.style.height =
+            "44px";
+
+        cancelReply();
+
+        removeImage();
+
+        renderMessages();
+
+        await loadConversations();
 
     }catch(error){
 
@@ -1650,12 +1854,11 @@ async function sendMessage(){
 
         sendButton.disabled =
             false;
+
     }
 }
 
-async function deleteMessage(
-    messageId
-){
+async function deleteMessage(messageId){
 
     if(
         !confirm(
@@ -1696,7 +1899,8 @@ async function deleteMessage(
     }catch(error){
 
         showToast(
-            error.message
+            error.message ||
+            "Gagal menghapus pesan"
         );
     }
 }
@@ -1705,6 +1909,10 @@ async function toggleReaction(
     messageId,
     emoji
 ){
+
+    if(!activeRoom){
+        return;
+    }
 
     try{
 
@@ -1735,20 +1943,31 @@ async function toggleReaction(
                 currentUser
             );
 
+        const users =
+            Array.isArray(
+                reaction?.users
+            )
+                ? reaction.users.map(
+                    usernameKey
+                )
+                : [];
+
         const alreadyReacted =
-            reaction?.users?.includes(
+            users.includes(
                 userKey
             );
 
         if(alreadyReacted){
 
             await api(
-                `/api/messages/${encodeURIComponent(messageId)}/reaction`,
+                `/api/chat/${encodeURIComponent(messageId)}/reaction`,
                 {
                     method:"DELETE",
+
                     body:JSON.stringify({
                         username:
                             currentUser,
+
                         emoji
                     })
                 }
@@ -1757,12 +1976,14 @@ async function toggleReaction(
         }else{
 
             await api(
-                `/api/private/${encodeURIComponent(activeRoom.id)}/messages/${encodeURIComponent(messageId)}/reaction`,
+                `/api/chat/${encodeURIComponent(messageId)}/reaction`,
                 {
                     method:"POST",
+
                     body:JSON.stringify({
                         username:
                             currentUser,
+
                         emoji
                     })
                 }
@@ -1773,8 +1994,11 @@ async function toggleReaction(
 
     }catch(error){
 
+        console.error(error);
+
         showToast(
-            error.message
+            error.message ||
+            "Gagal mengubah reaction"
         );
     }
 }
@@ -1791,6 +2015,7 @@ async function markRead(){
             `/api/private/${encodeURIComponent(activeRoom.id)}/read`,
             {
                 method:"POST",
+
                 body:JSON.stringify({
                     username:
                         currentUser
@@ -1807,43 +2032,253 @@ async function markRead(){
     }
 }
 
-function openNewChat(){
+function setChatButton(enabled){
 
-    document.getElementById(
-        "newChatModal"
-    ).classList.add(
-        "show"
-    );
+    createChatButton.disabled =
+        !enabled;
 
-    document.getElementById(
-        "targetUsername"
-    ).value =
+    createChatButton.style.opacity =
+        enabled
+            ? "1"
+            : ".5";
+
+    createChatButton.style.cursor =
+        enabled
+            ? "pointer"
+            : "not-allowed";
+}
+
+function resetUsernameValidation(){
+
+    validatedUser =
+        null;
+
+    usernameStatus.textContent =
         "";
 
-    document.getElementById(
-        "targetUsername"
-    ).focus();
-}
+    usernameStatus.style.color =
+        "#9ca3af";
 
-function closeNewChat(){
+    userPreview.style.display =
+        "none";
 
-    document.getElementById(
-        "newChatModal"
-    ).classList.remove(
-        "show"
+    userPreview.innerHTML =
+        "";
+
+    setChatButton(
+        false
     );
 }
+
+async function checkUsername(
+    username
+){
+
+    if(!username){
+        return;
+    }
+
+    if(
+        usernameKey(username) ===
+        usernameKey(currentUser)
+    ){
+
+        usernameStatus.textContent =
+            "❌ Tidak bisa chat dengan diri sendiri";
+
+        usernameStatus.style.color =
+            "#dc2626";
+
+        return;
+    }
+
+    try{
+
+        usernameStatus.textContent =
+            "Memeriksa username...";
+
+        usernameStatus.style.color =
+            "#6b7280";
+
+        const data =
+            await api(
+                `${USER_API}/${encodeURIComponent(username)}`
+            );
+
+        const user =
+            data.result ||
+            data.user ||
+            null;
+
+        if(
+            !data.status ||
+            !user
+        ){
+
+            throw new Error(
+                "Username tidak ditemukan"
+            );
+        }
+
+        if(
+            usernameKey(
+                user.username
+            ) ===
+            usernameKey(currentUser)
+        ){
+
+            throw new Error(
+                "Tidak bisa chat dengan diri sendiri"
+            );
+        }
+
+        validatedUser =
+            user;
+
+        usernameStatus.textContent =
+            "✓ Username ditemukan";
+
+        usernameStatus.style.color =
+            "#16a34a";
+
+        userPreview.style.display =
+            "flex";
+
+        userPreview.innerHTML = `
+
+            ${avatarHtml(user)}
+
+            <div class="user-preview-info">
+
+                <div class="user-preview-name">
+                    ${escapeHtml(
+                        user.username
+                    )}
+                </div>
+
+                <div class="user-preview-role">
+                    ${escapeHtml(
+                        user.role ||
+                        "member"
+                    )}
+                </div>
+
+            </div>
+
+        `;
+
+        setChatButton(
+            true
+        );
+
+    }catch(error){
+
+        validatedUser =
+            null;
+
+        usernameStatus.textContent =
+            "❌ " +
+            (
+                error.message ||
+                "Username tidak ditemukan"
+            );
+
+        usernameStatus.style.color =
+            "#dc2626";
+
+        userPreview.style.display =
+            "none";
+
+        userPreview.innerHTML =
+            "";
+
+        setChatButton(
+            false
+        );
+    }
+}
+
+targetUsernameInput.addEventListener(
+    "input",
+    () => {
+
+        clearTimeout(
+            usernameCheckTimer
+        );
+
+        resetUsernameValidation();
+
+        const username =
+            targetUsernameInput.value.trim();
+
+        if(!username){
+            return;
+        }
+
+        if(
+            usernameKey(username) ===
+            usernameKey(currentUser)
+        ){
+
+            usernameStatus.textContent =
+                "❌ Tidak bisa chat dengan diri sendiri";
+
+            usernameStatus.style.color =
+                "#dc2626";
+
+            return;
+        }
+
+        usernameStatus.textContent =
+            "Memeriksa username...";
+
+        usernameStatus.style.color =
+            "#6b7280";
+
+        usernameCheckTimer =
+            setTimeout(
+                () => {
+                    checkUsername(
+                        username
+                    );
+                },
+                500
+            );
+    }
+);
 
 async function createChat(){
 
     const target =
-        document.getElementById(
-            "targetUsername"
-        ).value.trim();
+        targetUsernameInput.value.trim();
 
     if(!target){
+
         showToast(
             "Username tujuan wajib diisi"
+        );
+
+        return;
+    }
+
+    if(!validatedUser){
+
+        showToast(
+            "Username belum valid"
+        );
+
+        return;
+    }
+
+    if(
+        usernameKey(
+            validatedUser.username
+        ) !==
+        usernameKey(target)
+    ){
+
+        showToast(
+            "Username belum valid"
         );
 
         return;
@@ -1853,12 +2288,19 @@ async function createChat(){
         usernameKey(target) ===
         usernameKey(currentUser)
     ){
+
         showToast(
             "Tidak bisa chat dengan diri sendiri"
         );
 
         return;
     }
+
+    createChatButton.disabled =
+        true;
+
+    createChatButton.textContent =
+        "Membuat...";
 
     try{
 
@@ -1867,14 +2309,26 @@ async function createChat(){
                 "/api/private/conversations",
                 {
                     method:"POST",
+
                     body:JSON.stringify({
+
                         username:
                             currentUser,
+
                         targetUsername:
-                            target
+                            validatedUser.username
+
                     })
                 }
             );
+
+        if(!data.status){
+
+            throw new Error(
+                data.message ||
+                "Gagal membuat chat"
+            );
+        }
 
         closeNewChat();
 
@@ -1885,14 +2339,87 @@ async function createChat(){
             await openConversation(
                 data.result.id
             );
+
+            return;
+        }
+
+        const found =
+            conversations.find(
+                room =>
+                    usernameKey(
+                        room.otherUser?.username
+                    ) ===
+                    usernameKey(
+                        validatedUser.username
+                    )
+            );
+
+        if(found){
+
+            await openConversation(
+                found.id
+            );
         }
 
     }catch(error){
 
+        console.error(error);
+
         showToast(
-            error.message
+            error.message ||
+            "Gagal membuat conversation"
+        );
+
+    }finally{
+
+        createChatButton.textContent =
+            "Mulai Chat";
+
+        setChatButton(
+            Boolean(
+                validatedUser
+            )
         );
     }
+}
+
+function openNewChat(){
+
+    document.getElementById(
+        "newChatModal"
+    ).classList.add(
+        "show"
+    );
+
+    targetUsernameInput.value =
+        "";
+
+    resetUsernameValidation();
+
+    setTimeout(
+        () => {
+            targetUsernameInput.focus();
+        },
+        100
+    );
+}
+
+function closeNewChat(){
+
+    document.getElementById(
+        "newChatModal"
+    ).classList.remove(
+        "show"
+    );
+
+    clearTimeout(
+        usernameCheckTimer
+    );
+
+    targetUsernameInput.value =
+        "";
+
+    resetUsernameValidation();
 }
 
 function closeChat(){
@@ -1906,6 +2433,13 @@ function closeChat(){
 
     activeOtherUser =
         null;
+
+    currentMessages =
+        [];
+
+    cancelReply();
+
+    removeImage();
 
     document.getElementById(
         "chatUsername"
@@ -1924,8 +2458,15 @@ function closeChat(){
 
     messagesEl.innerHTML = `
         <div class="empty">
-            <h3>Private Chat</h3>
-            <p>Pilih conversation untuk mulai chat.</p>
+
+            <h3>
+                Private Chat
+            </h3>
+
+            <p>
+                Pilih conversation untuk mulai chat.
+            </p>
+
         </div>
     `;
 }
@@ -1940,8 +2481,7 @@ messageInput.addEventListener(
     event => {
 
         if(
-            event.key ===
-                "Enter" &&
+            event.key === "Enter" &&
             !event.shiftKey
         ){
 
@@ -1967,10 +2507,27 @@ messageInput.addEventListener(
     }
 );
 
+document.getElementById(
+    "newChatModal"
+).addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target.id ===
+            "newChatModal"
+        ){
+
+            closeNewChat();
+        }
+    }
+);
+
 setInterval(
     async () => {
 
         if(!activeRoom){
+            await loadConversations();
             return;
         }
 
@@ -1995,6 +2552,7 @@ setInterval(
 );
 
 loadConversations();
+
 </script>
 
 </body>
