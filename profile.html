@@ -19,9 +19,7 @@ body{
     color:#111827;
 }
 
-button,
-input,
-textarea{
+button,input{
     font-family:inherit;
 }
 
@@ -36,7 +34,9 @@ textarea{
     border-right:1px solid #e5e7eb;
     padding:22px 16px;
     position:fixed;
-    inset:0 auto 0 0;
+    left:0;
+    top:0;
+    bottom:0;
     z-index:50;
 }
 
@@ -51,11 +51,11 @@ textarea{
     width:36px;
     height:36px;
     border-radius:10px;
-    background:#111827;
-    color:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
+    background:#111827;
+    color:#fff;
     font-weight:800;
 }
 
@@ -147,8 +147,8 @@ textarea{
 .user-info strong{
     display:block;
     font-size:13px;
-    overflow:hidden;
     white-space:nowrap;
+    overflow:hidden;
     text-overflow:ellipsis;
 }
 
@@ -167,15 +167,12 @@ textarea{
 
 .topbar{
     height:68px;
-    background:rgba(255,255,255,.94);
+    background:#fff;
     border-bottom:1px solid #e5e7eb;
     display:flex;
     align-items:center;
     justify-content:space-between;
     padding:0 30px;
-    position:sticky;
-    top:0;
-    z-index:20;
 }
 
 .page-title{
@@ -183,27 +180,18 @@ textarea{
     font-weight:750;
 }
 
-.status{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    color:#6b7280;
-    font-size:12px;
-}
-
-.status-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:#22c55e;
-}
-
-.status-dot.offline{
-    background:#ef4444;
+.mobile-menu{
+    display:none;
+    border:0;
+    background:#f3f4f6;
+    width:35px;
+    height:35px;
+    border-radius:8px;
+    cursor:pointer;
 }
 
 .content{
-    max-width:900px;
+    max-width:850px;
     margin:auto;
     padding:30px;
 }
@@ -219,175 +207,151 @@ textarea{
     height:150px;
     background:#111827;
     position:relative;
+    overflow:hidden;
 }
 
 .cover:after{
     content:"";
     position:absolute;
-    width:240px;
-    height:240px;
-    right:-80px;
+    width:230px;
+    height:230px;
+    right:-70px;
     top:-120px;
     border-radius:50%;
     background:rgba(255,255,255,.06);
 }
 
 .profile-main{
-    padding:0 28px 28px;
+    padding:0 25px 25px;
+    position:relative;
 }
 
-.big-avatar{
-    width:105px;
-    height:105px;
+.profile-avatar{
+    width:110px;
+    height:110px;
     border-radius:50%;
     background:#111827;
-    border:5px solid #fff;
-    margin-top:-52px;
+    border:6px solid #fff;
+    margin-top:-55px;
     position:relative;
+    z-index:2;
     display:flex;
     align-items:center;
     justify-content:center;
     color:#fff;
-    font-size:30px;
+    font-size:35px;
     font-weight:800;
     overflow:hidden;
 }
 
-.big-avatar img{
+.profile-avatar img{
     width:100%;
     height:100%;
     object-fit:cover;
 }
 
 .profile-name{
-    margin-top:13px;
-    font-size:25px;
+    margin-top:15px;
+    font-size:24px;
     font-weight:800;
 }
 
 .profile-role{
     display:inline-block;
     margin-top:6px;
-    padding:5px 10px;
+    padding:5px 11px;
     background:#f3f4f6;
+    color:#6b7280;
     border-radius:20px;
     font-size:11px;
-    color:#6b7280;
     font-weight:700;
 }
 
-.bio{
-    margin-top:12px;
-    color:#6b7280;
-    font-size:13px;
-    line-height:1.6;
+.profile-form{
+    margin-top:25px;
+    border-top:1px solid #e5e7eb;
+    padding-top:22px;
 }
 
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-    margin-top:22px;
-}
-
-.stat{
-    background:#f9fafb;
-    border:1px solid #f0f1f3;
-    border-radius:11px;
-    padding:13px;
-}
-
-.stat strong{
-    display:block;
-    font-size:13px;
-}
-
-.stat span{
-    display:block;
-    margin-top:4px;
-    color:#9ca3af;
-    font-size:10px;
-}
-
-.editor{
-    margin-top:18px;
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
-    padding:22px;
-}
-
-.editor h2{
-    font-size:16px;
-    margin-bottom:18px;
-}
-
-.field{
+.form-title{
+    font-size:15px;
+    font-weight:800;
     margin-bottom:15px;
 }
 
-.field label{
-    display:block;
-    font-size:12px;
-    font-weight:700;
-    margin-bottom:7px;
-    color:#374151;
-}
-
-.field input,
-.field textarea{
-    width:100%;
-    border:1px solid #e5e7eb;
-    outline:none;
-    border-radius:10px;
-    padding:11px 12px;
-    font-size:13px;
+.upload-box{
+    border:1px dashed #d1d5db;
+    border-radius:14px;
+    padding:20px;
     background:#fafafa;
-    color:#111827;
-}
-
-.field textarea{
-    min-height:90px;
-    resize:vertical;
-}
-
-.field input:focus,
-.field textarea:focus{
-    background:#fff;
-    border-color:#9ca3af;
-}
-
-.password-note{
-    color:#9ca3af;
-    font-size:10px;
-    margin-top:5px;
-}
-
-.actions{
     display:flex;
-    gap:8px;
-    margin-top:18px;
+    align-items:center;
+    gap:15px;
 }
 
-.save-btn,
-.refresh-btn{
+.upload-preview{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#111827;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:800;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.upload-preview img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.upload-info{
+    flex:1;
+}
+
+.upload-info strong{
+    display:block;
+    font-size:13px;
+}
+
+.upload-info span{
+    display:block;
+    color:#9ca3af;
+    font-size:11px;
+    margin-top:4px;
+}
+
+.upload-btn{
     border:0;
-    border-radius:10px;
-    height:42px;
-    padding:0 18px;
+    background:#111827;
+    color:#fff;
+    border-radius:9px;
+    padding:10px 14px;
     cursor:pointer;
-    font-weight:700;
     font-size:12px;
+    font-weight:700;
+}
+
+.upload-btn:hover{
+    opacity:.9;
 }
 
 .save-btn{
+    width:100%;
+    height:45px;
+    border:0;
+    border-radius:10px;
     background:#111827;
     color:#fff;
-}
-
-.refresh-btn{
-    background:#f3f4f6;
-    color:#374151;
+    cursor:pointer;
+    margin-top:15px;
+    font-size:13px;
+    font-weight:750;
 }
 
 .save-btn:disabled{
@@ -395,35 +359,54 @@ textarea{
     cursor:not-allowed;
 }
 
-.message{
+.status{
     margin-top:12px;
-    padding:10px 12px;
+    padding:11px 13px;
     border-radius:9px;
+    background:#f3f4f6;
+    color:#6b7280;
     font-size:11px;
     display:none;
 }
 
-.message.show{
+.status.show{
     display:block;
 }
 
-.message.success{
+.status.success{
     background:#dcfce7;
     color:#166534;
 }
 
-.message.error{
+.status.error{
     background:#fee2e2;
     color:#991b1b;
 }
 
-.mobile-menu{
-    display:none;
-    border:0;
-    background:#f3f4f6;
-    width:35px;
-    height:35px;
-    border-radius:8px;
+.info-grid{
+    margin-top:25px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.info-box{
+    border:1px solid #e5e7eb;
+    border-radius:11px;
+    padding:14px;
+    background:#fafafa;
+}
+
+.info-box span{
+    display:block;
+    color:#9ca3af;
+    font-size:10px;
+}
+
+.info-box strong{
+    display:block;
+    margin-top:5px;
+    font-size:13px;
 }
 
 @media(max-width:800px){
@@ -431,6 +414,7 @@ textarea{
     .sidebar{
         transform:translateX(-100%);
         transition:.25s;
+        box-shadow:10px 0 30px rgba(0,0,0,.08);
     }
 
     .sidebar.open{
@@ -446,31 +430,36 @@ textarea{
         display:block;
     }
 
-    .content{
-        padding:15px;
-    }
-
-    .stats{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:480px){
-
     .topbar{
         padding:0 15px;
     }
+
+    .content{
+        padding:15px;
+    }
+}
+
+@media(max-width:500px){
 
     .content{
         padding:10px;
     }
 
     .profile-main{
-        padding:0 18px 22px;
+        padding:0 18px 20px;
     }
 
-    .editor{
-        padding:17px;
+    .upload-box{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .upload-btn{
+        width:100%;
     }
 }
 </style>
@@ -489,42 +478,58 @@ textarea{
         </div>
     </div>
 
-    <div class="nav-title">Main</div>
+    <div class="nav-title">
+        Main
+    </div>
 
     <nav class="nav">
 
         <a href="dashboard.html">
-            ⌂ Dashboard
+            <span>⌂</span>
+            Dashboard
         </a>
 
         <a href="profile.html" class="active">
-            ◉ Profile
+            <span>◉</span>
+            Profile
         </a>
 
         <a href="cpanel.html">
-            ▣ Create Panel
+            <span>▣</span>
+            Create Panel
         </a>
 
         <a href="cadmin.html">
-            ♙ Create Admin
+            <span>♙</span>
+            Create Admin
         </a>
 
         <a href="chat.html">
-            ☁ Public Chat
+            <span>☁</span>
+            Public Chat
         </a>
 
         <a href="privatechat.html">
-            ✉ Private Chat
+            <span>✉</span>
+            Private Chat
         </a>
 
     </nav>
 
-    <div class="nav-title">Account</div>
+    <div class="nav-title">
+        Account
+    </div>
 
     <nav class="nav">
 
-        <a href="javascript:void(0)" id="logout">
-            ↪ Logout
+        <a href="javascript:void(0)" id="refreshAccount">
+            <span>↻</span>
+            Refresh Data
+        </a>
+
+        <a href="javascript:void(0)" id="logoutButton">
+            <span>↪</span>
+            Logout
         </a>
 
     </nav>
@@ -564,6 +569,7 @@ textarea{
         <button
             class="mobile-menu"
             id="mobileMenu"
+            type="button"
         >
             ☰
         </button>
@@ -571,19 +577,6 @@ textarea{
         <div class="page-title">
             Profile
         </div>
-
-    </div>
-
-    <div class="status">
-
-        <span
-            class="status-dot"
-            id="statusDot"
-        ></span>
-
-        <span id="statusText">
-            Connected
-        </span>
 
     </div>
 
@@ -598,157 +591,136 @@ textarea{
     <div class="profile-main">
 
         <div
-            class="big-avatar"
-            id="bigAvatar"
+            class="profile-avatar"
+            id="profileAvatar"
         >
             U
         </div>
 
         <div
             class="profile-name"
-            id="displayUsername"
+            id="profileUsername"
         >
             User
         </div>
 
         <div
             class="profile-role"
-            id="displayRole"
+            id="profileRole"
         >
             Member
         </div>
 
-        <div
-            class="bio"
-            id="displayBio"
-        >
-            Belum ada bio.
+        <div class="info-grid">
+
+            <div class="info-box">
+
+                <span>
+                    Username
+                </span>
+
+                <strong id="infoUsername">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <span>
+                    Role
+                </span>
+
+                <strong id="infoRole">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <span>
+                    Status
+                </span>
+
+                <strong id="infoStatus">
+                    -
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <span>
+                    Bergabung
+                </span>
+
+                <strong id="infoCreated">
+                    -
+                </strong>
+
+            </div>
+
         </div>
 
-        <div class="stats">
+        <div class="profile-form">
 
-            <div class="stat">
-                <strong id="displayStatus">
-                    -
-                </strong>
-                <span>Status</span>
+            <div class="form-title">
+                Foto Profil
             </div>
 
-            <div class="stat">
-                <strong id="displayDuration">
-                    -
-                </strong>
-                <span>Durasi</span>
+            <input
+                type="file"
+                id="avatarInput"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                hidden
+            >
+
+            <div class="upload-box">
+
+                <div
+                    class="upload-preview"
+                    id="uploadPreview"
+                >
+                    U
+                </div>
+
+                <div class="upload-info">
+
+                    <strong>
+                        Upload foto profil
+                    </strong>
+
+                    <span>
+                        JPG, PNG, WEBP atau GIF • maksimal 5MB
+                    </span>
+
+                </div>
+
+                <button
+                    class="upload-btn"
+                    id="chooseAvatar"
+                    type="button"
+                >
+                    Pilih Foto
+                </button>
+
             </div>
 
-            <div class="stat">
-                <strong id="displayCreated">
-                    -
-                </strong>
-                <span>Bergabung</span>
-            </div>
+            <button
+                class="save-btn"
+                id="saveProfile"
+                type="button"
+            >
+                Simpan Foto Profil
+            </button>
 
-            <div class="stat">
-                <strong id="displayExpires">
-                    -
-                </strong>
-                <span>Expired</span>
-            </div>
+            <div
+                class="status"
+                id="statusBox"
+            ></div>
 
         </div>
-
-    </div>
-
-</div>
-
-<div class="editor">
-
-    <h2>
-        Edit Profile
-    </h2>
-
-    <div class="field">
-
-        <label>
-            Username
-        </label>
-
-        <input
-            id="usernameInput"
-            type="text"
-            maxlength="30"
-            autocomplete="off"
-        >
-
-    </div>
-
-    <div class="field">
-
-        <label>
-            Avatar URL
-        </label>
-
-        <input
-            id="avatarInput"
-            type="url"
-            placeholder="https://example.com/avatar.jpg"
-        >
-
-    </div>
-
-    <div class="field">
-
-        <label>
-            Bio
-        </label>
-
-        <textarea
-            id="bioInput"
-            maxlength="300"
-            placeholder="Tulis bio kamu..."
-        ></textarea>
-
-    </div>
-
-    <div class="field">
-
-        <label>
-            Password Saat Ini
-        </label>
-
-        <input
-            id="passwordInput"
-            type="password"
-            placeholder="Masukkan password saat ini"
-            autocomplete="current-password"
-        >
-
-        <div class="password-note">
-            Password digunakan untuk verifikasi update profile dan tidak disimpan oleh halaman ini.
-        </div>
-
-    </div>
-
-    <div
-        class="message"
-        id="resultMessage"
-    ></div>
-
-    <div class="actions">
-
-        <button
-            class="save-btn"
-            id="saveBtn"
-        >
-            Simpan Perubahan
-        </button>
-
-        <button
-            class="refresh-btn"
-            id="refreshBtn"
-        >
-            ↻ Refresh
-        </button>
 
     </div>
 
@@ -766,50 +738,52 @@ const API_BASE =
     localStorage.getItem("apiBase") ||
     "https://api.legionteknologi.my.id";
 
+const API_UPLOAD =
+    `${API_BASE}/upload`;
+
+const API_USERS =
+    `${API_BASE}/api/users`;
+
+const MAX_FILE_SIZE =
+    5 * 1024 * 1024;
+
 let currentUser = null;
+let selectedFile = null;
 
 function escapeHTML(value){
 
-    return String(
-        value ?? ""
-    )
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
-function formatRole(value){
+function formatRole(role){
 
-    return String(
-        value || "member"
-    ).replace(
-        /\b\w/g,
-        char => char.toUpperCase()
-    );
+    return String(role || "member")
+        .replace(
+            /\b\w/g,
+            char => char.toUpperCase()
+        );
 
 }
 
-function formatDate(value){
+function formatDate(date){
 
-    if(!value){
+    if(!date){
         return "-";
     }
 
-    const date =
-        new Date(value);
+    const d = new Date(date);
 
-    if(
-        Number.isNaN(
-            date.getTime()
-        )
-    ){
+    if(Number.isNaN(d.getTime())){
         return "-";
     }
 
-    return date.toLocaleDateString(
+    return d.toLocaleDateString(
         "id-ID",
         {
             day:"2-digit",
@@ -820,7 +794,7 @@ function formatDate(value){
 
 }
 
-function getUser(){
+function getStoredUser(){
 
     const keys = [
         "user",
@@ -830,9 +804,7 @@ function getUser(){
         "loginUser"
     ];
 
-    for(
-        const key of keys
-    ){
+    for(const key of keys){
 
         const raw =
             localStorage.getItem(key);
@@ -864,98 +836,92 @@ function getUser(){
                 return data;
             }
 
-        }catch{}
+        }catch(error){
+
+            console.error(
+                "Storage error:",
+                error
+            );
+
+        }
 
     }
 
     return null;
+
 }
 
-function saveLocalUser(user){
+function showStatus(
+    message,
+    type = ""
+){
 
-    const json =
-        JSON.stringify(user);
+    const box =
+        document.getElementById(
+            "statusBox"
+        );
 
-    localStorage.setItem(
-        "user",
-        json
-    );
+    box.textContent =
+        message;
 
-    localStorage.setItem(
-        "userData",
-        json
-    );
+    box.className =
+        `status show ${type}`;
 
-    localStorage.setItem(
-        "currentUser",
-        json
-    );
-
-    localStorage.setItem(
-        "reycloud_user",
-        json
-    );
 }
 
-function renderUser(user){
+function updateUI(){
 
-    currentUser =
-        user;
+    if(!currentUser){
+        return;
+    }
 
     const username =
-        user.username ||
-        "User";
+        String(
+            currentUser.username ||
+            "User"
+        );
 
     const role =
-        user.role ||
-        "member";
+        String(
+            currentUser.role ||
+            "member"
+        );
 
     const avatar =
-        user.avatar ||
+        currentUser.avatar ||
         "";
 
     document.getElementById(
-        "displayUsername"
+        "profileUsername"
     ).textContent =
         username;
 
     document.getElementById(
-        "displayRole"
+        "profileRole"
     ).textContent =
         formatRole(role);
 
     document.getElementById(
-        "displayBio"
+        "infoUsername"
     ).textContent =
-        user.bio ||
-        "Belum ada bio.";
+        username;
 
     document.getElementById(
-        "displayStatus"
+        "infoRole"
     ).textContent =
-        formatRole(
-            user.status ||
-            "active"
-        );
+        formatRole(role);
 
     document.getElementById(
-        "displayDuration"
+        "infoStatus"
     ).textContent =
-        user.duration ||
-        "-";
+        currentUser.status ||
+        "active";
 
     document.getElementById(
-        "displayCreated"
+        "infoCreated"
     ).textContent =
         formatDate(
-            user.createdAt
-        );
-
-    document.getElementById(
-        "displayExpires"
-    ).textContent =
-        formatDate(
-            user.expiresAt
+            currentUser.createdAt
         );
 
     document.getElementById(
@@ -968,41 +934,40 @@ function renderUser(user){
     ).textContent =
         formatRole(role);
 
-    document.getElementById(
-        "usernameInput"
-    ).value =
-        username;
+    setAvatar(
+        "profileAvatar",
+        avatar,
+        username
+    );
 
-    document.getElementById(
-        "avatarInput"
-    ).value =
-        avatar;
+    setAvatar(
+        "sidebarAvatar",
+        avatar,
+        username
+    );
 
-    document.getElementById(
-        "bioInput"
-    ).value =
-        user.bio || "";
+    setAvatar(
+        "uploadPreview",
+        avatar,
+        username
+    );
 
-    const sidebarAvatar =
+}
+
+function setAvatar(
+    elementId,
+    avatar,
+    username
+){
+
+    const element =
         document.getElementById(
-            "sidebarAvatar"
-        );
-
-    const bigAvatar =
-        document.getElementById(
-            "bigAvatar"
+            elementId
         );
 
     if(avatar){
 
-        sidebarAvatar.innerHTML = `
-            <img
-                src="${escapeHTML(avatar)}"
-                alt="Avatar"
-            >
-        `;
-
-        bigAvatar.innerHTML = `
+        element.innerHTML = `
             <img
                 src="${escapeHTML(avatar)}"
                 alt="Avatar"
@@ -1011,62 +976,47 @@ function renderUser(user){
 
     }else{
 
-        const initial =
+        element.textContent =
             username
                 .charAt(0)
                 .toUpperCase();
 
-        sidebarAvatar.textContent =
-            initial;
-
-        bigAvatar.textContent =
-            initial;
-
     }
+
 }
 
-function showMessage(
-    text,
-    type
-){
+async function loadUser(){
 
-    const box =
-        document.getElementById(
-            "resultMessage"
+    const stored =
+        getStoredUser();
+
+    if(!stored?.username){
+
+        alert(
+            "Session login tidak ditemukan."
         );
 
-    box.textContent =
-        text;
-
-    box.className =
-        `message show ${type}`;
-
-}
-
-async function loadProfile(){
-
-    const user =
-        getUser();
-
-    if(!user?.username){
-
-        window.location.href =
+        location.href =
             "index.html";
 
         return;
+
     }
 
     currentUser =
-        user;
+        stored;
+
+    updateUI();
 
     try{
 
         const response =
             await fetch(
-                `${API_BASE}/api/users/${encodeURIComponent(
-                    user.username
+                `${API_USERS}/${encodeURIComponent(
+                    stored.username
                 )}`,
                 {
+                    method:"GET",
                     cache:"no-store"
                 }
             );
@@ -1087,48 +1037,229 @@ async function loadProfile(){
 
         }
 
-        renderUser(
-            data.result
-        );
+        currentUser =
+            data.result;
 
-        saveLocalUser(
-            data.result
-        );
+        saveUserSession();
 
-        document.getElementById(
-            "statusText"
-        ).textContent =
-            "API Connected";
-
-        document.getElementById(
-            "statusDot"
-        ).classList.remove(
-            "offline"
-        );
+        updateUI();
 
     }catch(error){
 
         console.error(
-            "[PROFILE]",
+            "[PROFILE LOAD]",
             error
         );
 
-        renderUser(
-            user
-        );
-
-        document.getElementById(
-            "statusText"
-        ).textContent =
-            "API Offline";
-
-        document.getElementById(
-            "statusDot"
-        ).classList.add(
-            "offline"
+        showStatus(
+            "Tidak dapat mengambil data terbaru dari server.",
+            "error"
         );
 
     }
+
+}
+
+function saveUserSession(){
+
+    localStorage.setItem(
+        "user",
+        JSON.stringify(
+            currentUser
+        )
+    );
+
+    localStorage.setItem(
+        "userData",
+        JSON.stringify(
+            currentUser
+        )
+    );
+
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(
+            currentUser
+        )
+    );
+
+    localStorage.setItem(
+        "reycloud_user",
+        JSON.stringify(
+            currentUser
+        )
+    );
+
+}
+
+document.getElementById(
+    "chooseAvatar"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "avatarInput"
+        ).click();
+
+    }
+);
+
+document.getElementById(
+    "avatarInput"
+).addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+        if(!file){
+            return;
+        }
+
+        if(
+            file.size >
+            MAX_FILE_SIZE
+        ){
+
+            alert(
+                "Ukuran foto maksimal 5MB."
+            );
+
+            event.target.value =
+                "";
+
+            return;
+
+        }
+
+        const allowed = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/gif"
+        ];
+
+        if(
+            !allowed.includes(
+                file.type
+            )
+        ){
+
+            alert(
+                "Format foto harus JPG, PNG, WEBP atau GIF."
+            );
+
+            event.target.value =
+                "";
+
+            return;
+
+        }
+
+        selectedFile =
+            file;
+
+        const preview =
+            document.getElementById(
+                "uploadPreview"
+            );
+
+        preview.innerHTML = `
+            <img
+                src="${URL.createObjectURL(file)}"
+                alt="Preview"
+            >
+        `;
+
+        showStatus(
+            "Foto siap diupload."
+        );
+
+    }
+);
+
+function extractUploadUrl(data){
+
+    const candidates = [
+        data?.url,
+        data?.result?.url,
+        data?.result?.fileUrl,
+        data?.result?.urlFile,
+        data?.result?.link,
+        data?.data?.url,
+        data?.file?.url
+    ];
+
+    return candidates.find(
+        value =>
+            typeof value === "string" &&
+            /^https?:\/\//i.test(value)
+    ) || "";
+
+}
+
+async function uploadAvatar(){
+
+    if(!selectedFile){
+
+        throw new Error(
+            "Pilih foto terlebih dahulu."
+        );
+
+    }
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "file",
+        selectedFile
+    );
+
+    const response =
+        await fetch(
+            API_UPLOAD,
+            {
+                method:"POST",
+                body:formData
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if(
+        !response.ok ||
+        data.status === false
+    ){
+
+        throw new Error(
+            data.message ||
+            "Upload foto gagal."
+        );
+
+    }
+
+    const url =
+        extractUploadUrl(data);
+
+    if(!url){
+
+        console.log(
+            "[UPLOAD]",
+            data
+        );
+
+        throw new Error(
+            "URL foto tidak ditemukan dari response upload."
+        );
+
+    }
+
+    return url;
+
 }
 
 async function saveProfile(){
@@ -1137,90 +1268,60 @@ async function saveProfile(){
         return;
     }
 
-    const saveButton =
-        document.getElementById(
-            "saveBtn"
-        );
+    if(!selectedFile){
 
-    const password =
-        document.getElementById(
-            "passwordInput"
-        ).value;
-
-    const username =
-        document.getElementById(
-            "usernameInput"
-        ).value.trim();
-
-    const avatar =
-        document.getElementById(
-            "avatarInput"
-        ).value.trim();
-
-    const bio =
-        document.getElementById(
-            "bioInput"
-        ).value.trim();
-
-    if(!password){
-
-        showMessage(
-            "Masukkan password saat ini.",
+        showStatus(
+            "Pilih foto profil terlebih dahulu.",
             "error"
         );
 
         return;
+
     }
 
-    if(
-        username.length < 3 ||
-        username.length > 30
-    ){
-
-        showMessage(
-            "Username harus 3-30 karakter.",
-            "error"
+    const button =
+        document.getElementById(
+            "saveProfile"
         );
 
-        return;
-    }
-
-    saveButton.disabled =
+    button.disabled =
         true;
 
-    saveButton.textContent =
-        "Menyimpan...";
+    button.textContent =
+        "Mengupload...";
 
     try{
 
+        showStatus(
+            "Mengupload foto profil..."
+        );
+
+        const avatarUrl =
+            await uploadAvatar();
+
+        showStatus(
+            "Menyimpan profile ke server..."
+        );
+
         const response =
             await fetch(
-                `${API_BASE}/api/users/${encodeURIComponent(
+                `${API_USERS}/${encodeURIComponent(
                     currentUser.username
-                )}/profile`,
+                )}`,
                 {
                     method:"PUT",
+
                     headers:{
                         "Content-Type":
                             "application/json",
                         "Accept":
                             "application/json"
                     },
+
                     body:
                         JSON.stringify({
-
-                            currentUsername:
-                                currentUser.username,
-
-                            currentPassword:
-                                password,
-
-                            username,
-
-                            avatar,
-
-                            bio
-
+                            avatar:
+                                avatarUrl
                         })
                 }
             );
@@ -1230,51 +1331,52 @@ async function saveProfile(){
 
         if(
             !response.ok ||
-            !data.status ||
-            !data.result
+            !data.status
         ){
 
             throw new Error(
                 data.message ||
-                "Gagal memperbarui profile"
+                "Gagal menyimpan profile."
             );
 
         }
 
         currentUser =
-            data.result;
+            data.result ||
+            {
+                ...currentUser,
+                avatar:avatarUrl
+            };
 
-        saveLocalUser(
-            currentUser
-        );
+        currentUser.avatar =
+            currentUser.avatar ||
+            avatarUrl;
 
-        renderUser(
-            currentUser
-        );
+        saveUserSession();
+
+        selectedFile =
+            null;
 
         document.getElementById(
-            "passwordInput"
+            "avatarInput"
         ).value =
             "";
 
-        showMessage(
-            "Profile berhasil diperbarui.",
+        updateUI();
+
+        showStatus(
+            "Foto profil berhasil diperbarui.",
             "success"
         );
-
-        document.getElementById(
-            "statusText"
-        ).textContent =
-            "API Connected";
 
     }catch(error){
 
         console.error(
-            "[UPDATE PROFILE]",
+            "[PROFILE UPDATE]",
             error
         );
 
-        showMessage(
+        showStatus(
             error.message ||
             "Gagal memperbarui profile.",
             "error"
@@ -1282,27 +1384,28 @@ async function saveProfile(){
 
     }finally{
 
-        saveButton.disabled =
+        button.disabled =
             false;
 
-        saveButton.textContent =
-            "Simpan Perubahan";
+        button.textContent =
+            "Simpan Foto Profil";
 
     }
+
 }
 
 document.getElementById(
-    "saveBtn"
+    "saveProfile"
 ).addEventListener(
     "click",
     saveProfile
 );
 
 document.getElementById(
-    "refreshBtn"
+    "refreshAccount"
 ).addEventListener(
     "click",
-    loadProfile
+    loadUser
 );
 
 document.getElementById(
@@ -1323,8 +1426,32 @@ document.getElementById(
     }
 );
 
+document.querySelectorAll(
+    ".nav a"
+).forEach(
+    link => {
+
+        link.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .getElementById(
+                        "sidebar"
+                    )
+                    .classList
+                    .remove(
+                        "open"
+                    );
+
+            }
+        );
+
+    }
+);
+
 document.getElementById(
-    "logout"
+    "logoutButton"
 ).addEventListener(
     "click",
     () => {
@@ -1342,13 +1469,13 @@ document.getElementById(
                 )
         );
 
-        window.location.href =
+        location.href =
             "index.html";
 
     }
 );
 
-loadProfile();
+loadUser();
 
 </script>
 
