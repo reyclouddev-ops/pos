@@ -23,10 +23,6 @@ button,input,textarea{
     font-family:inherit;
 }
 
-button{
-    -webkit-tap-highlight-color:transparent;
-}
-
 .app{
     min-height:100vh;
     display:flex;
@@ -66,7 +62,6 @@ button{
 .logo-text{
     font-size:18px;
     font-weight:800;
-    letter-spacing:-.5px;
 }
 
 .logo-text span{
@@ -99,7 +94,6 @@ button{
     gap:11px;
     font-size:14px;
     font-weight:600;
-    transition:.2s;
 }
 
 .nav a:hover{
@@ -127,7 +121,7 @@ button{
     gap:10px;
 }
 
-.avatar{
+.avatar-mini{
     width:36px;
     height:36px;
     border-radius:50%;
@@ -137,11 +131,10 @@ button{
     align-items:center;
     justify-content:center;
     font-weight:800;
-    font-size:13px;
     overflow:hidden;
 }
 
-.avatar img{
+.avatar-mini img{
     width:100%;
     height:100%;
     object-fit:cover;
@@ -174,7 +167,7 @@ button{
 
 .topbar{
     height:68px;
-    background:rgba(255,255,255,.94);
+    background:rgba(255,255,255,.92);
     backdrop-filter:blur(12px);
     border-bottom:1px solid #e5e7eb;
     display:flex;
@@ -198,7 +191,6 @@ button{
     width:35px;
     height:35px;
     border-radius:8px;
-    cursor:pointer;
 }
 
 .content{
@@ -207,63 +199,52 @@ button{
     padding:30px;
 }
 
+.profile-header{
+    background:#111827;
+    color:#fff;
+    border-radius:16px;
+    padding:27px;
+    margin-bottom:18px;
+}
+
+.profile-header h1{
+    font-size:25px;
+}
+
+.profile-header p{
+    color:#9ca3af;
+    font-size:13px;
+    margin-top:7px;
+}
+
 .profile-card{
     background:#fff;
     border:1px solid #e5e7eb;
-    border-radius:18px;
-    overflow:hidden;
+    border-radius:16px;
+    padding:25px;
 }
 
-.cover{
-    height:160px;
-    background:#111827;
-    position:relative;
-    overflow:hidden;
-}
-
-.cover:before{
-    content:"";
-    position:absolute;
-    width:280px;
-    height:280px;
-    right:-80px;
-    top:-170px;
-    border-radius:50%;
-    background:rgba(255,255,255,.06);
-}
-
-.cover:after{
-    content:"";
-    position:absolute;
-    width:180px;
-    height:180px;
-    left:-80px;
-    bottom:-130px;
-    border-radius:50%;
-    background:rgba(255,255,255,.04);
-}
-
-.profile-main{
-    padding:0 28px 28px;
-    position:relative;
+.avatar-section{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding-bottom:25px;
+    border-bottom:1px solid #e5e7eb;
 }
 
 .profile-avatar{
-    width:112px;
-    height:112px;
+    width:100px;
+    height:100px;
     border-radius:50%;
     background:#111827;
-    border:6px solid #fff;
-    margin-top:-56px;
-    position:relative;
-    z-index:2;
+    color:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
-    color:#fff;
-    font-size:36px;
+    font-size:32px;
     font-weight:800;
     overflow:hidden;
+    flex-shrink:0;
 }
 
 .profile-avatar img{
@@ -272,165 +253,23 @@ button{
     object-fit:cover;
 }
 
-.profile-name{
-    margin-top:15px;
-    font-size:25px;
-    font-weight:800;
-    letter-spacing:-.5px;
+.avatar-info h2{
+    font-size:18px;
 }
 
-.profile-role{
-    display:inline-flex;
-    margin-top:7px;
-    padding:5px 11px;
-    border-radius:20px;
-    background:#f3f4f6;
-    color:#6b7280;
-    font-size:10px;
-    font-weight:750;
-}
-
-.profile-bio{
-    margin-top:13px;
-    color:#6b7280;
-    font-size:13px;
-    line-height:1.6;
-    white-space:pre-wrap;
-    word-break:break-word;
-}
-
-.info-grid{
-    margin-top:24px;
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-}
-
-.info-box{
-    background:#fafafa;
-    border:1px solid #e5e7eb;
-    border-radius:11px;
-    padding:14px;
-}
-
-.info-box span{
-    display:block;
+.avatar-info p{
     color:#9ca3af;
-    font-size:10px;
-}
-
-.info-box strong{
-    display:block;
-    margin-top:5px;
-    font-size:13px;
-    word-break:break-word;
-}
-
-.form{
-    margin-top:25px;
-    border-top:1px solid #e5e7eb;
-    padding-top:24px;
-}
-
-.form-title{
-    font-size:15px;
-    font-weight:800;
-    margin-bottom:15px;
-}
-
-.form-group{
-    margin-bottom:17px;
-}
-
-.form-group label{
-    display:block;
     font-size:12px;
-    font-weight:700;
-    margin-bottom:7px;
-    color:#374151;
-}
-
-.bio-input{
-    width:100%;
-    min-height:110px;
-    resize:vertical;
-    border:1px solid #e5e7eb;
-    outline:none;
-    border-radius:11px;
-    padding:12px 13px;
-    font-size:13px;
-    color:#111827;
-    background:#fafafa;
-    line-height:1.5;
-}
-
-.bio-input:focus{
-    border-color:#9ca3af;
-    background:#fff;
-}
-
-.bio-counter{
-    display:flex;
-    justify-content:flex-end;
-    margin-top:5px;
-    color:#9ca3af;
-    font-size:10px;
-}
-
-.upload-box{
-    border:1px dashed #d1d5db;
-    border-radius:14px;
-    padding:18px;
-    background:#fafafa;
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.upload-preview{
-    width:70px;
-    height:70px;
-    border-radius:50%;
-    background:#111827;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px;
-    font-weight:800;
-    overflow:hidden;
-    flex-shrink:0;
-}
-
-.upload-preview img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.upload-info{
-    flex:1;
-    min-width:0;
-}
-
-.upload-info strong{
-    display:block;
-    font-size:13px;
-}
-
-.upload-info span{
-    display:block;
-    color:#9ca3af;
-    font-size:11px;
     margin-top:4px;
 }
 
 .upload-btn{
+    margin-top:12px;
     border:1px solid #e5e7eb;
     background:#fff;
     color:#374151;
     border-radius:9px;
-    padding:10px 14px;
+    padding:9px 13px;
     cursor:pointer;
     font-size:12px;
     font-weight:700;
@@ -440,21 +279,66 @@ button{
     background:#f3f4f6;
 }
 
+.form{
+    padding-top:25px;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    color:#374151;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group textarea{
+    width:100%;
+    border:1px solid #e5e7eb;
+    background:#fafafa;
+    outline:none;
+    border-radius:10px;
+    padding:12px;
+    font-size:13px;
+    color:#111827;
+}
+
+.form-group input:focus,
+.form-group textarea:focus{
+    background:#fff;
+    border-color:#9ca3af;
+}
+
+.form-group input:disabled{
+    color:#9ca3af;
+}
+
+.form-group textarea{
+    resize:vertical;
+    min-height:110px;
+}
+
+.counter{
+    text-align:right;
+    color:#9ca3af;
+    font-size:10px;
+    margin-top:5px;
+}
+
 .save-btn{
     width:100%;
-    height:45px;
+    height:44px;
     border:0;
     border-radius:10px;
     background:#111827;
     color:#fff;
     cursor:pointer;
-    margin-top:15px;
     font-size:13px;
     font-weight:750;
-}
-
-.save-btn:hover{
-    opacity:.92;
 }
 
 .save-btn:disabled{
@@ -462,31 +346,52 @@ button{
     cursor:not-allowed;
 }
 
-.status{
+.status-message{
     display:none;
-    margin-top:12px;
     padding:11px 13px;
     border-radius:9px;
-    font-size:11px;
+    margin-bottom:17px;
+    font-size:12px;
 }
 
-.status.show{
+.status-message.show{
     display:block;
 }
 
-.status.normal{
-    background:#f3f4f6;
-    color:#6b7280;
+.status-message.success{
+    background:#ecfdf5;
+    color:#047857;
 }
 
-.status.success{
-    background:#dcfce7;
-    color:#166534;
+.status-message.error{
+    background:#fef2f2;
+    color:#b91c1c;
 }
 
-.status.error{
-    background:#fee2e2;
-    color:#991b1b;
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:20px;
+}
+
+.info-box{
+    background:#f9fafb;
+    border:1px solid #f0f1f3;
+    border-radius:10px;
+    padding:12px;
+}
+
+.info-box strong{
+    display:block;
+    font-size:13px;
+}
+
+.info-box span{
+    display:block;
+    color:#9ca3af;
+    font-size:10px;
+    margin-top:3px;
 }
 
 @media(max-width:800px){
@@ -494,7 +399,6 @@ button{
     .sidebar{
         transform:translateX(-100%);
         transition:.25s;
-        box-shadow:10px 0 30px rgba(0,0,0,.08);
     }
 
     .sidebar.open{
@@ -519,39 +423,23 @@ button{
     }
 }
 
-@media(max-width:520px){
+@media(max-width:500px){
 
     .content{
         padding:10px;
     }
 
-    .profile-main{
-        padding:0 18px 20px;
+    .profile-card{
+        padding:18px;
     }
 
-    .cover{
-        height:135px;
-    }
-
-    .profile-name{
-        font-size:22px;
-    }
-
-    .info-grid{
-        grid-template-columns:1fr;
-    }
-
-    .upload-box{
+    .avatar-section{
         flex-direction:column;
         text-align:center;
     }
 
-    .upload-info{
-        width:100%;
-    }
-
-    .upload-btn{
-        width:100%;
+    .info-grid{
+        grid-template-columns:1fr;
     }
 }
 </style>
@@ -570,7 +458,9 @@ button{
         </div>
     </div>
 
-    <div class="nav-title">Main</div>
+    <div class="nav-title">
+        Main
+    </div>
 
     <nav class="nav">
 
@@ -606,16 +496,13 @@ button{
 
     </nav>
 
-    <div class="nav-title">Account</div>
+    <div class="nav-title">
+        Account
+    </div>
 
     <nav class="nav">
 
-        <a href="javascript:void(0)" id="refreshAccount">
-            <span>↻</span>
-            Refresh Data
-        </a>
-
-        <a href="javascript:void(0)" id="logoutButton">
+        <a href="javascript:void(0)" id="logout">
             <span>↪</span>
             Logout
         </a>
@@ -626,20 +513,18 @@ button{
 
         <div class="user-mini">
 
-            <div class="avatar" id="sidebarAvatar">
+            <div class="avatar-mini" id="miniAvatar">
                 U
             </div>
 
             <div class="user-info">
-
-                <strong id="sidebarUsername">
+                <strong id="miniUsername">
                     User
                 </strong>
 
-                <span id="sidebarRole">
+                <span id="miniRole">
                     member
                 </span>
-
             </div>
 
         </div>
@@ -657,7 +542,6 @@ button{
         <button
             class="mobile-menu"
             id="mobileMenu"
-            type="button"
         >
             ☰
         </button>
@@ -672,173 +556,146 @@ button{
 
 <section class="content">
 
+<div class="profile-header">
+
+    <h1>
+        👤 My Profile
+    </h1>
+
+    <p>
+        Kelola avatar dan informasi profile kamu.
+    </p>
+
+</div>
+
 <div class="profile-card">
 
-    <div class="cover"></div>
+<div
+    class="status-message"
+    id="statusMessage"
+></div>
 
-    <div class="profile-main">
+<div class="avatar-section">
 
-        <div
-            class="profile-avatar"
-            id="profileAvatar"
-        >
-            U
-        </div>
+    <div
+        class="profile-avatar"
+        id="profileAvatar"
+    >
+        U
+    </div>
 
-        <div
-            class="profile-name"
-            id="profileUsername"
-        >
+    <div class="avatar-info">
+
+        <h2 id="profileName">
             User
-        </div>
+        </h2>
 
-        <div
-            class="profile-role"
-            id="profileRole"
+        <p id="profileRole">
+            member
+        </p>
+
+        <input
+            type="file"
+            id="avatarInput"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            hidden
         >
-            Member
-        </div>
 
-        <div
-            class="profile-bio"
-            id="profileBio"
+        <button
+            class="upload-btn"
+            id="uploadBtn"
+            type="button"
         >
-            Belum ada bio.
-        </div>
+            🖼️ Pilih Avatar
+        </button>
 
-        <div class="info-grid">
+    </div>
 
-            <div class="info-box">
+</div>
 
-                <span>Username</span>
+<div class="form">
 
-                <strong id="infoUsername">
-                    -
-                </strong>
+    <div class="form-group">
 
-            </div>
+        <label>
+            Username
+        </label>
 
-            <div class="info-box">
+        <input
+            type="text"
+            id="username"
+            disabled
+        >
 
-                <span>Role</span>
+    </div>
 
-                <strong id="infoRole">
-                    -
-                </strong>
+    <div class="form-group">
 
-            </div>
+        <label>
+            Bio
+        </label>
 
-            <div class="info-box">
+        <textarea
+            id="bio"
+            maxlength="300"
+            placeholder="Tulis bio kamu..."
+        ></textarea>
 
-                <span>Status</span>
-
-                <strong id="infoStatus">
-                    -
-                </strong>
-
-            </div>
-
-            <div class="info-box">
-
-                <span>Bergabung</span>
-
-                <strong id="infoCreated">
-                    -
-                </strong>
-
-            </div>
-
-        </div>
-
-        <div class="form">
-
-            <div class="form-title">
-                Edit Profile
-            </div>
-
-            <div class="form-group">
-
-                <label for="bioInput">
-                    Bio
-                </label>
-
-                <textarea
-                    id="bioInput"
-                    class="bio-input"
-                    maxlength="300"
-                    placeholder="Tulis bio kamu..."
-                ></textarea>
-
-                <div class="bio-counter">
-                    <span id="bioCount">
-                        0/300
-                    </span>
-                </div>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>
-                    Foto Profil
-                </label>
-
-                <input
-                    type="file"
-                    id="avatarInput"
-                    accept="image/jpeg,image/png,image/webp,image/gif"
-                    hidden
-                >
-
-                <div class="upload-box">
-
-                    <div
-                        class="upload-preview"
-                        id="uploadPreview"
-                    >
-                        U
-                    </div>
-
-                    <div class="upload-info">
-
-                        <strong>
-                            Foto profil
-                        </strong>
-
-                        <span>
-                            JPG, PNG, WEBP atau GIF • maksimal 5MB
-                        </span>
-
-                    </div>
-
-                    <button
-                        class="upload-btn"
-                        id="chooseAvatar"
-                        type="button"
-                    >
-                        Pilih Foto
-                    </button>
-
-                </div>
-
-            </div>
-
-            <button
-                class="save-btn"
-                id="saveProfile"
-                type="button"
-            >
-                Simpan Profile
-            </button>
-
-            <div
-                class="status"
-                id="statusBox"
-            ></div>
-
+        <div class="counter">
+            <span id="bioCount">0</span>/300
         </div>
 
     </div>
+
+    <button
+        class="save-btn"
+        id="saveBtn"
+        type="button"
+    >
+        Simpan Profile
+    </button>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+            <strong id="infoRole">
+                -
+            </strong>
+            <span>
+                Role
+            </span>
+        </div>
+
+        <div class="info-box">
+            <strong id="infoStatus">
+                -
+            </strong>
+            <span>
+                Status
+            </span>
+        </div>
+
+        <div class="info-box">
+            <strong id="infoCreated">
+                -
+            </strong>
+            <span>
+                Bergabung
+            </span>
+        </div>
+
+        <div class="info-box">
+            <strong id="infoDuration">
+                -
+            </strong>
+            <span>
+                Durasi
+            </span>
+        </div>
+
+    </div>
+
+</div>
 
 </div>
 
@@ -854,17 +711,11 @@ const API_BASE =
     localStorage.getItem("apiBase") ||
     "https://api.legionteknologi.my.id";
 
-const API_USERS =
-    `${API_BASE}/api/users`;
-
-const API_UPLOAD =
-    `${API_BASE}/upload`;
-
-const MAX_FILE_SIZE =
-    5 * 1024 * 1024;
-
 let currentUser = null;
-let selectedFile = null;
+let selectedAvatar = null;
+
+const MAX_AVATAR_SIZE =
+    5 * 1024 * 1024;
 
 function escapeHTML(value){
 
@@ -874,43 +725,9 @@ function escapeHTML(value){
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
-
 }
 
-function formatRole(role){
-
-    return String(role || "member")
-        .replace(
-            /\b\w/g,
-            char => char.toUpperCase()
-        );
-
-}
-
-function formatDate(date){
-
-    if(!date){
-        return "-";
-    }
-
-    const d = new Date(date);
-
-    if(Number.isNaN(d.getTime())){
-        return "-";
-    }
-
-    return d.toLocaleDateString(
-        "id-ID",
-        {
-            day:"2-digit",
-            month:"short",
-            year:"numeric"
-        }
-    );
-
-}
-
-function getStoredUser(){
+function getUser(){
 
     const keys = [
         "user",
@@ -934,127 +751,142 @@ function getStoredUser(){
             const data =
                 JSON.parse(raw);
 
-            if(data?.result?.user){
+            if(
+                data &&
+                data.result &&
+                data.result.user
+            ){
                 return data.result.user;
             }
 
-            if(data?.user){
+            if(
+                data &&
+                data.user
+            ){
                 return data.user;
             }
 
-            if(data?.username){
+            if(
+                data &&
+                data.username
+            ){
                 return data;
             }
 
         }catch(error){
-
-            console.error(
-                "[STORAGE]",
-                error
-            );
-
+            console.error(error);
         }
-
     }
 
     return null;
-
 }
 
-function saveUserSession(){
+function saveLocalUser(user){
 
-    const value =
-        JSON.stringify(currentUser);
+    const json =
+        JSON.stringify(user);
 
     localStorage.setItem(
         "user",
-        value
+        json
     );
 
     localStorage.setItem(
         "userData",
-        value
+        json
     );
 
     localStorage.setItem(
         "currentUser",
-        value
+        json
     );
 
     localStorage.setItem(
         "reycloud_user",
-        value
+        json
     );
 
+    localStorage.setItem(
+        "loginUser",
+        json
+    );
 }
 
-function setAvatar(
-    elementId,
-    avatar,
-    username
+function formatRole(role){
+
+    return String(
+        role || "member"
+    ).replace(
+        /\b\w/g,
+        char =>
+            char.toUpperCase()
+    );
+}
+
+function formatDate(value){
+
+    if(!value){
+        return "-";
+    }
+
+    const date =
+        new Date(value);
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+        return "-";
+    }
+
+    return date.toLocaleDateString(
+        "id-ID",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
+}
+
+function showStatus(
+    message,
+    type
 ){
 
-    const element =
+    const box =
         document.getElementById(
-            elementId
+            "statusMessage"
         );
 
-    if(!element){
-        return;
-    }
+    box.textContent =
+        message;
 
-    if(avatar){
-
-        element.innerHTML = `
-            <img
-                src="${escapeHTML(avatar)}"
-                alt="Avatar"
-            >
-        `;
-
-    }else{
-
-        element.textContent =
-            String(username || "U")
-                .charAt(0)
-                .toUpperCase();
-
-    }
+    box.className =
+        `status-message show ${type}`;
 
 }
 
-function updateUI(){
+function renderUser(user){
 
-    if(!currentUser){
-        return;
-    }
+    currentUser =
+        user;
 
     const username =
         String(
-            currentUser.username ||
+            user.username ||
             "User"
         );
 
     const role =
         String(
-            currentUser.role ||
+            user.role ||
             "member"
         );
 
-    const avatar =
-        String(
-            currentUser.avatar ||
-            ""
-        );
-
-    const bio =
-        String(
-            currentUser.bio ||
-            ""
-        );
-
     document.getElementById(
-        "profileUsername"
+        "profileName"
     ).textContent =
         username;
 
@@ -1064,15 +896,16 @@ function updateUI(){
         formatRole(role);
 
     document.getElementById(
-        "profileBio"
-    ).textContent =
-        bio ||
-        "Belum ada bio.";
+        "username"
+    ).value =
+        username;
 
     document.getElementById(
-        "infoUsername"
-    ).textContent =
-        username;
+        "bio"
+    ).value =
+        user.bio || "";
+
+    updateBioCount();
 
     document.getElementById(
         "infoRole"
@@ -1082,129 +915,110 @@ function updateUI(){
     document.getElementById(
         "infoStatus"
     ).textContent =
-        currentUser.status ||
-        "active";
+        user.status || "active";
 
     document.getElementById(
         "infoCreated"
     ).textContent =
         formatDate(
-            currentUser.createdAt
+            user.createdAt
         );
 
     document.getElementById(
-        "sidebarUsername"
+        "infoDuration"
+    ).textContent =
+        user.duration || "-";
+
+    document.getElementById(
+        "miniUsername"
     ).textContent =
         username;
 
     document.getElementById(
-        "sidebarRole"
+        "miniRole"
     ).textContent =
         formatRole(role);
 
-    document.getElementById(
-        "bioInput"
-    ).value =
-        bio;
-
-    updateBioCount();
-
-    setAvatar(
-        "profileAvatar",
-        avatar,
+    renderAvatar(
+        user.avatar,
         username
     );
-
-    setAvatar(
-        "sidebarAvatar",
-        avatar,
-        username
-    );
-
-    if(!selectedFile){
-
-        setAvatar(
-            "uploadPreview",
-            avatar,
-            username
-        );
-
-    }
-
 }
 
-function updateBioCount(){
-
-    const input =
-        document.getElementById(
-            "bioInput"
-        );
-
-    const count =
-        document.getElementById(
-            "bioCount"
-        );
-
-    count.textContent =
-        `${input.value.length}/300`;
-
-}
-
-function showStatus(
-    message,
-    type = "normal"
+function renderAvatar(
+    avatar,
+    username
 ){
 
-    const box =
+    const profile =
         document.getElementById(
-            "statusBox"
+            "profileAvatar"
         );
 
-    box.textContent =
-        message;
+    const mini =
+        document.getElementById(
+            "miniAvatar"
+        );
 
-    box.className =
-        `status show ${type}`;
+    if(avatar){
 
+        const safe =
+            escapeHTML(avatar);
+
+        profile.innerHTML = `
+            <img
+                src="${safe}"
+                alt="Avatar"
+            >
+        `;
+
+        mini.innerHTML = `
+            <img
+                src="${safe}"
+                alt="Avatar"
+            >
+        `;
+
+    }else{
+
+        const initial =
+            String(
+                username || "U"
+            )
+            .charAt(0)
+            .toUpperCase();
+
+        profile.textContent =
+            initial;
+
+        mini.textContent =
+            initial;
+    }
 }
 
-async function loadUser(){
+async function loadProfile(){
 
-    const stored =
-        getStoredUser();
+    const localUser =
+        getUser();
 
-    if(!stored?.username){
+    if(!localUser?.username){
 
-        alert(
-            "Session login tidak ditemukan."
-        );
-
-        location.href =
+        window.location.href =
             "index.html";
 
         return;
-
     }
-
-    currentUser =
-        stored;
-
-    updateUI();
 
     try{
 
         const response =
             await fetch(
-                `${API_USERS}/${encodeURIComponent(
-                    stored.username
+                `${API_BASE}/api/users/${encodeURIComponent(
+                    localUser.username
                 )}`,
                 {
                     method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        Accept:
-                            "application/json"
-                    }
+                    cache:"no-store"
                 }
             );
 
@@ -1219,17 +1033,17 @@ async function loadUser(){
 
             throw new Error(
                 data.message ||
-                "Gagal mengambil data profile."
+                "Gagal mengambil profile"
             );
-
         }
 
-        currentUser =
-            data.result;
+        renderUser(
+            data.result
+        );
 
-        saveUserSession();
-
-        updateUI();
+        saveLocalUser(
+            data.result
+        );
 
     }catch(error){
 
@@ -1238,304 +1052,39 @@ async function loadUser(){
             error
         );
 
+        renderUser(
+            localUser
+        );
+
         showStatus(
-            "Data terbaru belum dapat diambil dari server.",
+            "Gagal mengambil data terbaru dari server.",
             "error"
         );
-
     }
-
 }
 
-function extractUploadUrl(data){
-
-    const candidates = [
-
-        data?.url,
-
-        data?.result?.url,
-
-        data?.result?.fileUrl,
-
-        data?.result?.urlFile,
-
-        data?.result?.link,
-
-        data?.data?.url,
-
-        data?.file?.url
-
-    ];
-
-    return candidates.find(
-        value =>
-            typeof value === "string" &&
-            /^https?:\/\//i.test(value)
-    ) || "";
-
-}
-
-async function uploadAvatar(){
-
-    if(!selectedFile){
-
-        return currentUser.avatar || "";
-
-    }
-
-    if(
-        selectedFile.size >
-        MAX_FILE_SIZE
-    ){
-
-        throw new Error(
-            "Ukuran foto maksimal 5MB."
-        );
-
-    }
-
-    const allowed = [
-
-        "image/jpeg",
-
-        "image/png",
-
-        "image/webp",
-
-        "image/gif"
-
-    ];
-
-    if(
-        !allowed.includes(
-            selectedFile.type
-        )
-    ){
-
-        throw new Error(
-            "Format foto harus JPG, PNG, WEBP atau GIF."
-        );
-
-    }
-
-    const formData =
-        new FormData();
-
-    formData.append(
-        "file",
-        selectedFile
-    );
-
-    const response =
-        await fetch(
-            API_UPLOAD,
-            {
-                method:"POST",
-                body:formData
-            }
-        );
-
-    const data =
-        await response.json();
-
-    if(
-        !response.ok ||
-        data.status === false
-    ){
-
-        throw new Error(
-            data.message ||
-            "Upload foto gagal."
-        );
-
-    }
-
-    const url =
-        extractUploadUrl(data);
-
-    if(!url){
-
-        console.error(
-            "[UPLOAD RESPONSE]",
-            data
-        );
-
-        throw new Error(
-            "URL foto tidak ditemukan dari response upload."
-        );
-
-    }
-
-    return url;
-
-}
-
-async function saveProfile(){
-
-    if(!currentUser?.username){
-        return;
-    }
-
-    const button =
-        document.getElementById(
-            "saveProfile"
-        );
+function updateBioCount(){
 
     const bio =
         document.getElementById(
-            "bioInput"
-        ).value.trim();
-
-    if(bio.length > 300){
-
-        showStatus(
-            "Bio maksimal 300 karakter.",
-            "error"
+            "bio"
         );
 
-        return;
-
-    }
-
-    button.disabled =
-        true;
-
-    button.textContent =
-        "Menyimpan...";
-
-    try{
-
-        let avatar =
-            currentUser.avatar ||
-            "";
-
-        if(selectedFile){
-
-            showStatus(
-                "Mengupload foto profil...",
-                "normal"
-            );
-
-            avatar =
-                await uploadAvatar();
-
-        }
-
-        showStatus(
-            "Menyimpan profile ke server...",
-            "normal"
-        );
-
-        const response =
-            await fetch(
-                `${API_USERS}/${encodeURIComponent(
-                    currentUser.username
-                )}`,
-                {
-                    method:"PUT",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json",
-
-                        "Accept":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            avatar,
-
-                            bio
-
-                        })
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if(
-            !response.ok ||
-            !data.status
-        ){
-
-            throw new Error(
-                data.message ||
-                "Gagal menyimpan profile."
-            );
-
-        }
-
-        if(
-            data.result
-        ){
-
-            currentUser =
-                data.result;
-
-        }else{
-
-            currentUser = {
-                ...currentUser,
-                avatar,
-                bio
-            };
-
-        }
-
-        saveUserSession();
-
-        selectedFile =
-            null;
-
-        document.getElementById(
-            "avatarInput"
-        ).value =
-            "";
-
-        updateUI();
-
-        showStatus(
-            "Profile berhasil diperbarui.",
-            "success"
-        );
-
-    }catch(error){
-
-        console.error(
-            "[PROFILE UPDATE]",
-            error
-        );
-
-        showStatus(
-            error.message ||
-            "Gagal memperbarui profile.",
-            "error"
-        );
-
-    }finally{
-
-        button.disabled =
-            false;
-
-        button.textContent =
-            "Simpan Profile";
-
-    }
-
+    document.getElementById(
+        "bioCount"
+    ).textContent =
+        bio.value.length;
 }
 
 document.getElementById(
-    "bioInput"
+    "bio"
 ).addEventListener(
     "input",
     updateBioCount
 );
 
 document.getElementById(
-    "chooseAvatar"
+    "uploadBtn"
 ).addEventListener(
     "click",
     () => {
@@ -1562,30 +1111,25 @@ document.getElementById(
 
         if(
             file.size >
-            MAX_FILE_SIZE
+            MAX_AVATAR_SIZE
         ){
 
-            alert(
-                "Ukuran foto maksimal 5MB."
+            showStatus(
+                "Avatar maksimal 5MB.",
+                "error"
             );
 
             event.target.value =
                 "";
 
             return;
-
         }
 
         const allowed = [
-
             "image/jpeg",
-
             "image/png",
-
             "image/webp",
-
             "image/gif"
-
         ];
 
         if(
@@ -1594,18 +1138,18 @@ document.getElementById(
             )
         ){
 
-            alert(
-                "Format foto harus JPG, PNG, WEBP atau GIF."
+            showStatus(
+                "Format avatar harus JPG, PNG, WEBP, atau GIF.",
+                "error"
             );
 
             event.target.value =
                 "";
 
             return;
-
         }
 
-        selectedFile =
+        selectedAvatar =
             file;
 
         const url =
@@ -1613,50 +1157,227 @@ document.getElementById(
                 file
             );
 
-        document.getElementById(
-            "uploadPreview"
-        ).innerHTML = `
-            <img
-                src="${url}"
-                alt="Preview"
-            >
-        `;
-
-        showStatus(
-            "Foto baru siap disimpan.",
-            "normal"
+        renderAvatar(
+            url,
+            currentUser?.username
         );
 
+        showStatus(
+            "Avatar dipilih. Klik Simpan Profile untuk menyimpan.",
+            "success"
+        );
     }
 );
 
+function extractUploadUrl(data){
+
+    const candidates = [
+        data?.url,
+        data?.result?.url,
+        data?.result?.fileUrl,
+        data?.result?.urlFile,
+        data?.result?.link,
+        data?.data?.url,
+        data?.file?.url
+    ];
+
+    return candidates.find(
+        value =>
+            typeof value === "string" &&
+            /^https?:\/\//i.test(value)
+    ) || "";
+}
+
+async function uploadAvatar(file){
+
+    const form =
+        new FormData();
+
+    form.append(
+        "file",
+        file
+    );
+
+    const response =
+        await fetch(
+            `${API_BASE}/upload`,
+            {
+                method:"POST",
+                body:form
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if(
+        !response.ok ||
+        data.status === false
+    ){
+
+        throw new Error(
+            data.message ||
+            "Upload avatar gagal"
+        );
+    }
+
+    const url =
+        extractUploadUrl(
+            data
+        );
+
+    if(!url){
+
+        throw new Error(
+            "URL avatar tidak ditemukan dari response upload."
+        );
+    }
+
+    return url;
+}
+
 document.getElementById(
-    "saveProfile"
+    "saveBtn"
 ).addEventListener(
     "click",
     saveProfile
 );
 
-document.getElementById(
-    "refreshAccount"
-).addEventListener(
-    "click",
-    async () => {
+async function saveProfile(){
 
-        showStatus(
-            "Memuat data terbaru...",
-            "normal"
+    if(!currentUser?.username){
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "saveBtn"
         );
 
-        await loadUser();
+    const bio =
+        document.getElementById(
+            "bio"
+        ).value
+        .trim();
+
+    if(bio.length > 300){
 
         showStatus(
-            "Data profile diperbarui.",
+            "Bio maksimal 300 karakter.",
+            "error"
+        );
+
+        return;
+    }
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Menyimpan...";
+
+    try{
+
+        let avatar =
+            currentUser.avatar ||
+            "";
+
+        if(selectedAvatar){
+
+            button.textContent =
+                "Mengupload avatar...";
+
+            avatar =
+                await uploadAvatar(
+                    selectedAvatar
+                );
+        }
+
+        button.textContent =
+            "Menyimpan profile...";
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/users/${encodeURIComponent(
+                    currentUser.username
+                )}/profile`,
+                {
+                    method:"PUT",
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+                        "Accept":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify({
+                            avatar,
+                            bio
+                        })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            !data.status ||
+            !data.result
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal update profile"
+            );
+        }
+
+        currentUser =
+            data.result;
+
+        saveLocalUser(
+            currentUser
+        );
+
+        selectedAvatar =
+            null;
+
+        document.getElementById(
+            "avatarInput"
+        ).value =
+            "";
+
+        renderUser(
+            currentUser
+        );
+
+        showStatus(
+            "Profile berhasil diperbarui! ✅",
             "success"
         );
 
+    }catch(error){
+
+        console.error(
+            "[PROFILE UPDATE]",
+            error
+        );
+
+        showStatus(
+            error.message ||
+            "Gagal memperbarui profile.",
+            "error"
+        );
+
+    }finally{
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Simpan Profile";
     }
-);
+}
 
 document.getElementById(
     "mobileMenu"
@@ -1672,7 +1393,6 @@ document.getElementById(
             .toggle(
                 "open"
             );
-
     }
 );
 
@@ -1693,15 +1413,13 @@ document.querySelectorAll(
                     .remove(
                         "open"
                     );
-
             }
         );
-
     }
 );
 
 document.getElementById(
-    "logoutButton"
+    "logout"
 ).addEventListener(
     "click",
     () => {
@@ -1719,13 +1437,12 @@ document.getElementById(
                 )
         );
 
-        location.href =
+        window.location.href =
             "index.html";
-
     }
 );
 
-loadUser();
+loadProfile();
 
 </script>
 
