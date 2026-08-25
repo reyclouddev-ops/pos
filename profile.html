@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ReyCloud — Profile</title>
 
 <style>
@@ -10,29 +10,46 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+:root{
+    --bg:#07090d;
+    --panel:#0d1117;
+    --panel2:#11161e;
+    --border:#202731;
+    --text:#f5f7fa;
+    --muted:#8b949e;
+    --green:#3fb950;
+    --blue:#58a6ff;
+    --red:#f85149;
 }
 
 body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
     min-height:100vh;
-    background:#f7f8fa;
-    color:#111827;
+}
+
+button,
+input{
+    font-family:inherit;
 }
 
 .app{
-    min-height:100vh;
     display:flex;
+    min-height:100vh;
 }
 
 .sidebar{
-    width:250px;
-    background:#fff;
-    border-right:1px solid #e5e7eb;
-    padding:22px 16px;
+    width:245px;
+    background:#090c11;
+    border-right:1px solid var(--border);
     position:fixed;
     left:0;
     top:0;
     bottom:0;
+    padding:22px 14px;
     z-index:20;
 }
 
@@ -40,7 +57,8 @@ body{
     display:flex;
     align-items:center;
     gap:10px;
-    padding:5px 10px 28px;
+    padding:0 10px;
+    margin-bottom:30px;
 }
 
 .logo-icon{
@@ -50,239 +68,221 @@ body{
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#111827;
-    color:#fff;
-    font-weight:800;
+    background:#fff;
+    color:#000;
+    font-weight:900;
+    font-size:15px;
 }
 
 .logo-text{
-    font-size:18px;
-    font-weight:800;
-    letter-spacing:-.5px;
+    font-size:16px;
+    font-weight:750;
 }
 
 .logo-text span{
-    color:#6b7280;
+    color:var(--muted);
+    font-weight:500;
 }
 
-.nav-title{
-    font-size:11px;
+.menu-title{
+    color:#555d68;
+    font-size:10px;
     font-weight:700;
-    color:#9ca3af;
-    padding:0 10px;
-    margin:8px 0 10px;
-    text-transform:uppercase;
-    letter-spacing:.08em;
+    letter-spacing:1px;
+    padding:0 11px;
+    margin:22px 0 9px;
 }
 
 .nav{
     display:flex;
     flex-direction:column;
-    gap:5px;
+    gap:3px;
 }
 
-.nav a{
-    text-decoration:none;
-    color:#6b7280;
+.nav button{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#9da5af;
     padding:11px 12px;
-    border-radius:9px;
+    border-radius:8px;
     display:flex;
     align-items:center;
     gap:11px;
-    font-size:14px;
-    font-weight:600;
+    cursor:pointer;
+    text-align:left;
+    font-size:13px;
     transition:.2s;
 }
 
-.nav a:hover{
-    background:#f3f4f6;
-    color:#111827;
-}
-
-.nav a.active{
-    background:#111827;
+.nav button:hover{
+    background:#12171e;
     color:#fff;
 }
 
-.sidebar-user{
+.nav button.active{
+    background:#171c24;
+    color:#fff;
+}
+
+.nav-icon{
+    width:19px;
+    text-align:center;
+    font-size:15px;
+}
+
+.logout{
     position:absolute;
-    left:16px;
-    right:16px;
-    bottom:18px;
-    border-top:1px solid #e5e7eb;
-    padding-top:15px;
+    bottom:20px;
+    left:14px;
+    right:14px;
 }
 
-.user-mini{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.avatar-mini{
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    background:#111827;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:800;
-    font-size:13px;
-    overflow:hidden;
-}
-
-.avatar-mini img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.user-info{
-    min-width:0;
-}
-
-.user-info strong{
-    display:block;
-    font-size:13px;
-    overflow:hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
-}
-
-.user-info span{
-    display:block;
-    color:#9ca3af;
-    font-size:11px;
-    margin-top:2px;
+.logout button{
+    color:#f85149;
 }
 
 .main{
-    width:calc(100% - 250px);
-    margin-left:250px;
+    margin-left:245px;
+    width:calc(100% - 245px);
     min-height:100vh;
 }
 
 .topbar{
-    height:68px;
-    background:rgba(255,255,255,.9);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid #e5e7eb;
+    height:65px;
+    border-bottom:1px solid var(--border);
     display:flex;
     align-items:center;
     justify-content:space-between;
     padding:0 30px;
+    background:rgba(7,9,13,.85);
+    backdrop-filter:blur(12px);
     position:sticky;
     top:0;
     z-index:10;
 }
 
 .page-title{
-    font-size:16px;
-    font-weight:750;
+    font-size:14px;
+    font-weight:650;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
 .mobile-menu{
     display:none;
-    border:0;
-    background:#f3f4f6;
     width:35px;
     height:35px;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:#fff;
     border-radius:8px;
     cursor:pointer;
 }
 
-.content{
-    max-width:950px;
-    margin:auto;
-    padding:30px;
-}
-
-.profile-header{
-    background:#111827;
-    color:white;
-    border-radius:16px;
-    padding:26px;
-    margin-bottom:18px;
-    position:relative;
-    overflow:hidden;
-}
-
-.profile-header::before{
-    content:"";
-    position:absolute;
-    width:250px;
-    height:250px;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:50%;
-    right:-80px;
-    top:-130px;
-}
-
-.profile-header::after{
-    content:"";
-    position:absolute;
-    width:150px;
-    height:150px;
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:50%;
-    right:60px;
-    bottom:-110px;
-}
-
-.profile-header h1,
-.profile-header p{
-    position:relative;
-    z-index:1;
-}
-
-.profile-header h1{
-    font-size:25px;
-    letter-spacing:-.7px;
-}
-
-.profile-header p{
-    color:#9ca3af;
-    font-size:13px;
-    margin-top:7px;
-}
-
-.profile-card{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:16px;
-    overflow:hidden;
-}
-
-.profile-top{
-    padding:28px;
-    border-bottom:1px solid #e5e7eb;
+.top-right{
     display:flex;
     align-items:center;
-    gap:25px;
+    gap:15px;
 }
 
-.profile-avatar-wrap{
-    position:relative;
-    width:110px;
-    height:110px;
-    flex:0 0 110px;
+.clock{
+    text-align:right;
 }
 
-.profile-avatar{
-    width:110px;
-    height:110px;
+.clock-time{
+    font-size:12px;
+    font-weight:650;
+}
+
+.clock-date{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:2px;
+}
+
+.top-avatar{
+    width:34px;
+    height:34px;
     border-radius:50%;
-    background:#111827;
-    color:#fff;
+    background:#fff;
+    color:#000;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:34px;
+    font-size:12px;
     font-weight:800;
     overflow:hidden;
-    border:4px solid #f3f4f6;
+}
+
+.top-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.content{
+    padding:30px;
+    max-width:1150px;
+    margin:auto;
+}
+
+.page-heading{
+    margin-bottom:20px;
+}
+
+.page-heading small{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.page-heading h1{
+    font-size:27px;
+    margin-top:5px;
+    letter-spacing:-.7px;
+}
+
+.page-heading p{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:7px;
+}
+
+.profile-grid{
+    display:grid;
+    grid-template-columns:330px 1fr;
+    gap:15px;
+}
+
+.card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+}
+
+.profile-card{
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+.profile-avatar{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:#fff;
+    color:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:42px;
+    font-weight:900;
+    overflow:hidden;
+    border:4px solid #171c24;
+    box-shadow:0 0 0 1px var(--border);
 }
 
 .profile-avatar img{
@@ -291,233 +291,259 @@ body{
     object-fit:cover;
 }
 
-.camera-btn{
-    position:absolute;
-    right:0;
-    bottom:0;
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    border:3px solid #fff;
-    background:#111827;
-    color:#fff;
-    cursor:pointer;
-    display:flex;
+.profile-name{
+    margin-top:18px;
+    font-size:20px;
+    font-weight:750;
+}
+
+.profile-role{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:11px;
+    text-transform:capitalize;
+}
+
+.status-badge{
+    margin-top:13px;
+    display:inline-flex;
     align-items:center;
-    justify-content:center;
-    font-size:14px;
+    gap:6px;
+    padding:6px 10px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:700;
+    color:#7ee787;
+    background:rgba(63,185,80,.1);
+    border:1px solid rgba(63,185,80,.2);
 }
 
-.profile-main{
-    min-width:0;
+.status-badge.offline{
+    color:#ff7b72;
+    background:rgba(248,81,73,.1);
+    border-color:rgba(248,81,73,.2);
 }
 
-.profile-main h2{
-    font-size:21px;
-    font-weight:800;
+.status-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--green);
+}
+
+.status-badge.offline .status-dot{
+    background:var(--red);
+}
+
+.upload-area{
+    width:100%;
+    margin-top:25px;
+}
+
+.file-input{
+    display:none;
+}
+
+.upload-button{
+    width:100%;
+    border:1px solid var(--border);
+    background:var(--panel2);
+    color:#fff;
+    padding:11px 13px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:650;
+    transition:.2s;
+}
+
+.upload-button:hover{
+    border-color:#3b444f;
+    background:#151b23;
+}
+
+.upload-info{
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.5;
+    margin-top:8px;
+}
+
+.upload-progress{
+    display:none;
+    margin-top:12px;
+}
+
+.progress-track{
+    width:100%;
+    height:5px;
+    background:#191f27;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#58a6ff;
+    transition:.2s;
+}
+
+.progress-text{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:5px;
+}
+
+.profile-actions{
+    display:flex;
+    gap:8px;
+    width:100%;
+    margin-top:10px;
+}
+
+.action-btn{
+    flex:1;
+    border:1px solid var(--border);
+    background:transparent;
+    color:#9da5af;
+    border-radius:8px;
+    padding:9px;
+    cursor:pointer;
+    font-size:10px;
+}
+
+.action-btn:hover{
+    color:#fff;
+    background:#12171e;
+}
+
+.section-header{
+    padding:17px 18px;
+    border-bottom:1px solid var(--border);
+}
+
+.section-title{
+    font-size:13px;
+    font-weight:700;
+}
+
+.section-subtitle{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
+}
+
+.info-body{
+    padding:18px;
+}
+
+.info{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:13px 0;
+    border-bottom:1px solid #191f27;
+}
+
+.info:last-child{
+    border-bottom:0;
+}
+
+.info-label{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.info-value{
+    color:#fff;
+    font-size:11px;
+    font-weight:650;
+    text-align:right;
+    max-width:65%;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
 }
 
-.profile-main p{
-    color:#9ca3af;
-    font-size:13px;
-    margin-top:5px;
-}
-
-.role-badge{
+.badge{
     display:inline-flex;
-    margin-top:10px;
-    padding:5px 10px;
-    background:#f3f4f6;
-    color:#4b5563;
-    border-radius:20px;
-    font-size:11px;
+    padding:5px 8px;
+    border-radius:6px;
+    font-size:9px;
     font-weight:700;
 }
 
-.profile-body{
-    padding:25px;
+.badge-active{
+    color:#7ee787;
+    background:rgba(63,185,80,.1);
+    border:1px solid rgba(63,185,80,.2);
 }
 
-.section-title{
-    font-size:14px;
-    font-weight:800;
-    margin-bottom:15px;
+.badge-other{
+    color:#ff7b72;
+    background:rgba(248,81,73,.1);
+    border:1px solid rgba(248,81,73,.2);
 }
 
-.info-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-}
-
-.info-box{
-    border:1px solid #e5e7eb;
-    border-radius:11px;
-    padding:14px;
-    background:#fafafa;
-}
-
-.info-box label{
-    display:block;
-    color:#9ca3af;
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    font-weight:700;
-    margin-bottom:6px;
-}
-
-.info-box strong{
-    display:block;
-    font-size:13px;
-    color:#374151;
-    word-break:break-word;
-}
-
-.upload-area{
-    margin-top:25px;
-    border-top:1px solid #e5e7eb;
-    padding-top:25px;
-}
-
-.file-box{
-    border:1px dashed #d1d5db;
-    border-radius:12px;
-    padding:22px;
-    text-align:center;
-    background:#fafafa;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.file-box:hover{
-    background:#f3f4f6;
-    border-color:#9ca3af;
-}
-
-.file-box strong{
-    display:block;
-    font-size:13px;
-    color:#374151;
-}
-
-.file-box span{
-    display:block;
-    font-size:11px;
-    color:#9ca3af;
-    margin-top:5px;
-}
-
-#fileInput{
-    display:none;
-}
-
-.preview{
-    display:none;
-    margin-top:15px;
-    padding:12px;
-    border:1px solid #e5e7eb;
-    border-radius:11px;
-    background:#fff;
-}
-
-.preview img{
+.refresh-btn{
     width:100%;
-    max-height:250px;
-    object-fit:contain;
-    border-radius:8px;
-}
-
-.preview-name{
-    margin-top:8px;
-    color:#6b7280;
-    font-size:11px;
-    word-break:break-all;
-}
-
-.actions{
-    display:flex;
-    gap:9px;
     margin-top:15px;
-}
-
-.btn{
-    border:0;
-    border-radius:9px;
-    padding:11px 15px;
-    cursor:pointer;
-    font-size:12px;
-    font-weight:700;
-    transition:.2s;
-}
-
-.btn-primary{
-    background:#111827;
+    padding:11px;
+    border:1px solid var(--border);
+    background:var(--panel2);
     color:#fff;
-}
-
-.btn-primary:hover{
-    background:#374151;
-}
-
-.btn-secondary{
-    background:#f3f4f6;
-    color:#374151;
-}
-
-.btn-secondary:hover{
-    background:#e5e7eb;
-}
-
-.btn-danger{
-    background:#fee2e2;
-    color:#b91c1c;
-}
-
-.btn-danger:hover{
-    background:#fecaca;
-}
-
-.btn:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
-.upload-status{
-    display:none;
-    margin-top:12px;
-    padding:11px 13px;
     border-radius:9px;
-    font-size:12px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:650;
 }
 
-.upload-status.success{
-    display:block;
-    background:#dcfce7;
-    color:#166534;
+.refresh-btn:hover{
+    border-color:#3b444f;
 }
 
-.upload-status.error{
-    display:block;
-    background:#fee2e2;
-    color:#991b1b;
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#11161e;
+    border:1px solid var(--border);
+    color:#fff;
+    padding:12px 15px;
+    border-radius:9px;
+    font-size:11px;
+    opacity:0;
+    transform:translateY(10px);
+    pointer-events:none;
+    transition:.25s;
+    z-index:100;
 }
 
-.upload-status.loading{
-    display:block;
-    background:#f3f4f6;
-    color:#4b5563;
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
 }
 
-@media(max-width:800px){
+@media(max-width:900px){
+
+    .profile-grid{
+        grid-template-columns:1fr;
+    }
+
+    .profile-card{
+        max-width:600px;
+        width:100%;
+        margin:auto;
+    }
+}
+
+@media(max-width:760px){
 
     .sidebar{
         transform:translateX(-100%);
         transition:.25s;
-        box-shadow:10px 0 30px rgba(0,0,0,.08);
     }
 
     .sidebar.open{
@@ -525,8 +551,8 @@ body{
     }
 
     .main{
-        width:100%;
         margin-left:0;
+        width:100%;
     }
 
     .mobile-menu{
@@ -534,60 +560,39 @@ body{
     }
 
     .topbar{
-        padding:0 15px;
+        padding:0 16px;
+    }
+
+    .clock{
+        display:none;
     }
 
     .content{
-        padding:15px;
+        padding:20px 15px 30px;
+    }
+
+    .page-heading h1{
+        font-size:23px;
     }
 }
 
-@media(max-width:600px){
-
-    .profile-top{
-        padding:22px;
-        flex-direction:column;
-        text-align:center;
-    }
-
-    .profile-main h2{
-        max-width:280px;
-    }
-
-    .info-grid{
-        grid-template-columns:1fr;
-    }
-
-    .profile-body{
-        padding:20px;
-    }
-
-    .actions{
-        flex-direction:column;
-    }
-
-    .btn{
-        width:100%;
-    }
-}
-
-@media(max-width:480px){
+@media(max-width:430px){
 
     .content{
-        padding:10px;
-    }
-
-    .profile-header{
-        border-radius:13px;
-        padding:21px;
-    }
-
-    .profile-header h1{
-        font-size:21px;
+        padding:15px 10px 25px;
     }
 
     .profile-card{
-        border-radius:13px;
+        padding:20px 15px;
+    }
+
+    .profile-avatar{
+        width:110px;
+        height:110px;
+    }
+
+    .info-value{
+        max-width:55%;
     }
 }
 </style>
@@ -600,307 +605,408 @@ body{
 <aside class="sidebar" id="sidebar">
 
     <div class="logo">
-        <div class="logo-icon">R</div>
+        <div class="logo-icon">RC</div>
 
         <div class="logo-text">
             ReyCloud <span>Panel</span>
         </div>
     </div>
 
-    <div class="nav-title">
-        Menu
+    <div class="menu-title">
+        MAIN
     </div>
 
     <nav class="nav">
 
-        <a href="dashboard.html">
-            <span>⌂</span>
+        <button onclick="openPage('dashboard.html')">
+            <span class="nav-icon">⌂</span>
             Dashboard
-        </a>
+        </button>
 
-        <a href="cpanel.html">
-            <span>▣</span>
-            Create Panel
-        </a>
+        <button onclick="openPage('cpanel.html')">
+            <span class="nav-icon">▣</span>
+            CPanel
+        </button>
 
-        <a href="cadmin.html">
-            <span>♙</span>
-            Create Admin
-        </a>
+        <button onclick="openPage('cadmin.html')">
+            <span class="nav-icon">◈</span>
+            CAdmin
+        </button>
 
-        <a href="chat.html">
-            <span>◉</span>
+        <button onclick="openPage('chat.html')">
+            <span class="nav-icon">☁</span>
             Public Chat
-        </a>
+        </button>
 
-        <a href="profile.html" class="active">
-            <span>●</span>
-            Profile
-        </a>
+        <button onclick="openPage('privatechat.html')">
+            <span class="nav-icon">💬</span>
+            Private Chat
+        </button>
 
     </nav>
 
-    <div class="sidebar-user">
+    <div class="menu-title">
+        ACCOUNT
+    </div>
 
-        <div class="user-mini">
+    <nav class="nav">
 
-            <div class="avatar-mini" id="sidebarAvatar">
-                R
-            </div>
+        <button class="active">
+            <span class="nav-icon">👤</span>
+            Profile
+        </button>
 
-            <div class="user-info">
+        <button onclick="refreshUser()">
+            <span class="nav-icon">↻</span>
+            Refresh Data
+        </button>
 
-                <strong id="sidebarUsername">
-                    User
-                </strong>
+        <button onclick="logout()">
+            <span class="nav-icon">↪</span>
+            Logout
+        </button>
 
-                <span id="sidebarRole">
-                    member
-                </span>
+    </nav>
 
-            </div>
+    <div class="logout">
 
-        </div>
+        <button
+            class="nav"
+            onclick="logout()"
+            style="
+                width:100%;
+                border:0;
+                background:transparent;
+                padding:11px 12px;
+                cursor:pointer;
+                text-align:left;
+                font-size:13px;
+            "
+        >
+            <span class="nav-icon">⎋</span>
+            Keluar
+        </button>
 
     </div>
 
 </aside>
 
-
 <main class="main">
 
 <header class="topbar">
 
-    <div style="
-        display:flex;
-        align-items:center;
-        gap:10px
-    ">
+    <div class="page-title">
 
         <button
             class="mobile-menu"
-            id="mobileMenu"
-            type="button"
+            onclick="toggleSidebar()"
         >
             ☰
         </button>
 
-        <div class="page-title">
-            Profile
+        Profile
+
+    </div>
+
+    <div class="top-right">
+
+        <div class="clock">
+
+            <div
+                class="clock-time"
+                id="clock"
+            >
+                00:00:00
+            </div>
+
+            <div
+                class="clock-date"
+                id="date"
+            >
+                Memuat...
+            </div>
+
+        </div>
+
+        <div
+            class="top-avatar"
+            id="topAvatar"
+        >
+            R
         </div>
 
     </div>
 
 </header>
 
-
 <section class="content">
 
-    <div class="profile-header">
+<div class="page-heading">
 
-        <h1>
-            👤 My Profile
-        </h1>
+    <small>
+        Account
+    </small>
 
-        <p>
-            Kelola informasi dan foto profil akun ReyCloud kamu.
-        </p>
+    <h1>
+        My Profile
+    </h1>
 
+    <p>
+        Kelola informasi dan foto profil akun ReyCloud kamu.
+    </p>
+
+</div>
+
+<div class="profile-grid">
+
+<div class="card profile-card">
+
+    <div
+        class="profile-avatar"
+        id="profileAvatar"
+    >
+        R
     </div>
 
+    <div
+        class="profile-name"
+        id="profileName"
+    >
+        User
+    </div>
 
-    <div class="profile-card">
+    <div
+        class="profile-role"
+        id="profileRole"
+    >
+        member
+    </div>
 
-        <div class="profile-top">
+    <div
+        class="status-badge"
+        id="statusBadge"
+    >
+        <span class="status-dot"></span>
+        <span id="statusText">
+            Active
+        </span>
+    </div>
 
-            <div class="profile-avatar-wrap">
+    <div class="upload-area">
 
-                <div
-                    class="profile-avatar"
-                    id="profileAvatar"
-                >
-                    R
-                </div>
+        <input
+            class="file-input"
+            type="file"
+            id="avatarInput"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+        >
 
-                <button
-                    class="camera-btn"
-                    id="cameraBtn"
-                    type="button"
-                    title="Ganti foto"
-                >
-                    📷
-                </button>
+        <button
+            class="upload-button"
+            type="button"
+            onclick="document.getElementById('avatarInput').click()"
+        >
+            📷 Ganti Foto Profil
+        </button>
 
-            </div>
-
-
-            <div class="profile-main">
-
-                <h2 id="profileUsername">
-                    User
-                </h2>
-
-                <p id="profileSubtitle">
-                    ReyCloud User
-                </p>
-
-                <span
-                    class="role-badge"
-                    id="profileRole"
-                >
-                    Member
-                </span>
-
-            </div>
-
+        <div class="upload-info">
+            Format JPG, PNG, WEBP atau GIF.
+            Maksimal 5MB.
         </div>
 
+        <div
+            class="upload-progress"
+            id="uploadProgress"
+        >
 
-        <div class="profile-body">
-
-            <div class="section-title">
-                Informasi Akun
-            </div>
-
-            <div class="info-grid">
-
-                <div class="info-box">
-
-                    <label>
-                        Username
-                    </label>
-
-                    <strong id="infoUsername">
-                        -
-                    </strong>
-
-                </div>
-
-                <div class="info-box">
-
-                    <label>
-                        Role
-                    </label>
-
-                    <strong id="infoRole">
-                        -
-                    </strong>
-
-                </div>
-
-                <div class="info-box">
-
-                    <label>
-                        Status
-                    </label>
-
-                    <strong id="infoStatus">
-                        Active
-                    </strong>
-
-                </div>
-
-                <div class="info-box">
-
-                    <label>
-                        Avatar
-                    </label>
-
-                    <strong id="infoAvatar">
-                        Default
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="upload-area">
-
-                <div class="section-title">
-                    Foto Profil
-                </div>
-
-                <label
-                    class="file-box"
-                    for="fileInput"
-                >
-
-                    <strong>
-                        📷 Pilih foto profil
-                    </strong>
-
-                    <span>
-                        JPG, JPEG, PNG atau WEBP • Maksimal 5MB
-                    </span>
-
-                </label>
-
-                <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/jpeg,image/png,image/webp"
-                >
-
+            <div class="progress-track">
 
                 <div
-                    class="preview"
-                    id="preview"
-                >
-
-                    <img
-                        id="previewImage"
-                        alt="Preview"
-                    >
-
-                    <div
-                        class="preview-name"
-                        id="previewName"
-                    ></div>
-
-                </div>
-
-
-                <div class="actions">
-
-                    <button
-                        class="btn btn-primary"
-                        id="uploadBtn"
-                        type="button"
-                        disabled
-                    >
-                        📤 Upload Foto
-                    </button>
-
-                    <button
-                        class="btn btn-secondary"
-                        id="cancelBtn"
-                        type="button"
-                    >
-                        Batal
-                    </button>
-
-                    <button
-                        class="btn btn-danger"
-                        id="removeBtn"
-                        type="button"
-                    >
-                        🗑️ Hapus Foto
-                    </button>
-
-                </div>
-
-
-                <div
-                    class="upload-status"
-                    id="uploadStatus"
+                    class="progress-bar"
+                    id="progressBar"
                 ></div>
 
             </div>
 
+            <div
+                class="progress-text"
+                id="progressText"
+            >
+                Uploading...
+            </div>
+
+        </div>
+
+        <div class="profile-actions">
+
+            <button
+                class="action-btn"
+                onclick="openPage('dashboard.html')"
+            >
+                ← Dashboard
+            </button>
+
+            <button
+                class="action-btn"
+                onclick="refreshUser()"
+            >
+                ↻ Refresh
+            </button>
+
         </div>
 
     </div>
+
+</div>
+
+<div class="card">
+
+    <div class="section-header">
+
+        <div class="section-title">
+            Account Information
+        </div>
+
+        <div class="section-subtitle">
+            Informasi akun ReyCloud
+        </div>
+
+    </div>
+
+    <div class="info-body">
+
+        <div class="info">
+
+            <span class="info-label">
+                User ID
+            </span>
+
+            <span
+                class="info-value"
+                id="userId"
+            >
+                -
+            </span>
+
+        </div>
+
+        <div class="info">
+
+            <span class="info-label">
+                Username
+            </span>
+
+            <span
+                class="info-value"
+                id="username"
+            >
+                -
+            </span>
+
+        </div>
+
+        <div class="info">
+
+            <span class="info-label">
+                Role
+            </span>
+
+            <span
+                class="info-value"
+                id="role"
+            >
+                -
+            </span>
+
+        </div>
+
+        <div class="info">
+
+            <span class="info-label">
+                Status
+            </span>
+
+            <span
+                class="info-value"
+                id="accountStatus"
+            >
+                -
+            </span>
+
+        </div>
+
+        <div class="info">
+
+            <span class="info-label">
+                Duration
+            </span>
+
+            <span
+                class="info-value"
+                id="duration"
+            >
+                -
+            </span>
+
+        </div>
+
+        <div class="info">
+
+            <span class="info-label">
+                Created
+            </span>
+
+            <span
+                class="info-value"
+                id="createdAt"
+            >
+                -
+            </span>
+
+        </div>
+
+        <div class="info">
+
+            <span class="info-label">
+                Expired
+            </span>
+
+            <span
+                class="info-value"
+                id="expiresAt"
+            >
+                -
+            </span>
+
+        </div>
+
+        <div class="info">
+
+            <span class="info-label">
+                Avatar URL
+            </span>
+
+            <span
+                class="info-value"
+                id="avatarUrl"
+            >
+                -
+            </span>
+
+        </div>
+
+        <button
+            class="refresh-btn"
+            onclick="refreshUser()"
+        >
+            🔄 Refresh Account Data
+        </button>
+
+    </div>
+
+</div>
+
+</div>
 
 </section>
 
@@ -908,673 +1014,29 @@ body{
 
 </div>
 
+<div
+    class="toast"
+    id="toast"
+></div>
 
 <script>
 
-const API_UPLOAD =
+const API_BASE =
+    localStorage.getItem("apiBase") ||
+    "https://api.legionteknologi.my.id";
+
+const UPLOAD_URL =
     "https://api.legionteknologi.my.id/upload";
 
-let currentUser = null;
-let selectedFile = null;
-let previewObjectUrl = null;
-
-
-/* =========================
-   USER STORAGE
-========================= */
+let user =
+    getUser();
 
 function getUser(){
 
     const keys = [
         "user",
         "currentUser",
-        "reycloud_user",
-        "loginUser"
-    ];
-
-    for(const key of keys){
-
-        try{
-
-            const raw =
-                localStorage.getItem(key);
-
-            if(!raw){
-                continue;
-            }
-
-            const parsed =
-                JSON.parse(raw);
-
-            if(
-                parsed &&
-                parsed.result &&
-                parsed.result.user
-            ){
-                return parsed.result.user;
-            }
-
-            if(
-                parsed &&
-                parsed.user
-            ){
-                return parsed.user;
-            }
-
-            if(
-                parsed &&
-                parsed.username
-            ){
-                return parsed;
-            }
-
-        }catch(error){
-
-            console.error(
-                "[STORAGE]",
-                error
-            );
-
-        }
-
-    }
-
-    return null;
-}
-
-
-/* =========================
-   FORMAT
-========================= */
-
-function formatRole(role){
-
-    return String(
-        role || "member"
-    )
-    .replace(
-        /\b\w/g,
-        char =>
-            char.toUpperCase()
-    );
-}
-
-
-/* =========================
-   STATUS
-========================= */
-
-function showStatus(
-    message,
-    type
-){
-
-    const box =
-        document.getElementById(
-            "uploadStatus"
-        );
-
-    box.textContent =
-        message;
-
-    box.className =
-        `upload-status ${type}`;
-
-}
-
-
-/* =========================
-   AVATAR
-========================= */
-
-function getAvatarUrl(){
-
-    if(!currentUser){
-        return "";
-    }
-
-    return (
-        currentUser.avatar ||
-        currentUser.avatarUrl ||
-        currentUser.photo ||
-        currentUser.photoUrl ||
-        localStorage.getItem(
-            `avatar_${currentUser.username}`
-        ) ||
-        ""
-    );
-}
-
-
-function renderAvatar(){
-
-    if(!currentUser){
-        return;
-    }
-
-    const username =
-        String(
-            currentUser.username ||
-            "User"
-        ).trim();
-
-    const initial =
-        username
-            .charAt(0)
-            .toUpperCase();
-
-    const avatarUrl =
-        getAvatarUrl();
-
-    const profileAvatar =
-        document.getElementById(
-            "profileAvatar"
-        );
-
-    const sidebarAvatar =
-        document.getElementById(
-            "sidebarAvatar"
-        );
-
-    if(avatarUrl){
-
-        profileAvatar.innerHTML =
-            `<img
-                src="${escapeAttr(avatarUrl)}"
-                alt="Avatar"
-                onerror="this.parentElement.textContent='${escapeAttr(initial)}'"
-            >`;
-
-        sidebarAvatar.innerHTML =
-            `<img
-                src="${escapeAttr(avatarUrl)}"
-                alt="Avatar"
-            >`;
-
-        document.getElementById(
-            "infoAvatar"
-        ).textContent =
-            "Custom";
-
-    }else{
-
-        profileAvatar.textContent =
-            initial;
-
-        sidebarAvatar.textContent =
-            initial;
-
-        document.getElementById(
-            "infoAvatar"
-        ).textContent =
-            "Default";
-    }
-}
-
-
-function escapeAttr(value){
-
-    return String(
-        value || ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    );
-}
-
-
-/* =========================
-   USER SETUP
-========================= */
-
-function setupUser(){
-
-    currentUser =
-        getUser();
-
-    if(!currentUser){
-
-        alert(
-            "Session login tidak ditemukan. Silakan login terlebih dahulu."
-        );
-
-        window.location.href =
-            "index.html";
-
-        return false;
-    }
-
-    const username =
-        String(
-            currentUser.username ||
-            "User"
-        ).trim();
-
-    const role =
-        String(
-            currentUser.role ||
-            "member"
-        ).trim();
-
-    document.getElementById(
-        "profileUsername"
-    ).textContent =
-        username;
-
-    document.getElementById(
-        "profileSubtitle"
-    ).textContent =
-        `${formatRole(role)} ReyCloud User`;
-
-    document.getElementById(
-        "profileRole"
-    ).textContent =
-        formatRole(role);
-
-    document.getElementById(
-        "infoUsername"
-    ).textContent =
-        username;
-
-    document.getElementById(
-        "infoRole"
-    ).textContent =
-        formatRole(role);
-
-    document.getElementById(
-        "infoStatus"
-    ).textContent =
-        currentUser.status ||
-        "Active";
-
-    document.getElementById(
-        "sidebarUsername"
-    ).textContent =
-        username;
-
-    document.getElementById(
-        "sidebarRole"
-    ).textContent =
-        formatRole(role);
-
-    renderAvatar();
-
-    return true;
-}
-
-
-/* =========================
-   FILE SELECT
-========================= */
-
-document.getElementById(
-    "fileInput"
-).addEventListener(
-    "change",
-    event => {
-
-        const file =
-            event.target.files?.[0];
-
-        if(!file){
-            return;
-        }
-
-        const allowed = [
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-        ];
-
-        if(
-            !allowed.includes(
-                file.type
-            )
-        ){
-
-            showStatus(
-                "Format foto harus JPG, JPEG, PNG atau WEBP.",
-                "error"
-            );
-
-            event.target.value =
-                "";
-
-            return;
-        }
-
-        if(
-            file.size >
-            5 * 1024 * 1024
-        ){
-
-            showStatus(
-                "Ukuran foto maksimal 5MB.",
-                "error"
-            );
-
-            event.target.value =
-                "";
-
-            return;
-        }
-
-        selectedFile =
-            file;
-
-        if(previewObjectUrl){
-
-            URL.revokeObjectURL(
-                previewObjectUrl
-            );
-        }
-
-        previewObjectUrl =
-            URL.createObjectURL(
-                file
-            );
-
-        document.getElementById(
-            "previewImage"
-        ).src =
-            previewObjectUrl;
-
-        document.getElementById(
-            "previewName"
-        ).textContent =
-            `${file.name} • ${formatSize(file.size)}`;
-
-        document.getElementById(
-            "preview"
-        ).style.display =
-            "block";
-
-        document.getElementById(
-            "uploadBtn"
-        ).disabled =
-            false;
-
-        showStatus(
-            "Foto siap di-upload.",
-            "loading"
-        );
-
-    }
-);
-
-
-/* =========================
-   FORMAT SIZE
-========================= */
-
-function formatSize(bytes){
-
-    if(
-        bytes <
-        1024
-    ){
-        return `${bytes} B`;
-    }
-
-    if(
-        bytes <
-        1024 * 1024
-    ){
-        return `${(
-            bytes / 1024
-        ).toFixed(1)} KB`;
-    }
-
-    return `${(
-        bytes /
-        (1024 * 1024)
-    ).toFixed(2)} MB`;
-}
-
-
-/* =========================
-   UPLOAD
-========================= */
-
-document.getElementById(
-    "uploadBtn"
-).addEventListener(
-    "click",
-    uploadAvatar
-);
-
-
-async function uploadAvatar(){
-
-    if(!selectedFile){
-
-        showStatus(
-            "Pilih foto terlebih dahulu.",
-            "error"
-        );
-
-        return;
-    }
-
-    if(!currentUser?.username){
-
-        showStatus(
-            "Username tidak ditemukan.",
-            "error"
-        );
-
-        return;
-    }
-
-    const button =
-        document.getElementById(
-            "uploadBtn"
-        );
-
-    button.disabled =
-        true;
-
-    showStatus(
-        "Sedang meng-upload foto...",
-        "loading"
-    );
-
-    try{
-
-        const formData =
-            new FormData();
-
-        formData.append(
-            "file",
-            selectedFile
-        );
-
-        formData.append(
-            "username",
-            currentUser.username
-        );
-
-        const response =
-            await fetch(
-                API_UPLOAD,
-                {
-                    method:"POST",
-                    body:formData
-                }
-            );
-
-        let data;
-
-        try{
-
-            data =
-                await response.json();
-
-        }catch{
-
-            throw new Error(
-                `Response upload tidak valid (${response.status})`
-            );
-
-        }
-
-        if(
-            !response.ok
-        ){
-
-            throw new Error(
-                data?.message ||
-                `Upload gagal (${response.status})`
-            );
-        }
-
-        if(
-            data?.status === false
-        ){
-
-            throw new Error(
-                data.message ||
-                "Upload gagal."
-            );
-        }
-
-        const avatarUrl =
-            extractUrl(data);
-
-        if(!avatarUrl){
-
-            throw new Error(
-                "Upload berhasil tetapi URL foto tidak ditemukan dari response API."
-            );
-        }
-
-        saveAvatar(
-            avatarUrl
-        );
-
-        showStatus(
-            "✅ Foto profil berhasil diperbarui!",
-            "success"
-        );
-
-        selectedFile =
-            null;
-
-        document.getElementById(
-            "fileInput"
-        ).value =
-            "";
-
-        document.getElementById(
-            "uploadBtn"
-        ).disabled =
-            true;
-
-        renderAvatar();
-
-    }catch(error){
-
-        console.error(
-            "[AVATAR UPLOAD]",
-            error
-        );
-
-        showStatus(
-            error.message ||
-            "Gagal meng-upload foto.",
-            "error"
-        );
-
-        button.disabled =
-            false;
-    }
-}
-
-
-/* =========================
-   EXTRACT URL
-========================= */
-
-function extractUrl(data){
-
-    const candidates = [
-
-        data?.url,
-
-        data?.result?.url,
-
-        data?.result?.fileUrl,
-
-        data?.result?.imageUrl,
-
-        data?.result?.link,
-
-        data?.data?.url,
-
-        data?.data?.fileUrl,
-
-        data?.data?.imageUrl,
-
-        data?.data?.link
-    ];
-
-    for(
-        const value of candidates
-    ){
-
-        if(
-            typeof value === "string" &&
-            /^https?:\/\//i.test(value)
-        ){
-
-            return value;
-        }
-
-    }
-
-    return "";
-}
-
-
-/* =========================
-   SAVE AVATAR
-========================= */
-
-function saveAvatar(
-    avatarUrl
-){
-
-    if(!currentUser?.username){
-        return;
-    }
-
-    currentUser.avatar =
-        avatarUrl;
-
-    const username =
-        currentUser.username;
-
-    localStorage.setItem(
-        `avatar_${username}`,
-        avatarUrl
-    );
-
-    const keys = [
-        "user",
-        "currentUser",
+        "userData",
         "reycloud_user",
         "loginUser"
     ];
@@ -1583,222 +1045,755 @@ function saveAvatar(
         const key of keys
     ){
 
+        const raw =
+            localStorage.getItem(key);
+
+        if(!raw){
+            continue;
+        }
+
         try{
 
-            const raw =
-                localStorage.getItem(
-                    key
-                );
-
-            if(!raw){
-                continue;
-            }
-
-            const parsed =
+            const data =
                 JSON.parse(raw);
 
             if(
-                parsed?.result?.user
+                data &&
+                typeof data === "object"
             ){
 
-                parsed.result.user.avatar =
-                    avatarUrl;
+                if(data.result?.user){
+                    return data.result.user;
+                }
 
-                localStorage.setItem(
-                    key,
-                    JSON.stringify(parsed)
-                );
+                if(data.user){
+                    return data.user;
+                }
 
-                continue;
+                if(data.username){
+                    return data;
+                }
+
             }
 
-            if(parsed?.user){
+        }catch{
 
-                parsed.user.avatar =
-                    avatarUrl;
+        }
 
-                localStorage.setItem(
-                    key,
-                    JSON.stringify(parsed)
+    }
+
+    return null;
+}
+
+if(!user){
+
+    window.location.href =
+        "index.html";
+}
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function initials(name){
+
+    if(!name){
+        return "R";
+    }
+
+    return name
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+}
+
+function getAvatar(){
+
+    return (
+        user?.avatar ||
+        user?.avatarUrl ||
+        user?.image ||
+        user?.photo ||
+        user?.profilePicture ||
+        ""
+    );
+}
+
+function renderAvatar(){
+
+    const profile =
+        document.getElementById(
+            "profileAvatar"
+        );
+
+    const top =
+        document.getElementById(
+            "topAvatar"
+        );
+
+    const avatar =
+        getAvatar();
+
+    const initial =
+        initials(
+            user?.username
+        );
+
+    if(avatar){
+
+        const safe =
+            escapeHTML(avatar);
+
+        profile.innerHTML = `
+            <img
+                src="${safe}"
+                alt="Profile"
+                onerror="this.onerror=null;this.parentElement.textContent='${initial}'"
+            >
+        `;
+
+        top.innerHTML = `
+            <img
+                src="${safe}"
+                alt="Avatar"
+                onerror="this.onerror=null;this.parentElement.textContent='${initial}'"
+            >
+        `;
+
+    }else{
+
+        profile.textContent =
+            initial;
+
+        top.textContent =
+            initial;
+
+    }
+
+    document.getElementById(
+        "avatarUrl"
+    ).textContent =
+        avatar || "-";
+}
+
+function formatDateTime(date){
+
+    if(!date){
+        return "-";
+    }
+
+    const d =
+        new Date(date);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+        return "-";
+    }
+
+    return d.toLocaleString(
+        "id-ID",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+}
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+    window.toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
                 );
 
-                continue;
+            },
+            2500
+        );
+}
+
+function loadUser(){
+
+    user =
+        getUser();
+
+    if(!user){
+
+        window.location.href =
+            "index.html";
+
+        return;
+    }
+
+    const username =
+        user.username ||
+        "User";
+
+    document.getElementById(
+        "profileName"
+    ).textContent =
+        username;
+
+    document.getElementById(
+        "profileRole"
+    ).textContent =
+        user.role ||
+        "member";
+
+    document.getElementById(
+        "userId"
+    ).textContent =
+        user.id ||
+        "-";
+
+    document.getElementById(
+        "username"
+    ).textContent =
+        username;
+
+    document.getElementById(
+        "role"
+    ).textContent =
+        user.role ||
+        "member";
+
+    document.getElementById(
+        "duration"
+    ).textContent =
+        user.duration ||
+        "-";
+
+    document.getElementById(
+        "createdAt"
+    ).textContent =
+        formatDateTime(
+            user.createdAt
+        );
+
+    document.getElementById(
+        "expiresAt"
+    ).textContent =
+        formatDateTime(
+            user.expiresAt
+        );
+
+    const status =
+        String(
+            user.status ||
+            "unknown"
+        );
+
+    const badge =
+        document.getElementById(
+            "statusBadge"
+        );
+
+    const accountStatus =
+        document.getElementById(
+            "accountStatus"
+        );
+
+    if(
+        status.toLowerCase() ===
+        "active"
+    ){
+
+        badge.classList.remove(
+            "offline"
+        );
+
+        document.getElementById(
+            "statusText"
+        ).textContent =
+            "Active";
+
+        accountStatus.innerHTML =
+            `<span class="badge badge-active">ACTIVE</span>`;
+
+    }else{
+
+        badge.classList.add(
+            "offline"
+        );
+
+        document.getElementById(
+            "statusText"
+        ).textContent =
+            status;
+
+        accountStatus.innerHTML =
+            `<span class="badge badge-other">${escapeHTML(status).toUpperCase()}</span>`;
+
+    }
+
+    renderAvatar();
+}
+
+function refreshUser(){
+
+    const username =
+        user?.username;
+
+    if(!username){
+
+        loadUser();
+
+        return;
+    }
+
+    showToast(
+        "Mengambil data terbaru..."
+    );
+
+    fetch(
+        `${API_BASE}/api/users/${encodeURIComponent(username)}`,
+        {
+            method:"GET",
+            cache:"no-store",
+            headers:{
+                "Accept":
+                    "application/json"
             }
+        }
+    )
+    .then(
+        response =>
+            response.json()
+    )
+    .then(
+        data => {
 
-            if(parsed?.username){
+            if(
+                !data.status ||
+                !data.result
+            ){
 
-                parsed.avatar =
-                    avatarUrl;
-
-                localStorage.setItem(
-                    key,
-                    JSON.stringify(parsed)
+                throw new Error(
+                    data.message ||
+                    "Gagal mengambil data user"
                 );
+
             }
 
-        }catch(error){
+            user =
+                data.result;
 
-            console.warn(
-                "[SAVE USER]",
+            const serialized =
+                JSON.stringify(
+                    user
+                );
+
+            localStorage.setItem(
+                "user",
+                serialized
+            );
+
+            localStorage.setItem(
+                "userData",
+                serialized
+            );
+
+            localStorage.setItem(
+                "currentUser",
+                serialized
+            );
+
+            loadUser();
+
+            showToast(
+                "Data akun berhasil diperbarui."
+            );
+
+        }
+    )
+    .catch(
+        error => {
+
+            console.error(
+                "[PROFILE REFRESH]",
                 error
             );
 
-        }
-
-    }
-
-}
-
-
-/* =========================
-   CANCEL
-========================= */
-
-document.getElementById(
-    "cancelBtn"
-).addEventListener(
-    "click",
-    () => {
-
-        selectedFile =
-            null;
-
-        document.getElementById(
-            "fileInput"
-        ).value =
-            "";
-
-        document.getElementById(
-            "preview"
-        ).style.display =
-            "none";
-
-        document.getElementById(
-            "uploadBtn"
-        ).disabled =
-            true;
-
-        document.getElementById(
-            "uploadStatus"
-        ).className =
-            "upload-status";
-
-    }
-);
-
-
-/* =========================
-   REMOVE AVATAR
-========================= */
-
-document.getElementById(
-    "removeBtn"
-).addEventListener(
-    "click",
-    () => {
-
-        if(!currentUser?.username){
-            return;
-        }
-
-        const username =
-            currentUser.username;
-
-        localStorage.removeItem(
-            `avatar_${username}`
-        );
-
-        currentUser.avatar =
-            "";
-
-        saveAvatar("");
-
-        renderAvatar();
-
-        showStatus(
-            "Foto profil dihapus dari akun lokal.",
-            "success"
-        );
-
-    }
-);
-
-
-/* =========================
-   CAMERA BUTTON
-========================= */
-
-document.getElementById(
-    "cameraBtn"
-).addEventListener(
-    "click",
-    () => {
-
-        document.getElementById(
-            "fileInput"
-        ).click();
-
-    }
-);
-
-
-/* =========================
-   MOBILE MENU
-========================= */
-
-document.getElementById(
-    "mobileMenu"
-).addEventListener(
-    "click",
-    () => {
-
-        document
-            .getElementById(
-                "sidebar"
-            )
-            .classList
-            .toggle(
-                "open"
+            showToast(
+                error.message ||
+                "API tidak dapat dihubungi."
             );
 
+        }
+    );
+}
+
+function uploadAvatar(file){
+
+    if(!file){
+        return;
     }
-);
 
+    const allowed = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif"
+    ];
 
-/* =========================
-   AUTO CLOSE SIDEBAR
-========================= */
+    if(
+        !allowed.includes(
+            file.type
+        )
+    ){
 
-document.querySelectorAll(
-    ".nav a"
-).forEach(
-    link => {
+        showToast(
+            "Format foto tidak didukung."
+        );
 
-        link.addEventListener(
-            "click",
-            () => {
+        return;
+    }
 
-                document
-                    .getElementById(
-                        "sidebar"
-                    )
-                    .classList
-                    .remove(
-                        "open"
+    if(
+        file.size >
+        5 * 1024 * 1024
+    ){
+
+        showToast(
+            "Ukuran foto maksimal 5MB."
+        );
+
+        return;
+    }
+
+    const progress =
+        document.getElementById(
+            "uploadProgress"
+        );
+
+    const bar =
+        document.getElementById(
+            "progressBar"
+        );
+
+    const text =
+        document.getElementById(
+            "progressText"
+        );
+
+    progress.style.display =
+        "block";
+
+    bar.style.width =
+        "0%";
+
+    text.textContent =
+        "Mengupload foto...";
+
+    const form =
+        new FormData();
+
+    form.append(
+        "file",
+        file
+    );
+
+    const xhr =
+        new XMLHttpRequest();
+
+    xhr.open(
+        "POST",
+        UPLOAD_URL
+    );
+
+    xhr.upload.onprogress =
+        event => {
+
+            if(
+                event.lengthComputable
+            ){
+
+                const percent =
+                    Math.round(
+                        event.loaded /
+                        event.total *
+                        100
                     );
 
+                bar.style.width =
+                    `${percent}%`;
+
+                text.textContent =
+                    `Uploading ${percent}%`;
+
+            }
+
+        };
+
+    xhr.onload =
+        () => {
+
+            progress.style.display =
+                "none";
+
+            let data;
+
+            try{
+
+                data =
+                    JSON.parse(
+                        xhr.responseText
+                    );
+
+            }catch{
+
+                showToast(
+                    "Response upload tidak valid."
+                );
+
+                return;
+            }
+
+            if(
+                xhr.status < 200 ||
+                xhr.status >= 300
+            ){
+
+                showToast(
+                    data.message ||
+                    "Upload gagal."
+                );
+
+                return;
+            }
+
+            if(
+                data.status === false
+            ){
+
+                showToast(
+                    data.message ||
+                    "Upload gagal."
+                );
+
+                return;
+            }
+
+            const url =
+                data.url ||
+                data.result?.url ||
+                data.result?.link ||
+                data.link ||
+                data.file?.url ||
+                "";
+
+            if(!url){
+
+                showToast(
+                    "Upload berhasil tetapi URL foto tidak ditemukan."
+                );
+
+                return;
+            }
+
+            user.avatar =
+                url;
+
+            user.avatarUrl =
+                url;
+
+            user.image =
+                url;
+
+            const serialized =
+                JSON.stringify(
+                    user
+                );
+
+            localStorage.setItem(
+                "user",
+                serialized
+            );
+
+            localStorage.setItem(
+                "userData",
+                serialized
+            );
+
+            localStorage.setItem(
+                "currentUser",
+                serialized
+            );
+
+            renderAvatar();
+
+            showToast(
+                "Foto profil berhasil diupload."
+            );
+
+        };
+
+    xhr.onerror =
+        () => {
+
+            progress.style.display =
+                "none";
+
+            showToast(
+                "Gagal menghubungi server upload."
+            );
+
+        };
+
+    xhr.send(
+        form
+    );
+}
+
+document
+    .getElementById(
+        "avatarInput"
+    )
+    .addEventListener(
+        "change",
+        event => {
+
+            const file =
+                event.target.files?.[0];
+
+            uploadAvatar(
+                file
+            );
+
+            event.target.value =
+                "";
+
+        }
+    );
+
+function openPage(page){
+
+    window.location.href =
+        page;
+}
+
+function logout(){
+
+    localStorage.removeItem("user");
+    localStorage.removeItem("userData");
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("reycloud_user");
+    localStorage.removeItem("loginUser");
+
+    window.location.href =
+        "index.html";
+}
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList
+        .toggle("open");
+}
+
+function updateClock(){
+
+    const now =
+        new Date();
+
+    document.getElementById(
+        "clock"
+    ).textContent =
+        now.toLocaleTimeString(
+            "id-ID",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
             }
         );
 
-    }
+    document.getElementById(
+        "date"
+    ).textContent =
+        now.toLocaleDateString(
+            "id-ID",
+            {
+                weekday:"long",
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            }
+        );
+}
+
+document
+    .querySelectorAll(
+        ".nav button"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    if(
+                        window.innerWidth <= 760
+                    ){
+
+                        document
+                            .getElementById(
+                                "sidebar"
+                            )
+                            .classList
+                            .remove(
+                                "open"
+                            );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+loadUser();
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
 );
-
-
-/* =========================
-   INIT
-========================= */
-
-setupUser();
 
 </script>
 
