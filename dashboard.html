@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReyCloud Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#07090d;
+    --panel:#0d1117;
+    --panel2:#11161e;
+    --border:#202731;
+    --text:#f5f7fa;
+    --muted:#8b949e;
+    --green:#3fb950;
+    --blue:#58a6ff;
+    --red:#f85149;
+    --yellow:#d29922;
+}
+
+body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button{
+    font-family:inherit;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:245px;
+    background:#090c11;
+    border-right:1px solid var(--border);
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    padding:22px 14px;
+    z-index:20;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 10px;
+    margin-bottom:30px;
+}
+
+.logo-icon{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    color:#000;
+    font-weight:900;
+    font-size:15px;
+}
+
+.logo-text{
+    font-size:16px;
+    font-weight:750;
+}
+
+.logo-text span{
+    color:var(--muted);
+    font-weight:500;
+}
+
+.menu-title{
+    color:#555d68;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1px;
+    padding:0 11px;
+    margin:22px 0 9px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+.nav button{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#9da5af;
+    padding:11px 12px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    cursor:pointer;
+    text-align:left;
+    font-size:13px;
+    transition:.2s;
+}
+
+.nav button:hover{
+    background:#12171e;
+    color:#fff;
+}
+
+.nav button.active{
+    background:#171c24;
+    color:#fff;
+}
+
+.nav-icon{
+    width:19px;
+    text-align:center;
+    font-size:15px;
+}
+
+.logout{
+    position:absolute;
+    bottom:20px;
+    left:14px;
+    right:14px;
+}
+
+.logout button{
+    color:#f85149;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:245px;
+    width:calc(100% - 245px);
+    min-height:100vh;
+}
+
+/* TOPBAR */
+
+.topbar{
+    height:65px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    background:rgba(7,9,13,.85);
+    backdrop-filter:blur(12px);
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.page-title{
+    font-size:14px;
+    font-weight:650;
+}
+
+.top-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.clock{
+    text-align:right;
+}
+
+.clock-time{
+    font-size:12px;
+    font-weight:650;
+}
+
+.clock-date{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:2px;
+}
+
+.avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#fff;
+    color:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:800;
+}
+
+/* CONTENT */
+
+.content{
+    padding:30px;
+    max-width:1450px;
+    margin:auto;
+}
+
+.welcome{
+    margin-bottom:20px;
+}
+
+.welcome small{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.welcome h1{
+    font-size:27px;
+    letter-spacing:-.8px;
+    margin-top:5px;
+}
+
+.welcome p{
+    color:var(--muted);
+    margin-top:7px;
+    font-size:13px;
+}
+
+/* BANNER */
+
+.hero-banner{
+    position:relative;
+    width:100%;
+    height:270px;
+    border:1px solid var(--border);
+    border-radius:17px;
+    overflow:hidden;
+    margin-bottom:22px;
+    background:#111;
+}
+
+.hero-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.88) 0%,
+            rgba(0,0,0,.60) 42%,
+            rgba(0,0,0,.12) 100%
+        );
+}
+
+.hero-content{
+    position:absolute;
+    left:30px;
+    bottom:28px;
+    max-width:520px;
+    z-index:2;
+}
+
+.hero-badge{
+    display:inline-flex;
+    padding:6px 10px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(10px);
+    border-radius:7px;
+    color:#ddd;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:1px;
+    margin-bottom:12px;
+}
+
+.hero-content h2{
+    font-size:29px;
+    line-height:1.15;
+    letter-spacing:-1px;
+}
+
+.hero-content p{
+    color:#c5cad1;
+    font-size:13px;
+    line-height:1.6;
+    margin-top:9px;
+}
+
+/* STATUS */
+
+.status-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:22px;
+}
+
+.card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:13px;
+}
+
+.stat{
+    padding:18px;
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:11px;
+    margin-bottom:9px;
+}
+
+.stat-value{
+    font-size:17px;
+    font-weight:700;
+}
+
+.status-dot{
+    display:inline-block;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+    margin-right:6px;
+    box-shadow:0 0 8px rgba(63,185,80,.6);
+}
+
+.role{
+    text-transform:capitalize;
+}
+
+/* GRID */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:15px;
+}
+
+.card-header{
+    padding:17px 18px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card-title{
+    font-size:13px;
+    font-weight:700;
+}
+
+.card-subtitle{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.card-body{
+    padding:18px;
+}
+
+/* ACTIONS */
+
+.actions{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.action{
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-radius:11px;
+    padding:15px;
+    cursor:pointer;
+    color:#fff;
+    text-align:left;
+    transition:.2s;
+}
+
+.action:hover{
+    border-color:#3b444f;
+    transform:translateY(-1px);
+}
+
+.action-icon{
+    font-size:19px;
+    margin-bottom:10px;
+}
+
+.action-title{
+    font-size:12px;
+    font-weight:700;
+}
+
+.action-text{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:4px;
+    line-height:1.5;
+}
+
+/* ACCOUNT */
+
+.info{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid #191f27;
+}
+
+.info:last-child{
+    border-bottom:0;
+}
+
+.info span:first-child{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.info span:last-child{
+    font-size:11px;
+    font-weight:600;
+    text-align:right;
+    max-width:60%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.badge{
+    display:inline-flex;
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:9px;
+    font-weight:700;
+}
+
+.badge-active{
+    color:#7ee787;
+    background:rgba(63,185,80,.1);
+    border:1px solid rgba(63,185,80,.2);
+}
+
+.badge-expired{
+    color:#ff7b72;
+    background:rgba(248,81,73,.1);
+    border:1px solid rgba(248,81,73,.2);
+}
+
+/* MOBILE */
+
+.mobile-menu{
+    display:none;
+    width:35px;
+    height:35px;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+    .status-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:760px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .topbar{
+        padding:0 16px;
+    }
+
+    .page-title{
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+
+    .content{
+        padding:18px 15px 30px;
+    }
+
+    .hero-banner{
+        height:225px;
+        border-radius:14px;
+    }
+
+    .hero-content{
+        left:19px;
+        right:19px;
+        bottom:20px;
+    }
+
+    .hero-content h2{
+        font-size:22px;
+    }
+
+    .hero-content p{
+        font-size:11px;
+        max-width:350px;
+    }
+
+    .status-grid{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .stat{
+        padding:14px;
+    }
+
+    .stat-value{
+        font-size:14px;
+    }
+
+    .actions{
+        grid-template-columns:1fr;
+    }
+
+    .clock{
+        display:none;
+    }
+
+}
+
+@media(max-width:420px){
+
+    .status-grid{
+        grid-template-columns:1fr;
+    }
+
+    .welcome h1{
+        font-size:23px;
+    }
+
+    .hero-banner{
+        height:215px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">RC</div>
+            <div class="logo-text">
+                ReyCloud <span>Panel</span>
+            </div>
+        </div>
+
+        <div class="menu-title">
+            MAIN
+        </div>
+
+        <nav class="nav">
+
+            <button class="active">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </button>
+
+            <button onclick="openPage('cpanel.html')">
+                <span class="nav-icon">▣</span>
+                CPanel
+            </button>
+
+            <button onclick="openPage('cadmin.html')">
+                <span class="nav-icon">◈</span>
+                CAdmin
+            </button>
+
+            <button onclick="openPage('chat.html')">
+                <span class="nav-icon">☁</span>
+                Public Chat
+            </button>
+
+        </nav>
+
+        <div class="menu-title">
+            ACCOUNT
+        </div>
+
+        <nav class="nav">
+
+            <button onclick="refreshUser()">
+                <span class="nav-icon">↻</span>
+                Refresh Data
+            </button>
+
+            <button onclick="logout()">
+                <span class="nav-icon">↪</span>
+                Logout
+            </button>
+
+        </nav>
+
+        <div class="logout">
+            <button onclick="logout()">
+                <span class="nav-icon">⎋</span>
+                Keluar
+            </button>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <button
+                    class="mobile-menu"
+                    onclick="toggleSidebar()"
+                >
+                    ☰
+                </button>
+
+                Dashboard
+            </div>
+
+            <div class="top-right">
+
+                <div class="clock">
+                    <div
+                        class="clock-time"
+                        id="clock"
+                    >
+                        00:00:00
+                    </div>
+
+                    <div
+                        class="clock-date"
+                        id="date"
+                    >
+                        Memuat...
+                    </div>
+                </div>
+
+                <div
+                    class="avatar"
+                    id="avatar"
+                >
+                    R
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="content">
+
+            <div class="welcome">
+
+                <small>
+                    Welcome back
+                </small>
+
+                <h1 id="welcomeName">
+                    Rey 👋
+                </h1>
+
+                <p>
+                    Kelola layanan ReyCloud kamu dari satu dashboard.
+                </p>
+
+            </div>
+
+            <!-- BANNER -->
+
+            <div class="hero-banner">
+
+                <video
+                    class="hero-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                >
+                    <source
+                        src="https://files.catbox.moe/tg2yn9.mp4"
+                        type="video/mp4"
+                    >
+                </video>
+
+                <div class="hero-overlay"></div>
+
+                <div class="hero-content">
+
+                    <div class="hero-badge">
+                        REYCLOUD PANEL
+                    </div>
+
+                    <h2>
+                        Solusi Hosting Digital
+                    </h2>
+
+                    <p>
+                        Kelola layanan hosting kamu
+                        dengan cepat, simpel, dan modern.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="status-grid">
+
+                <div class="card stat">
+
+                    <div class="stat-label">
+                        Account Status
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="status"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+                <div class="card stat">
+
+                    <div class="stat-label">
+                        Role
+                    </div>
+
+                    <div
+                        class="stat-value role"
+                        id="role"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+                <div class="card stat">
+
+                    <div class="stat-label">
+                        Duration
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="duration"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+                <div class="card stat">
+
+                    <div class="stat-label">
+                        Expired
+                    </div>
+
+                    <div
+                        class="stat-value"
+                        id="expired"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- LOWER GRID -->
+
+            <div class="dashboard-grid">
+
+                <!-- ACTIONS -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Quick Actions
+                            </div>
+
+                            <div class="card-subtitle">
+                                Akses layanan ReyCloud
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="actions">
+
+                            <button
+                                class="action"
+                                onclick="openPage('cpanel.html')"
+                            >
+
+                                <div class="action-icon">
+                                    🖥️
+                                </div>
+
+                                <div class="action-title">
+                                    Create CPanel
+                                </div>
+
+                                <div class="action-text">
+                                    Buat panel hosting baru
+                                    melalui API ReyCloud.
+                                </div>
+
+                            </button>
+
+                            <button
+                                class="action"
+                                onclick="openPage('cadmin.html')"
+                            >
+
+                                <div class="action-icon">
+                                    ⚙️
+                                </div>
+
+                                <div class="action-title">
+                                    Create CAdmin
+                                </div>
+
+                                <div class="action-text">
+                                    Buat akun administrator
+                                    panel hosting.
+                                </div>
+
+                            </button>
+
+                            <button
+                                class="action"
+                                onclick="openPage('chat.html')"
+                            >
+
+                                <div class="action-icon">
+                                    💬
+                                </div>
+
+                                <div class="action-title">
+                                    Public Chat
+                                </div>
+
+                                <div class="action-text">
+                                    Bergabung dengan chat
+                                    komunitas ReyCloud.
+                                </div>
+
+                            </button>
+
+                            <button
+                                class="action"
+                                onclick="refreshUser()"
+                            >
+
+                                <div class="action-icon">
+                                    🔄
+                                </div>
+
+                                <div class="action-title">
+                                    Refresh Account
+                                </div>
+
+                                <div class="action-text">
+                                    Perbarui data akun
+                                    dari browser.
+                                </div>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ACCOUNT -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <div class="card-title">
+                                Account Information
+                            </div>
+
+                            <div class="card-subtitle">
+                                Informasi akun kamu
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="info">
+
+                            <span>
+                                User ID
+                            </span>
+
+                            <span id="userId">
+                                -
+                            </span>
+
+                        </div>
+
+                        <div class="info">
+
+                            <span>
+                                Username
+                            </span>
+
+                            <span id="username">
+                                -
+                            </span>
+
+                        </div>
+
+                        <div class="info">
+
+                            <span>
+                                Role
+                            </span>
+
+                            <span id="accountRole">
+                                -
+                            </span>
+
+                        </div>
+
+                        <div class="info">
+
+                            <span>
+                                Status
+                            </span>
+
+                            <span id="accountStatus">
+                                -
+                            </span>
+
+                        </div>
+
+                        <div class="info">
+
+                            <span>
+                                Created
+                            </span>
+
+                            <span id="createdAt">
+                                -
+                            </span>
+
+                        </div>
+
+                        <div class="info">
+
+                            <span>
+                                Expired
+                            </span>
+
+                            <span id="expiresAt">
+                                -
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+
+const API_BASE =
+    localStorage.getItem("apiBase") ||
+    "https://api.legionteknologi.my.id";
+
+function getUser(){
+
+    const possibleKeys = [
+        "user",
+        "currentUser",
+        "userData",
+        "reycloud_user"
+    ];
+
+    for(
+        const key of possibleKeys
+    ){
+
+        const value =
+            localStorage.getItem(key);
+
+        if(!value) continue;
+
+        try{
+
+            const data =
+                JSON.parse(value);
+
+            if(
+                data &&
+                typeof data === "object"
+            ){
+
+                if(data.user){
+                    return data.user;
+                }
+
+                if(data.result?.user){
+                    return data.result.user;
+                }
+
+                return data;
+            }
+
+        }catch{
+
+        }
+
+    }
+
+    return null;
+}
+
+let user =
+    getUser();
+
+if(!user){
+
+    window.location.href =
+        "index.html";
+
+}
+
+function formatDate(date){
+
+    if(!date){
+        return "-";
+    }
+
+    const d =
+        new Date(date);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+        return "-";
+    }
+
+    return d.toLocaleDateString(
+        "id-ID",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
+
+}
+
+function formatDateTime(date){
+
+    if(!date){
+        return "-";
+    }
+
+    const d =
+        new Date(date);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+        return "-";
+    }
+
+    return d.toLocaleString(
+        "id-ID",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
+}
+
+function initials(name){
+
+    if(!name){
+        return "R";
+    }
+
+    return name
+        .trim()
+        .slice(0,1)
+        .toUpperCase();
+
+}
+
+function loadUser(){
+
+    user =
+        getUser();
+
+    if(!user){
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+    const username =
+        user.username || "User";
+
+    document.getElementById(
+        "welcomeName"
+    ).textContent =
+        `${username} 👋`;
+
+    document.getElementById(
+        "avatar"
+    ).textContent =
+        initials(username);
+
+    document.getElementById(
+        "userId"
+    ).textContent =
+        user.id || "-";
+
+    document.getElementById(
+        "username"
+    ).textContent =
+        username;
+
+    document.getElementById(
+        "role"
+    ).textContent =
+        user.role || "member";
+
+    document.getElementById(
+        "accountRole"
+    ).textContent =
+        user.role || "member";
+
+    document.getElementById(
+        "duration"
+    ).textContent =
+        user.duration || "-";
+
+    document.getElementById(
+        "createdAt"
+    ).textContent =
+        formatDateTime(
+            user.createdAt
+        );
+
+    document.getElementById(
+        "expired"
+    ).textContent =
+        formatDate(
+            user.expiresAt
+        );
+
+    document.getElementById(
+        "expiresAt"
+    ).textContent =
+        formatDateTime(
+            user.expiresAt
+        );
+
+    const status =
+        user.status || "unknown";
+
+    const statusElement =
+        document.getElementById(
+            "status"
+        );
+
+    const accountStatus =
+        document.getElementById(
+            "accountStatus"
+        );
+
+    if(
+        status === "active"
+    ){
+
+        statusElement.innerHTML =
+            `<span class="status-dot"></span>Active`;
+
+        accountStatus.innerHTML =
+            `<span class="badge badge-active">ACTIVE</span>`;
+
+    }else{
+
+        statusElement.innerHTML =
+            `<span style="color:#f85149">●</span> ${status}`;
+
+        accountStatus.innerHTML =
+            `<span class="badge badge-expired">${status.toUpperCase()}</span>`;
+
+    }
+
+}
+
+function refreshUser(){
+
+    const username =
+        user?.username;
+
+    if(!username){
+
+        loadUser();
+
+        return;
+
+    }
+
+    fetch(
+        `${API_BASE}/api/users/${encodeURIComponent(username)}`
+    )
+    .then(
+        response =>
+            response.json()
+    )
+    .then(
+        data => {
+
+            if(
+                !data.status ||
+                !data.result
+            ){
+
+                alert(
+                    data.message ||
+                    "Gagal mengambil data user"
+                );
+
+                return;
+
+            }
+
+            user =
+                data.result;
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(
+                    user
+                )
+            );
+
+            localStorage.setItem(
+                "userData",
+                JSON.stringify(
+                    user
+                )
+            );
+
+            loadUser();
+
+        }
+    )
+    .catch(
+        () => {
+
+            alert(
+                "API tidak dapat dihubungi."
+            );
+
+        }
+    );
+
+}
+
+function openPage(page){
+
+    window.location.href =
+        page;
+
+}
+
+function logout(){
+
+    localStorage.removeItem(
+        "user"
+    );
+
+    localStorage.removeItem(
+        "userData"
+    );
+
+    localStorage.removeItem(
+        "currentUser"
+    );
+
+    localStorage.removeItem(
+        "reycloud_user"
+    );
+
+    window.location.href =
+        "index.html";
+
+}
+
+function updateClock(){
+
+    const now =
+        new Date();
+
+    document.getElementById(
+        "clock"
+    ).textContent =
+        now.toLocaleTimeString(
+            "id-ID",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        );
+
+    document.getElementById(
+        "date"
+    ).textContent =
+        now.toLocaleDateString(
+            "id-ID",
+            {
+                weekday:"long",
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            }
+        );
+
+}
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList
+        .toggle("open");
+
+}
+
+loadUser();
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+</script>
+
+</body>
+</html>
