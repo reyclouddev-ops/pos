@@ -3,236 +3,340 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#06080d">
 
 <title>ReyCloud Marketplace</title>
 
 <style>
-
 *{
-    box-sizing:border-box;
     margin:0;
     padding:0;
+    box-sizing:border-box;
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,
+    "Segoe UI",sans-serif;
 }
 
 :root{
-    --bg:#06080d;
-    --panel:#0c111a;
-    --panel2:#101722;
-    --panel3:#151d29;
-    --border:rgba(255,255,255,.08);
-    --border2:rgba(255,255,255,.13);
-    --text:#f8fafc;
-    --muted:#8b95a7;
-    --blue:#38bdf8;
-    --green:#22c55e;
-    --red:#ef4444;
-    --yellow:#f59e0b;
-    --shadow:0 20px 60px rgba(0,0,0,.35);
-}
-
-html{
-    scroll-behavior:smooth;
+    --black:#111111;
+    --text:#171717;
+    --muted:#737373;
+    --border:#e5e5e5;
+    --soft:#f5f5f5;
+    --white:#ffffff;
+    --orange:#f97316;
+    --orange-dark:#ea580c;
+    --blue:#1877f2;
 }
 
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:
-        radial-gradient(
-            circle at 10% 0%,
-            rgba(56,189,248,.08),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 90% 10%,
-            rgba(34,197,94,.05),
-            transparent 30%
-        ),
-        var(--bg);
-    color:var(--text);
     min-height:100vh;
-    overflow:hidden;
+    background:#f5f6f7;
+    color:var(--text);
 }
 
-body:before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-
-    background-image:
-        linear-gradient(
-            rgba(255,255,255,.018) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.018) 1px,
-            transparent 1px
-        );
-
-    background-size:40px 40px;
-
-    mask-image:
-        linear-gradient(
-            to bottom,
-            black,
-            transparent
-        );
+button,
+input{
+    font-family:inherit;
 }
 
-/* APP */
+button{
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+/* =========================
+   APP
+========================= */
 
 .app{
-    max-width:1150px;
-    height:100vh;
-    margin:auto;
-    padding:18px;
-    position:relative;
-    z-index:1;
-
-    display:flex;
-    flex-direction:column;
+    min-height:100vh;
 }
 
-/* HEADER */
+/* =========================
+   TOPBAR
+========================= */
 
-.header{
-    flex-shrink:0;
-
-    background:rgba(12,17,26,.86);
+.topbar{
+    height:64px;
+    background:rgba(255,255,255,.94);
     backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border);
 
-    border:1px solid var(--border);
-    border-radius:22px;
+    position:sticky;
+    top:0;
+    z-index:100;
 
-    padding:15px;
+    display:flex;
+    align-items:center;
+}
+
+.topbar-inner{
+    width:100%;
+    max-width:1180px;
+    margin:auto;
+    padding:0 20px;
 
     display:flex;
     align-items:center;
     justify-content:space-between;
-
-    gap:15px;
-
-    margin-bottom:15px;
-
-    box-shadow:var(--shadow);
-
-    position:relative;
-    z-index:20;
+    gap:18px;
 }
 
-.header-left{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
+/* =========================
+   LOGO
+========================= */
 
 .logo{
-    width:48px;
-    height:48px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    flex-shrink:0;
+}
 
-    border-radius:15px;
+.logo-icon{
+    width:35px;
+    height:35px;
+    border-radius:9px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #1c2838,
-            #080b12
-        );
-
-    border:1px solid rgba(255,255,255,.1);
+    background:#111;
+    color:white;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    font-size:21px;
+    font-size:17px;
     font-weight:900;
 }
 
-.title h1{
-    font-size:19px;
+.logo-text{
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:-.5px;
 }
 
-.title p{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:4px;
+.logo-text span{
+    color:#a3a3a3;
+    font-weight:600;
 }
 
-.header-actions{
-    display:flex;
-    gap:8px;
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+    flex:1;
+    max-width:430px;
+    position:relative;
 }
 
-.action-btn{
+.search-box span{
+    position:absolute;
+    left:13px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#999;
+    font-size:14px;
+}
+
+.search-box input{
+    width:100%;
+    height:38px;
+
     border:1px solid var(--border);
-    background:#111722;
-    color:white;
+    border-radius:9px;
 
-    padding:10px 13px;
+    background:#fafafa;
+    outline:none;
 
-    border-radius:11px;
+    padding:0 13px 0 36px;
 
-    font-size:11px;
-    font-weight:bold;
+    font-size:13px;
+    color:var(--text);
 
     transition:.2s;
 }
 
-.action-btn:hover{
-    background:#18212e;
-    transform:translateY(-1px);
+.search-box input:focus{
+    background:white;
+    border-color:#a3a3a3;
+    box-shadow:0 0 0 3px rgba(0,0,0,.04);
 }
 
-.action-btn.primary{
-    background:
-        linear-gradient(
-            135deg,
-            #1e9bd3,
-            #1574a3
-        );
+/* =========================
+   TOP ACTIONS
+========================= */
 
-    border-color:
-        rgba(56,189,248,.3);
-}
-
-/* MAIN */
-
-.main{
-    flex:1;
-    min-height:0;
-
+.top-actions{
     display:flex;
-    flex-direction:column;
+    align-items:center;
+    gap:8px;
 }
 
-/* HERO */
-
-.hero{
-    flex-shrink:0;
-
-    background:
-        radial-gradient(
-            circle at 100% 0%,
-            rgba(56,189,248,.13),
-            transparent 35%
-        ),
-        linear-gradient(
-            145deg,
-            #0d141f,
-            #080b11
-        );
+.top-btn{
+    width:36px;
+    height:36px;
 
     border:1px solid var(--border);
-    border-radius:22px;
+    border-radius:9px;
 
-    padding:20px;
+    background:white;
+    color:#444;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+
+    transition:.2s;
+}
+
+.top-btn:hover{
+    background:#f5f5f5;
+}
+
+.profile-mini{
+    width:35px;
+    height:35px;
+
+    border-radius:50%;
+    overflow:hidden;
+
+    background:#111;
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:13px;
+    font-weight:800;
+
+    flex-shrink:0;
+}
+
+.profile-mini img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    max-width:1180px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:230px minmax(0,650px) 230px;
+
+    gap:22px;
+
+    padding:24px 20px 50px;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:sticky;
+    top:88px;
+    height:max-content;
+}
+
+.sidebar-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:13px;
+    overflow:hidden;
+}
+
+.sidebar-title{
+    padding:15px;
+    border-bottom:1px solid var(--border);
+
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:#999;
+}
+
+.side-link{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:11px 14px;
+
+    font-size:13px;
+    font-weight:650;
+
+    color:#666;
+
+    transition:.2s;
+}
+
+.side-link:hover{
+    background:#f7f7f7;
+    color:#111;
+}
+
+.side-link.active{
+    background:#111;
+    color:white;
+}
+
+.side-icon{
+    width:27px;
+    height:27px;
+
+    border-radius:7px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#f1f1f1;
+
+    font-size:12px;
+}
+
+.side-link.active .side-icon{
+    background:#333;
+    color:white;
+}
+
+/* =========================
+   FEED
+========================= */
+
+.feed{
+    min-width:0;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    background:#111;
+    color:white;
+
+    border-radius:16px;
+
+    padding:24px;
 
     margin-bottom:15px;
-
-    box-shadow:var(--shadow);
 
     position:relative;
     overflow:hidden;
@@ -243,15 +347,15 @@ body:before{
 
     position:absolute;
 
-    width:240px;
-    height:240px;
+    width:180px;
+    height:180px;
 
-    border:1px solid rgba(56,189,248,.07);
+    right:-60px;
+    top:-70px;
 
     border-radius:50%;
 
-    right:-100px;
-    top:-120px;
+    border:35px solid rgba(249,115,22,.15);
 }
 
 .hero-content{
@@ -259,1111 +363,678 @@ body:before{
     z-index:2;
 }
 
-.hero h2{
-    font-size:23px;
-    margin-bottom:7px;
+.hero h1{
+    font-size:24px;
+    letter-spacing:-.8px;
 }
 
 .hero p{
-    color:var(--muted);
+    color:#a3a3a3;
     font-size:12px;
-    line-height:1.6;
-    max-width:650px;
+    margin-top:6px;
 }
 
-.hero-bottom{
-    display:flex;
-    gap:10px;
-
-    margin-top:16px;
-
-    flex-wrap:wrap;
-}
-
-.search-box{
-    flex:1;
-    min-width:200px;
-    position:relative;
-}
-
-.search-box input{
-    width:100%;
-    height:43px;
-
-    border-radius:12px;
-
-    border:1px solid var(--border);
-
-    background:#0a0f17;
-
-    color:white;
-
-    outline:none;
-
-    padding:
-        0
-        14px
-        0
-        40px;
-
-    font-size:12px;
-}
-
-.search-box input:focus{
-    border-color:
-        rgba(56,189,248,.4);
-}
-
-.search-icon{
-    position:absolute;
-
-    left:14px;
-    top:13px;
-
-    color:var(--muted);
-}
-
-/* FEED */
-
-.feed{
-    flex:1;
-    min-height:0;
-
-    width:100%;
-    max-width:760px;
-
-    margin:0 auto;
-
-    overflow-y:auto;
-
-    padding:
-        0
-        6px
-        20px
-        0;
-
-    scrollbar-width:thin;
-    scrollbar-color:#263244 transparent;
-}
-
-.feed::-webkit-scrollbar{
-    width:6px;
-}
-
-.feed::-webkit-scrollbar-track{
-    background:transparent;
-}
-
-.feed::-webkit-scrollbar-thumb{
-    background:#263244;
-    border-radius:10px;
-}
-
-.feed::-webkit-scrollbar-thumb:hover{
-    background:#344256;
-}
-
-/* POST */
-
-.post{
-    background:rgba(12,17,26,.9);
-
-    border:1px solid var(--border);
-
-    border-radius:21px;
-
-    margin-bottom:15px;
-
-    overflow:hidden;
-
-    box-shadow:var(--shadow);
-
-    animation:postIn .3s ease;
-}
-
-@keyframes postIn{
-
-    from{
-        opacity:0;
-        transform:translateY(10px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-
-}
-
-/* POST HEADER */
-
-.post-head{
-    padding:15px;
-
-    display:flex;
+.hero-badge{
+    display:inline-flex;
     align-items:center;
-    justify-content:space-between;
-
-    gap:10px;
-}
-
-.user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    min-width:0;
-}
-
-.user-avatar{
-    width:40px;
-    height:40px;
-
-    flex-shrink:0;
-
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #334155,
-            #0f172a
-        );
-
-    border:1px solid rgba(255,255,255,.1);
-
-    font-size:14px;
-    font-weight:bold;
-
-    overflow:hidden;
-}
-
-.user-avatar img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.user-info{
-    min-width:0;
-}
-
-.user-name{
-    font-size:12px;
-    font-weight:bold;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.user-role{
-    color:var(--blue);
-    font-size:9px;
-    margin-top:3px;
-}
-
-.post-time{
-    font-size:9px;
-    color:var(--muted);
-    margin-top:3px;
-}
-
-/* MENU */
-
-.post-menu{
-    position:relative;
-}
-
-.menu-btn{
-    width:34px;
-    height:34px;
-
-    border:1px solid var(--border);
-
-    background:#111722;
-
-    color:#cbd5e1;
-
-    border-radius:10px;
-
-    font-size:16px;
-}
-
-.menu{
-    display:none;
-
-    position:absolute;
-
-    right:0;
-    top:40px;
-
-    min-width:130px;
-
-    background:#111722;
-
-    border:1px solid var(--border);
-
-    border-radius:12px;
-
-    padding:5px;
-
-    z-index:10;
-
-    box-shadow:var(--shadow);
-}
-
-.menu.show{
-    display:block;
-}
-
-.menu button{
-    width:100%;
-
-    border:0;
-
-    background:transparent;
-
-    color:#cbd5e1;
-
-    text-align:left;
-
-    padding:9px;
-
-    border-radius:8px;
-
-    font-size:11px;
-}
-
-.menu button:hover{
-    background:#18212e;
-}
-
-.menu .danger{
-    color:#f87171;
-}
-
-/* DESCRIPTION */
-
-.post-content{
-    padding:
-        0
-        15px
-        15px;
-}
-
-.post-description{
-    color:#dbe4ef;
-
-    font-size:12px;
-
-    line-height:1.7;
-
-    white-space:pre-wrap;
-
-    word-break:break-word;
-}
-
-/* GALLERY */
-
-.gallery{
-    position:relative;
-
-    background:#05070b;
-
-    overflow:hidden;
-}
-
-.gallery-track{
-    display:flex;
-
-    overflow-x:auto;
-
-    scroll-snap-type:x mandatory;
-
-    scrollbar-width:none;
-}
-
-.gallery-track::-webkit-scrollbar{
-    display:none;
-}
-
-.gallery-item{
-    min-width:100%;
-
-    height:420px;
-
-    scroll-snap-align:center;
-
-    position:relative;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:#05070b;
-}
-
-.gallery-item img{
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-
-    display:block;
-}
-
-.gallery-count{
-    position:absolute;
-
-    right:12px;
-    top:12px;
-
-    background:rgba(0,0,0,.65);
-
-    backdrop-filter:blur(8px);
-
-    border:1px solid rgba(255,255,255,.1);
+    gap:6px;
 
     padding:6px 9px;
 
-    border-radius:9px;
+    border-radius:7px;
+
+    background:#222;
+    color:#ddd;
 
     font-size:10px;
-
-    color:white;
-
-    z-index:3;
-}
-
-.gallery-arrow{
-    position:absolute;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:34px;
-    height:34px;
-
-    border-radius:50%;
-
-    border:1px solid rgba(255,255,255,.12);
-
-    background:rgba(0,0,0,.55);
-
-    color:white;
-
-    z-index:3;
-
-    font-size:17px;
-}
-
-.gallery-arrow.left{
-    left:10px;
-}
-
-.gallery-arrow.right{
-    right:10px;
-}
-
-.gallery-dots{
-    position:absolute;
-
-    bottom:10px;
-    left:50%;
-
-    transform:translateX(-50%);
-
-    display:flex;
-
-    gap:5px;
-
-    z-index:3;
-}
-
-.dot{
-    width:6px;
-    height:6px;
-
-    border-radius:50%;
-
-    background:rgba(255,255,255,.35);
-}
-
-.dot.active{
-    background:white;
-
-    width:17px;
-
-    border-radius:10px;
-}
-
-/* ACTIONS */
-
-.post-actions{
-    display:flex;
-    align-items:center;
-
-    gap:5px;
-
-    padding:
-        11px
-        15px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.05);
-}
-
-.post-action{
-    border:0;
-
-    background:transparent;
-
-    color:#aab5c5;
-
-    padding:8px 10px;
-
-    border-radius:10px;
-
-    font-size:11px;
-
-    display:flex;
-    align-items:center;
-
-    gap:6px;
-
-    transition:.2s;
-}
-
-.post-action:hover{
-    background:#151d29;
-    color:white;
-}
-
-.post-action.liked{
-    color:#ef4444;
-}
-
-.like-count{
-    color:#cbd5e1;
-}
-
-/* STATS */
-
-.post-stats{
-    padding:
-        0
-        15px
-        10px;
-
-    color:var(--muted);
-
-    font-size:10px;
-}
-
-/* COMMENTS */
-
-.comments{
-    border-top:
-        1px solid
-        rgba(255,255,255,.05);
-
-    padding:
-        12px
-        15px
-        14px;
-
-    display:none;
-}
-
-.comments.show{
-    display:block;
-}
-
-.comment-list{
-    display:flex;
-    flex-direction:column;
-
-    gap:10px;
-
-    margin-bottom:11px;
-}
-
-.comment{
-    display:flex;
-    gap:8px;
-}
-
-.comment-avatar{
-    width:27px;
-    height:27px;
-
-    flex-shrink:0;
-
-    border-radius:50%;
-
-    background:#1e293b;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:9px;
-    font-weight:bold;
-
-    overflow:hidden;
-}
-
-.comment-avatar img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.comment-body{
-    background:#111722;
-
-    border:1px solid var(--border);
-
-    border-radius:10px;
-
-    padding:8px 10px;
-
-    flex:1;
-}
-
-.comment-body strong{
-    font-size:10px;
-    display:block;
-}
-
-.comment-body span{
-    display:block;
-
-    color:#b6c1d1;
-
-    font-size:10px;
-
-    line-height:1.5;
-
-    margin-top:3px;
-}
-
-.comment-input{
-    display:flex;
-    gap:7px;
-}
-
-.comment-input input{
-    flex:1;
-    min-width:0;
-
-    border:1px solid var(--border);
-
-    background:#080d14;
-
-    color:white;
-
-    outline:none;
-
-    border-radius:10px;
-
-    padding:10px;
-
-    font-size:10px;
-}
-
-.comment-input button{
-    border:
-        1px solid
-        rgba(56,189,248,.2);
-
-    background:#123147;
-
-    color:#7dd3fc;
-
-    border-radius:10px;
-
-    padding:0 13px;
-
-    font-size:10px;
-
-    font-weight:bold;
-}
-
-/* EMPTY */
-
-.empty{
-    background:rgba(12,17,26,.86);
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:50px 20px;
-
-    text-align:center;
-
-    color:var(--muted);
-}
-
-.empty-icon{
-    font-size:38px;
+    font-weight:700;
 
     margin-bottom:12px;
 }
 
-.empty h3{
-    color:white;
-
-    font-size:15px;
-
-    margin-bottom:6px;
+.cloudflare-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--orange);
 }
 
-.empty p{
-    font-size:11px;
-}
+/* =========================
+   FILTER BAR
+========================= */
 
-/* LOADING */
-
-.loading{
-    background:rgba(12,17,26,.86);
-
+.filter-card{
+    background:white;
     border:1px solid var(--border);
+    border-radius:13px;
 
-    border-radius:20px;
-
-    padding:40px 20px;
-
-    text-align:center;
-
-    color:var(--muted);
-
-    font-size:11px;
-}
-
-/* ERROR */
-
-.error-box{
-    background:rgba(127,29,29,.12);
-
-    border:1px solid rgba(239,68,68,.2);
-
-    border-radius:18px;
-
-    padding:30px 20px;
-
-    text-align:center;
-}
-
-.error-box h3{
-    color:#fca5a5;
-
-    font-size:14px;
-
-    margin-bottom:6px;
-}
-
-.error-box p{
-    color:#94a3b8;
-
-    font-size:10px;
-
-    line-height:1.6;
+    padding:10px;
 
     margin-bottom:15px;
+
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    overflow-x:auto;
 }
 
-/* MODAL */
-
-.modal{
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.72);
-
-    backdrop-filter:blur(10px);
-
+.filter-card::-webkit-scrollbar{
     display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:18px;
-
-    z-index:100;
 }
 
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    width:100%;
-    max-width:620px;
-
-    max-height:90vh;
-
-    overflow:auto;
-
-    background:#0c111a;
-
-    border:1px solid var(--border2);
-
-    border-radius:22px;
-
-    box-shadow:
-        0 30px 100px
-        rgba(0,0,0,.6);
-
-    animation:modalIn .25s ease;
-}
-
-@keyframes modalIn{
-
-    from{
-        opacity:0;
-        transform:
-            scale(.96)
-            translateY(10px);
-    }
-
-    to{
-        opacity:1;
-        transform:
-            scale(1)
-            translateY(0);
-    }
-
-}
-
-.modal-head{
-    padding:17px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    border-bottom:1px solid var(--border);
-}
-
-.modal-head h2{
-    font-size:16px;
-}
-
-.close-btn{
-    width:34px;
-    height:34px;
-
-    border:1px solid var(--border);
-
-    background:#111722;
-
-    color:white;
-
-    border-radius:10px;
-}
-
-.modal-body{
-    padding:17px;
-}
-
-.form-group{
-    margin-bottom:15px;
-}
-
-.form-group label{
-    display:block;
-
-    color:#cbd5e1;
-
-    font-size:11px;
-
-    font-weight:bold;
-
-    margin-bottom:7px;
-}
-
-.form-group input,
-.form-group textarea{
-    width:100%;
-
-    border:1px solid var(--border);
-
-    background:#080d14;
-
-    color:white;
-
-    outline:none;
-
-    border-radius:12px;
-
-    padding:11px;
-
-    font-size:11px;
-}
-
-.form-group textarea{
-    min-height:120px;
-
-    resize:vertical;
-}
-
-.form-group input:focus,
-.form-group textarea:focus{
-    border-color:
-        rgba(56,189,248,.4);
-}
-
-.file-box{
-    border:
-        1px dashed
-        rgba(56,189,248,.3);
-
-    background:
-        rgba(56,189,248,.035);
-
-    border-radius:14px;
-
-    padding:20px;
-
-    text-align:center;
-}
-
-.file-box input{
+.filter{
     border:0;
-
     background:transparent;
 
-    padding:0;
+    padding:8px 12px;
+
+    border-radius:8px;
+
+    color:#777;
+
+    font-size:12px;
+    font-weight:700;
+
+    white-space:nowrap;
 }
 
-.file-help{
-    color:var(--muted);
-
-    font-size:10px;
-
-    margin-top:8px;
+.filter:hover{
+    background:#f5f5f5;
+    color:#111;
 }
 
-.preview-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:8px;
-
-    margin-top:12px;
+.filter.active{
+    background:#111;
+    color:#fff;
 }
 
-.preview{
-    height:90px;
+/* =========================
+   POST CARD
+========================= */
 
-    border-radius:10px;
+.post{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:14px;
+
+    margin-bottom:15px;
 
     overflow:hidden;
 
-    border:1px solid var(--border);
-
-    position:relative;
-
-    background:#05070b;
+    transition:
+        transform .2s,
+        box-shadow .2s;
 }
 
-.preview img{
+.post:hover{
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.06);
+}
+
+/* =========================
+   POST HEADER
+========================= */
+
+.post-header{
+    padding:15px;
+
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.post-avatar{
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    background:#111;
+    color:#fff;
+
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:800;
+    font-size:14px;
+
+    flex-shrink:0;
+}
+
+.post-avatar img{
     width:100%;
     height:100%;
-
     object-fit:cover;
 }
 
-.preview span{
-    position:absolute;
+.post-user{
+    min-width:0;
+    flex:1;
+}
 
-    top:5px;
-    right:5px;
+.post-user-name{
+    display:flex;
+    align-items:center;
+    gap:6px;
 
-    background:rgba(0,0,0,.7);
+    font-size:13px;
+    font-weight:800;
+}
 
-    border-radius:6px;
+.verified{
+    width:15px;
+    height:15px;
 
-    padding:3px 5px;
+    border-radius:50%;
+
+    background:#111;
+    color:white;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
 
     font-size:8px;
 }
 
-.modal-footer{
-    padding:
-        15px
-        17px;
+.post-meta{
+    margin-top:3px;
 
-    border-top:1px solid var(--border);
+    color:#999;
+
+    font-size:10px;
 
     display:flex;
-
-    justify-content:flex-end;
-
-    gap:8px;
+    align-items:center;
+    gap:5px;
 }
 
-/* TOAST */
+.post-more{
+    border:0;
+    background:transparent;
+
+    width:32px;
+    height:32px;
+
+    border-radius:7px;
+
+    color:#888;
+}
+
+.post-more:hover{
+    background:#f5f5f5;
+}
+
+/* =========================
+   POST BODY
+========================= */
+
+.post-content{
+    padding:0 15px 14px;
+}
+
+.post-text{
+    font-size:13px;
+    line-height:1.65;
+
+    white-space:pre-wrap;
+    word-break:break-word;
+
+    color:#333;
+}
+
+.post-category{
+    display:inline-flex;
+
+    margin-top:10px;
+
+    background:#fff7ed;
+    color:#c2410c;
+
+    border:1px solid #fed7aa;
+
+    border-radius:6px;
+
+    padding:4px 7px;
+
+    font-size:9px;
+    font-weight:800;
+}
+
+/* =========================
+   POST IMAGE
+========================= */
+
+.post-image{
+    width:100%;
+
+    background:#f1f1f1;
+
+    max-height:620px;
+
+    overflow:hidden;
+}
+
+.post-image img{
+    display:block;
+
+    width:100%;
+    height:auto;
+
+    max-height:620px;
+
+    object-fit:contain;
+
+    background:#f5f5f5;
+}
+
+/* =========================
+   POST FOOTER
+========================= */
+
+.post-stats{
+    padding:10px 15px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    color:#999;
+
+    font-size:10px;
+
+    border-bottom:1px solid #f0f0f0;
+}
+
+.post-actions{
+    padding:7px 10px;
+
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+
+    gap:4px;
+}
+
+.post-action{
+    height:36px;
+
+    border:0;
+    background:transparent;
+
+    border-radius:8px;
+
+    color:#666;
+
+    font-size:11px;
+    font-weight:700;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+}
+
+.post-action:hover{
+    background:#f5f5f5;
+    color:#111;
+}
+
+.post-action.liked{
+    color:var(--blue);
+}
+
+/* =========================
+   RIGHT CARD
+========================= */
+
+.right-card{
+    background:white;
+
+    border:1px solid var(--border);
+    border-radius:13px;
+
+    padding:16px;
+
+    margin-bottom:14px;
+}
+
+.right-title{
+    font-size:12px;
+    font-weight:800;
+
+    margin-bottom:12px;
+}
+
+.stat-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:8px 0;
+
+    border-bottom:1px solid #f3f3f3;
+}
+
+.stat-row:last-child{
+    border-bottom:0;
+}
+
+.stat-row span{
+    color:#999;
+    font-size:10px;
+}
+
+.stat-row strong{
+    font-size:12px;
+}
+
+/* =========================
+   CREATE POST INFO
+========================= */
+
+.create-box{
+    background:#111;
+    color:white;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    margin-bottom:14px;
+}
+
+.create-box h3{
+    font-size:13px;
+}
+
+.create-box p{
+    color:#999;
+
+    font-size:10px;
+    line-height:1.5;
+
+    margin-top:5px;
+}
+
+.create-btn{
+    width:100%;
+
+    border:0;
+
+    margin-top:12px;
+
+    background:white;
+    color:#111;
+
+    border-radius:8px;
+
+    height:35px;
+
+    font-size:11px;
+    font-weight:800;
+}
+
+.create-btn:hover{
+    background:#f1f1f1;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+    background:white;
+
+    border:1px solid var(--border);
+    border-radius:14px;
+
+    padding:55px 20px;
+
+    text-align:center;
+}
+
+.empty-icon{
+    width:55px;
+    height:55px;
+
+    margin:0 auto 14px;
+
+    border-radius:15px;
+
+    background:#f3f3f3;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:23px;
+}
+
+.empty h3{
+    font-size:15px;
+}
+
+.empty p{
+    color:#999;
+    font-size:11px;
+    margin-top:5px;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.skeleton{
+    background:white;
+
+    border:1px solid var(--border);
+    border-radius:14px;
+
+    padding:15px;
+
+    margin-bottom:15px;
+}
+
+.skeleton-line{
+    height:11px;
+
+    border-radius:5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #eee,
+            #f7f7f7,
+            #eee
+        );
+
+    background-size:200% 100%;
+
+    animation:skeleton 1.3s infinite;
+}
+
+.skeleton-avatar{
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    background:#eee;
+}
+
+.skeleton-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.skeleton-user{
+    flex:1;
+}
+
+.skeleton-user .skeleton-line:first-child{
+    width:100px;
+}
+
+.skeleton-user .skeleton-line:last-child{
+    width:70px;
+    margin-top:6px;
+}
+
+.skeleton-image{
+    height:300px;
+    margin-top:14px;
+    border-radius:9px;
+}
+
+@keyframes skeleton{
+    0%{
+        background-position:200% 0;
+    }
+
+    100%{
+        background-position:-200% 0;
+    }
+}
+
+/* =========================
+   TOAST
+========================= */
 
 .toast{
     position:fixed;
 
     left:50%;
-    bottom:20px;
+    bottom:25px;
 
     transform:
         translate(-50%,20px);
-
-    background:#111722;
-
-    border:1px solid var(--border2);
-
-    color:white;
-
-    padding:11px 15px;
-
-    border-radius:12px;
-
-    font-size:11px;
-
-    box-shadow:var(--shadow);
 
     opacity:0;
 
     pointer-events:none;
 
+    background:#111;
+    color:white;
+
+    border-radius:9px;
+
+    padding:10px 14px;
+
+    font-size:11px;
+    font-weight:700;
+
+    z-index:999;
+
     transition:.25s;
 
-    z-index:200;
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.2);
 }
 
 .toast.show{
     opacity:1;
-
-    transform:
-        translate(-50%,0);
+    transform:translate(-50%,0);
 }
 
-/* FOOTER */
+/* =========================
+   MOBILE
+========================= */
 
-.footer{
-    flex-shrink:0;
+@media(max-width:1000px){
 
-    text-align:center;
+    .main{
+        grid-template-columns:
+            200px
+            minmax(0,1fr);
+    }
 
-    color:#596273;
+    .right-sidebar{
+        display:none;
+    }
 
-    font-size:10px;
-
-    padding:10px 0 2px;
 }
-
-/* MOBILE */
 
 @media(max-width:700px){
 
-    body{
-        overflow:hidden;
+    .topbar-inner{
+        padding:0 12px;
     }
 
-    .app{
-        padding:10px;
+    .logo-text{
+        display:none;
     }
 
-    .header{
-        border-radius:17px;
-        padding:12px;
+    .search-box{
+        max-width:none;
     }
 
-    .logo{
-        width:42px;
-        height:42px;
-
-        border-radius:13px;
-
-        font-size:18px;
-    }
-
-    .title h1{
-        font-size:15px;
-    }
-
-    .title p{
-        font-size:9px;
-    }
-
-    .header-actions
-    .action-btn:first-child{
+    .main{
         display:block;
+        padding:12px 10px 40px;
     }
 
-    .action-btn{
-        padding:9px 10px;
-        font-size:9px;
+    .left-sidebar{
+        display:none;
     }
 
     .hero{
-        border-radius:18px;
-        padding:17px;
+        border-radius:12px;
+        padding:20px;
     }
 
-    .hero h2{
-        font-size:20px;
+    .hero h1{
+        font-size:21px;
     }
 
-    .hero p{
-        font-size:11px;
+    .post{
+        border-radius:12px;
     }
 
-    .gallery-item{
-        height:340px;
+    .post-image img{
+        max-height:500px;
     }
-
-    .preview-grid{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
-
 }
 
-@media(max-width:420px){
+@media(max-width:450px){
 
-    .gallery-item{
-        height:300px;
-    }
-
-    .post-action{
-        padding:7px;
-    }
-
-    .post-action span:nth-child(2){
+    .top-actions .top-btn{
         display:none;
     }
 
-    .header{
-        gap:8px;
+    .topbar{
+        height:58px;
     }
 
-    .title p{
-        display:none;
+    .search-box input{
+        height:35px;
+    }
+
+    .hero{
+        margin-bottom:10px;
+    }
+
+    .filter-card{
+        margin-bottom:10px;
+    }
+
+    .post-header{
+        padding:12px;
+    }
+
+    .post-content{
+        padding:0 12px 12px;
+    }
+
+    .post-stats{
+        padding:9px 12px;
     }
 
 }
-
 </style>
 </head>
 
@@ -1371,335 +1042,491 @@ body:before{
 
 <div class="app">
 
-    <!-- HEADER -->
+<!-- =========================
+     TOPBAR
+========================= -->
 
-    <header class="header">
+<header class="topbar">
 
-        <div class="header-left">
+<div class="topbar-inner">
 
-            <div class="logo">
-                R
-            </div>
+<a
+    href="dashboard.html"
+    class="logo"
+>
 
-            <div class="title">
+    <div class="logo-icon">
+        R
+    </div>
 
-                <h1>
-                    ReyCloud Marketplace
-                </h1>
+    <div class="logo-text">
+        ReyCloud <span>Market</span>
+    </div>
 
-                <p>
-                    Community • Marketplace • Sharing
-                </p>
+</a>
 
-            </div>
+<div class="search-box">
 
-        </div>
+    <span>⌕</span>
 
+    <input
+        type="search"
+        id="searchInput"
+        placeholder="Cari postingan..."
+        autocomplete="off"
+    >
 
-        <div class="header-actions">
+</div>
 
-            <button
-                class="action-btn"
-                onclick="goDashboard()"
-            >
-                ← Dashboard
-            </button>
+<div class="top-actions">
 
-            <button
-                class="action-btn primary"
-                onclick="openCreate()"
-            >
-                ＋ Upload
-            </button>
+    <button
+        class="top-btn"
+        id="refreshBtn"
+        title="Refresh"
+    >
+        ↻
+    </button>
 
-        </div>
+    <a
+        href="profile.html"
+        class="profile-mini"
+        id="topAvatar"
+    >
+        U
+    </a>
 
-    </header>
+</div>
 
+</div>
 
-    <main class="main">
-
-        <!-- HERO -->
-
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <h2>
-                    ReyCloud Marketplace 🚀
-                </h2>
-
-                <p>
-                    Tempat berbagi produk, project,
-                    karya, informasi, dan berbagai
-                    hal menarik dari komunitas ReyCloud.
-                </p>
+</header>
 
 
-                <div class="hero-bottom">
+<!-- =========================
+     MAIN
+========================= -->
 
-                    <div class="search-box">
-
-                        <span class="search-icon">
-                            🔎
-                        </span>
-
-                        <input
-                            id="searchInput"
-                            type="text"
-                            placeholder="Cari postingan atau username..."
-                            oninput="searchPosts()"
-                        >
-
-                    </div>
+<main class="main">
 
 
-                    <button
-                        class="action-btn primary"
-                        onclick="openCreate()"
-                    >
-                        ＋ Buat Postingan
-                    </button>
+<!-- =========================
+     LEFT SIDEBAR
+========================= -->
 
-                </div>
+<aside class="sidebar left-sidebar">
 
-            </div>
+<div class="sidebar-card">
 
-        </section>
+<div class="sidebar-title">
+    Marketplace
+</div>
+
+<a
+    href="dashboard.html"
+    class="side-link"
+>
+    <div class="side-icon">⌂</div>
+    Dashboard
+</a>
+
+<a
+    href="marketplace.html"
+    class="side-link active"
+>
+    <div class="side-icon">▦</div>
+    Marketplace
+</a>
+
+<a
+    href="profile.html"
+    class="side-link"
+>
+    <div class="side-icon">◉</div>
+    Profile
+</a>
+
+<a
+    href="chat.html"
+    class="side-link"
+>
+    <div class="side-icon">☁</div>
+    Public Chat
+</a>
+
+</div>
+
+</aside>
 
 
-        <!-- FEED -->
+<!-- =========================
+     FEED
+========================= -->
 
-        <main
-            id="feed"
-            class="feed"
-        >
-
-            <div class="loading">
-                Memuat postingan...
-            </div>
-
-        </main>
-
-    </main>
+<section class="feed">
 
 
-    <footer class="footer">
-        ReyCloud Marketplace • PT Legion Teknologi Inc
-    </footer>
+<!-- HERO -->
+
+<div class="hero">
+
+<div class="hero-content">
+
+<div class="hero-badge">
+    <span class="cloudflare-dot"></span>
+    ReyCloud Community
+</div>
+
+<h1>
+    Marketplace
+</h1>
+
+<p>
+    Lihat postingan terbaru dari komunitas ReyCloud.
+</p>
+
+</div>
 
 </div>
 
 
-<!-- CREATE POST MODAL -->
+<!-- FILTER -->
 
-<div
-    id="createModal"
-    class="modal"
-    onclick="closeModalOutside(event)"
+<div class="filter-card">
+
+<button
+    class="filter active"
+    data-category="all"
 >
+    Semua
+</button>
 
-    <div class="modal-box">
+<button
+    class="filter"
+    data-category="hosting"
+>
+    Hosting
+</button>
 
-        <div class="modal-head">
+<button
+    class="filter"
+    data-category="project"
+>
+    Project
+</button>
 
-            <h2>
-                ＋ Buat Postingan
-            </h2>
+<button
+    class="filter"
+    data-category="service"
+>
+    Service
+</button>
 
-            <button
-                class="close-btn"
-                onclick="closeCreate()"
-            >
-                ×
-            </button>
+<button
+    class="filter"
+    data-category="other"
+>
+    Lainnya
+</button>
 
-        </div>
-
-
-        <div class="modal-body">
-
-            <div class="form-group">
-
-                <label>
-                    Deskripsi / Pesan
-                </label>
-
-                <textarea
-                    id="postDescription"
-                    placeholder="Tulis sesuatu..."
-                ></textarea>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Foto
-                </label>
-
-                <div class="file-box">
-
-                    <input
-                        id="postImages"
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onchange="previewImages(this)"
-                    >
-
-                    <div class="file-help">
-                        Upload foto untuk postingan.
-                    </div>
-
-                </div>
+</div>
 
 
-                <div
-                    id="previewGrid"
-                    class="preview-grid"
-                ></div>
+<!-- POSTS -->
+
+<div id="postsContainer">
+
+    <div class="skeleton">
+
+        <div class="skeleton-head">
+
+            <div class="skeleton-avatar"></div>
+
+            <div class="skeleton-user">
+
+                <div class="skeleton-line"></div>
+
+                <div class="skeleton-line"></div>
 
             </div>
 
         </div>
 
-
-        <div class="modal-footer">
-
-            <button
-                class="action-btn"
-                onclick="closeCreate()"
-            >
-                Batal
-            </button>
-
-            <button
-                class="action-btn primary"
-                onclick="createPost()"
-            >
-                🚀 Publish
-            </button>
-
-        </div>
+        <div class="skeleton-line skeleton-image"></div>
 
     </div>
 
 </div>
 
 
-<!-- TOAST -->
+</section>
+
+
+<!-- =========================
+     RIGHT SIDEBAR
+========================= -->
+
+<aside class="sidebar right-sidebar">
+
+
+<div class="create-box">
+
+<h3>
+    Mau membuat postingan?
+</h3>
+
+<p>
+    Buat postingan dari halaman profile kamu. Setelah disimpan, postingan akan muncul di Marketplace.
+</p>
+
+<button
+    class="create-btn"
+    onclick="location.href='profile.html'"
+>
+    ＋ Create Post
+</button>
+
+</div>
+
+
+<div class="right-card">
+
+<div class="right-title">
+    Marketplace Info
+</div>
+
+<div class="stat-row">
+
+<span>
+    Total Postingan
+</span>
+
+<strong id="totalPosts">
+    -
+</strong>
+
+</div>
+
+<div class="stat-row">
+
+<span>
+    Kategori
+</span>
+
+<strong id="totalCategories">
+    -
+</strong>
+
+</div>
+
+<div class="stat-row">
+
+<span>
+    Status
+</span>
+
+<strong>
+    Online
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="right-card">
+
+<div class="right-title">
+    ReyCloud
+</div>
+
+<p style="
+    color:#999;
+    font-size:10px;
+    line-height:1.6;
+">
+    Marketplace komunitas untuk berbagi project,
+    hosting, service, dan berbagai postingan lainnya.
+</p>
+
+</div>
+
+</aside>
+
+
+</main>
+
+</div>
+
 
 <div
-    id="toast"
     class="toast"
-></div>
+    id="toast"
+>
+    Berhasil
+</div>
 
 
 <script>
 
-/* =========================================
+/* =====================================================
    CONFIG
-========================================= */
+===================================================== */
 
-const API_BASE = "https://api.legionteknologi.my.id";
-
-const POSTING_ENDPOINT =
-    `${API_BASE}/api/posting`;
-
+const API_BASE =
+    localStorage.getItem("apiBase") ||
+    "https://api.legionteknologi.my.id";
 
 /*
-   Jika API berada di domain lain,
-   ubah menjadi:
+    Endpoint utama marketplace.
 
-   const API_BASE =
-       "https://api.legionteknologi.my.id";
+    Backend diharapkan mengembalikan:
 
+    {
+        "status": true,
+        "result": [
+            {
+                "id": "...",
+                "username": "Rey",
+                "avatar": "https://...",
+                "caption": "Hello...",
+                "image": "https://...",
+                "category": "hosting",
+                "likes": 0,
+                "comments": 0,
+                "createdAt": "2026-08-26T..."
+            }
+        ]
+    }
+
+    Kalau backend kamu menggunakan endpoint lain,
+    cukup ubah bagian ini.
 */
 
-
-let posts = [];
-
-let selectedImages = [];
+const POSTS_API =
+    `${API_BASE}/api/posts`;
 
 
-/* =========================================
-   ELEMENT
-========================================= */
+/* =====================================================
+   STATE
+===================================================== */
 
-function $(id){
-    return document.getElementById(id);
-}
+let allPosts = [];
+
+let activeCategory =
+    "all";
+
+let searchQuery =
+    "";
 
 
-/* =========================================
-   HTML SECURITY
-========================================= */
+/* =====================================================
+   HELPERS
+===================================================== */
 
 function escapeHTML(value){
 
     return String(value ?? "")
-
         .replace(/&/g,"&amp;")
-
         .replace(/</g,"&lt;")
-
         .replace(/>/g,"&gt;")
-
         .replace(/"/g,"&quot;")
-
         .replace(/'/g,"&#039;");
-}
-
-
-/* =========================================
-   TOAST
-========================================= */
-
-function showToast(message){
-
-    const toast =
-        $("toast");
-
-    toast.textContent =
-        message;
-
-    toast.classList.add("show");
-
-    setTimeout(()=>{
-
-        toast.classList.remove("show");
-
-    },2200);
 
 }
 
 
-/* =========================================
-   DASHBOARD
-========================================= */
+function getCurrentUser(){
 
-function goDashboard(){
+    const keys = [
 
-    window.location.href =
-        "dashboard.html";
+        "user",
+        "currentUser",
+        "userData",
+        "reycloud_user",
+        "loginUser"
+
+    ];
+
+    for(const key of keys){
+
+        const raw =
+            localStorage.getItem(key);
+
+        if(!raw){
+            continue;
+        }
+
+        try{
+
+            const data =
+                JSON.parse(raw);
+
+            if(
+                data &&
+                data.result &&
+                data.result.user
+            ){
+
+                return data.result.user;
+
+            }
+
+            if(
+                data &&
+                data.user
+            ){
+
+                return data.user;
+
+            }
+
+            if(
+                data &&
+                data.username
+            ){
+
+                return data;
+
+            }
+
+        }catch(error){
+
+            console.error(
+                "[USER]",
+                error
+            );
+
+        }
+
+    }
+
+    return null;
 
 }
 
 
-/* =========================================
-   DATE
-========================================= */
+function formatRole(role){
 
-function formatDate(timestamp){
+    return String(
+        role || "member"
+    ).replace(
+        /\b\w/g,
+        char =>
+            char.toUpperCase()
+    );
 
-    if(!timestamp){
-        return "";
+}
+
+
+function formatDate(dateValue){
+
+    if(!dateValue){
+        return "Baru saja";
     }
 
     const date =
-        new Date(timestamp);
+        new Date(dateValue);
 
     if(
         Number.isNaN(
@@ -1707,230 +1534,414 @@ function formatDate(timestamp){
         )
     ){
 
-        return "";
+        return "Baru saja";
 
     }
 
-    return date.toLocaleString(
+    const now =
+        new Date();
+
+    const diff =
+        Math.floor(
+            (now - date) / 1000
+        );
+
+    if(diff < 60){
+        return "Baru saja";
+    }
+
+    if(diff < 3600){
+
+        return `${Math.floor(
+            diff / 60
+        )} menit lalu`;
+
+    }
+
+    if(diff < 86400){
+
+        return `${Math.floor(
+            diff / 3600
+        )} jam lalu`;
+
+    }
+
+    if(diff < 604800){
+
+        return `${Math.floor(
+            diff / 86400
+        )} hari lalu`;
+
+    }
+
+    return date.toLocaleDateString(
         "id-ID",
         {
             day:"2-digit",
             month:"short",
-            year:"numeric",
-            hour:"2-digit",
-            minute:"2-digit"
+            year:"numeric"
         }
     );
 
 }
 
 
-/* =========================================
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+    window.toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+/* =====================================================
    AVATAR
-========================================= */
+===================================================== */
 
-function avatarLetter(username){
+function avatarHTML(
+    avatar,
+    username
+){
 
-    return String(
-        username || "R"
-    )
-    .trim()
-    .charAt(0)
-    .toUpperCase();
+    if(avatar){
+
+        return `
+            <img
+                src="${escapeHTML(avatar)}"
+                alt="Avatar ${escapeHTML(username)}"
+                loading="lazy"
+                onerror="this.remove()"
+            >
+        `;
+
+    }
+
+    return escapeHTML(
+        String(
+            username || "U"
+        )
+        .charAt(0)
+        .toUpperCase()
+    );
 
 }
 
 
-/*
-   Mendukung beberapa kemungkinan
-   nama field avatar dari user.json.
-*/
+/* =====================================================
+   CURRENT USER
+===================================================== */
 
-function getUserData(post){
+function renderCurrentUser(){
 
-    return (
+    const user =
+        getCurrentUser();
+
+    if(!user){
+        return;
+    }
+
+    const avatar =
+        document.getElementById(
+            "topAvatar"
+        );
+
+    if(user.avatar){
+
+        avatar.innerHTML = `
+            <img
+                src="${escapeHTML(
+                    user.avatar
+                )}"
+                alt="Profile"
+            >
+        `;
+
+    }else{
+
+        avatar.textContent =
+            String(
+                user.username || "U"
+            )
+            .charAt(0)
+            .toUpperCase();
+
+    }
+
+}
+
+
+/* =====================================================
+   NORMALIZE POST
+===================================================== */
+
+function normalizePost(post){
+
+    /*
+        Dibuat fleksibel supaya bisa membaca
+        beberapa bentuk response backend.
+    */
+
+    const user =
         post.user ||
-        post.profile ||
-        {}
-    );
+        post.author ||
+        {};
+
+    return {
+
+        id:
+            post.id ||
+            post._id ||
+            post.postId ||
+            crypto.randomUUID(),
+
+        username:
+            post.username ||
+            user.username ||
+            post.authorUsername ||
+            "User",
+
+        avatar:
+            post.avatar ||
+            user.avatar ||
+            post.authorAvatar ||
+            "",
+
+        role:
+            post.role ||
+            user.role ||
+            "member",
+
+        caption:
+            post.caption ||
+            post.content ||
+            post.text ||
+            post.description ||
+            "",
+
+        image:
+            post.image ||
+            post.imageUrl ||
+            post.media ||
+            post.photo ||
+            "",
+
+        category:
+            String(
+                post.category ||
+                "other"
+            ).toLowerCase(),
+
+        likes:
+            Number(
+                post.likes ||
+                post.likeCount ||
+                0
+            ),
+
+        comments:
+            Number(
+                post.comments ||
+                post.commentCount ||
+                0
+            ),
+
+        createdAt:
+            post.createdAt ||
+            post.created_at ||
+            post.date ||
+            new Date().toISOString()
+
+    };
 
 }
 
 
-function getAvatar(post){
-
-    const user =
-        getUserData(post);
-
-    return (
-        user.avatar ||
-        user.photo ||
-        user.foto ||
-        post.avatar ||
-        post.photo ||
-        post.fotoProfile ||
-        ""
-    );
-
-}
-
-
-function getRole(post){
-
-    const user =
-        getUserData(post);
-
-    return (
-        user.role ||
-        post.role ||
-        ""
-    );
-
-}
-
-
-function getUsername(post){
-
-    const user =
-        getUserData(post);
-
-    return (
-        user.username ||
-        post.username ||
-        "Unknown"
-    );
-
-}
-
-
-/* =========================================
-   LOAD POSTS
-========================================= */
+/* =====================================================
+   FETCH POSTS
+===================================================== */
 
 async function loadPosts(){
 
-    const feed =
-        $("feed");
+    const container =
+        document.getElementById(
+            "postsContainer"
+        );
 
-    feed.innerHTML = `
-        <div class="loading">
-            Memuat postingan...
+    container.innerHTML = `
+        <div class="skeleton">
+
+            <div class="skeleton-head">
+
+                <div class="skeleton-avatar"></div>
+
+                <div class="skeleton-user">
+
+                    <div class="skeleton-line"></div>
+
+                    <div class="skeleton-line"></div>
+
+                </div>
+
+            </div>
+
+            <div class="skeleton-line skeleton-image"></div>
+
+        </div>
+
+        <div class="skeleton">
+
+            <div class="skeleton-head">
+
+                <div class="skeleton-avatar"></div>
+
+                <div class="skeleton-user">
+
+                    <div class="skeleton-line"></div>
+
+                    <div class="skeleton-line"></div>
+
+                </div>
+
+            </div>
+
+            <div class="skeleton-line skeleton-image"></div>
+
         </div>
     `;
-
 
     try{
 
         const response =
             await fetch(
-                POSTING_ENDPOINT,
+                POSTS_API,
                 {
                     method:"GET",
-
+                    cache:"no-store",
                     headers:{
                         "Accept":
                             "application/json"
-                    },
-
-                    credentials:"include"
+                    }
                 }
             );
-
-
-        if(!response.ok){
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-
-        }
-
 
         const data =
             await response.json();
 
+        if(
+            !response.ok ||
+            data.status === false
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal mengambil postingan."
+            );
+
+        }
+
+        let posts =
+            data.result ||
+            data.posts ||
+            data.data ||
+            [];
 
         /*
-           Mendukung response:
+            Jika backend mengirim:
 
-           [
-             {...}
-           ]
-
-           atau:
-
-           {
-             status:true,
-             data:[...]
-           }
-
-           atau:
-
-           {
-             postings:[...]
-           }
+            {
+                result: {
+                    posts: [...]
+                }
+            }
         */
 
-        if(Array.isArray(data)){
-
-            posts = data;
-
-        }else if(
-            Array.isArray(data.data)
+        if(
+            !Array.isArray(posts) &&
+            posts &&
+            Array.isArray(posts.posts)
         ){
 
-            posts = data.data;
+            posts =
+                posts.posts;
 
-        }else if(
-            Array.isArray(data.postings)
-        ){
+        }
 
-            posts = data.postings;
-
-        }else if(
-            Array.isArray(data.result)
-        ){
-
-            posts = data.result;
-
-        }else{
+        if(!Array.isArray(posts)){
 
             posts = [];
 
         }
 
+        allPosts =
+            posts.map(
+                normalizePost
+            );
 
-        renderPosts(
-            $("searchInput").value
-        );
+        updateStats();
 
+        renderPosts();
 
     }catch(error){
 
         console.error(
-            "GET /api/posting:",
+            "[MARKETPLACE]",
             error
         );
 
+        container.innerHTML = `
 
-        feed.innerHTML = `
+            <div class="empty">
 
-            <div class="error-box">
+                <div class="empty-icon">
+                    ⚠️
+                </div>
 
                 <h3>
                     Gagal memuat postingan
                 </h3>
 
                 <p>
-                    API Marketplace tidak dapat
-                    diakses saat ini.
+                    ${escapeHTML(
+                        error.message ||
+                        "Terjadi kesalahan."
+                    )}
                 </p>
 
                 <button
-                    class="action-btn primary"
+                    class="create-btn"
+                    style="
+                        max-width:180px;
+                        background:#111;
+                        color:white;
+                    "
                     onclick="loadPosts()"
                 >
-                    🔄 Coba Lagi
+                    ↻ Coba Lagi
                 </button>
 
             </div>
@@ -1942,1183 +1953,341 @@ async function loadPosts(){
 }
 
 
-/* =========================================
-   CREATE MODAL
-========================================= */
+/* =====================================================
+   FILTER POSTS
+===================================================== */
 
-function openCreate(){
+function getFilteredPosts(){
 
-    $("createModal")
-        .classList.add("show");
-
-    $("postDescription")
-        .focus();
-
-}
-
-
-function closeCreate(){
-
-    $("createModal")
-        .classList.remove("show");
-
-}
-
-
-function closeModalOutside(event){
+    let posts =
+        [...allPosts];
 
     if(
-        event.target ===
-        $("createModal")
+        activeCategory !==
+        "all"
     ){
 
-        closeCreate();
-
-    }
-
-}
-
-
-/* =========================================
-   PREVIEW
-========================================= */
-
-function previewImages(input){
-
-    selectedImages =
-        Array.from(
-            input.files || []
-        );
-
-
-    $("previewGrid")
-        .innerHTML = "";
-
-
-    selectedImages.forEach(
-        (file,index)=>{
-
-            const reader =
-                new FileReader();
-
-
-            reader.onload =
-                event=>{
-
-                    const div =
-                        document.createElement(
-                            "div"
-                        );
-
-                    div.className =
-                        "preview";
-
-
-                    div.innerHTML = `
-
-                        <img
-                            src="${event.target.result}"
-                            alt="Preview"
-                        >
-
-                        <span>
-                            ${index + 1}
-                        </span>
-
-                    `;
-
-
-                    $("previewGrid")
-                        .appendChild(div);
-
-                };
-
-
-            reader.readAsDataURL(file);
-
-        }
-    );
-
-}
-
-
-/* =========================================
-   CREATE POST
-========================================= */
-
-async function createPost(){
-
-    const description =
-        $("postDescription")
-            .value
-            .trim();
-
-
-    if(
-        !description &&
-        !selectedImages.length
-    ){
-
-        showToast(
-            "Isi pesan atau upload foto dulu 😅"
-        );
-
-        return;
-
-    }
-
-
-    /*
-       Untuk sementara foto dikirim
-       sebagai FormData.
-
-       Backend /api/posting nanti
-       bisa menerima:
-
-       description
-       foto[]
-    */
-
-    const formData =
-        new FormData();
-
-
-    formData.append(
-        "deskripsi",
-        description
-    );
-
-
-    selectedImages.forEach(
-        file=>{
-
-            formData.append(
-                "foto",
-                file
+        posts =
+            posts.filter(
+                post =>
+                    post.category ===
+                    activeCategory
             );
 
-        }
-    );
+    }
 
+    if(searchQuery){
 
-    try{
+        const query =
+            searchQuery.toLowerCase();
 
-        showToast(
-            "Mengupload postingan..."
-        );
+        posts =
+            posts.filter(
+                post => {
 
+                    const text = [
 
-        const response =
-            await fetch(
-                POSTING_ENDPOINT,
-                {
-                    method:"POST",
+                        post.username,
 
-                    body:formData,
+                        post.caption,
 
-                    credentials:"include"
+                        post.category,
+
+                        post.role
+
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+                    return text.includes(
+                        query
+                    );
+
                 }
             );
 
-
-        const data =
-            await response.json()
-                .catch(()=>({}));
-
-
-        if(!response.ok){
-
-            throw new Error(
-                data.message ||
-                `HTTP ${response.status}`
-            );
-
-        }
-
-
-        $("postDescription")
-            .value = "";
-
-        $("postImages")
-            .value = "";
-
-        $("previewGrid")
-            .innerHTML = "";
-
-        selectedImages = [];
-
-
-        closeCreate();
-
-
-        showToast(
-            "Postingan berhasil dipublish 🚀"
-        );
-
-
-        await loadPosts();
-
-
-    }catch(error){
-
-        console.error(
-            "POST /api/posting:",
-            error
-        );
-
-
-        showToast(
-            error.message ||
-            "Gagal membuat postingan."
-        );
-
     }
+
+    return posts;
 
 }
 
 
-/* =========================================
-   LIKE
-========================================= */
+/* =====================================================
+   RENDER POSTS
+===================================================== */
 
-async function toggleLike(postId){
+function renderPosts(){
 
-    try{
-
-        const response =
-            await fetch(
-                `${POSTING_ENDPOINT}/${encodeURIComponent(postId)}/like`,
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    credentials:"include",
-
-                    body:JSON.stringify({})
-                }
-            );
-
-
-        if(!response.ok){
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-
-        }
-
-
-        await loadPosts();
-
-
-    }catch(error){
-
-        console.error(
-            "LIKE:",
-            error
+    const container =
+        document.getElementById(
+            "postsContainer"
         );
 
-        showToast(
-            "Gagal mengubah like."
-        );
+    const posts =
+        getFilteredPosts();
 
-    }
+    if(!posts.length){
 
-}
+        container.innerHTML = `
 
+            <div class="empty">
 
-/* =========================================
-   COMMENTS
-========================================= */
+                <div class="empty-icon">
+                    ${searchQuery ? "⌕" : "▦"}
+                </div>
 
-function toggleComments(postId){
+                <h3>
+                    ${
+                        searchQuery
+                        ? "Postingan tidak ditemukan"
+                        : "Belum ada postingan"
+                    }
+                </h3>
 
-    const comments =
-        document.querySelector(
-            `[data-comments="${postId}"]`
-        );
+                <p>
+                    ${
+                        searchQuery
+                        ? "Coba gunakan kata pencarian lain."
+                        : "Belum ada user yang membuat postingan."
+                    }
+                </p>
 
+            </div>
 
-    if(!comments){
-        return;
-    }
-
-
-    comments.classList.toggle(
-        "show"
-    );
-
-}
-
-
-async function addComment(postId){
-
-    const input =
-        document.querySelector(
-            `[data-comment-input="${postId}"]`
-        );
-
-
-    if(!input){
-        return;
-    }
-
-
-    const text =
-        input.value.trim();
-
-
-    if(!text){
-        return;
-    }
-
-
-    try{
-
-        const response =
-            await fetch(
-                `${POSTING_ENDPOINT}/${encodeURIComponent(postId)}/comen`,
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    credentials:"include",
-
-                    body:JSON.stringify({
-                        text
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json()
-                .catch(()=>({}));
-
-
-        if(!response.ok){
-
-            throw new Error(
-                data.message ||
-                `HTTP ${response.status}`
-            );
-
-        }
-
-
-        await loadPosts();
-
-
-        setTimeout(()=>{
-
-            const comments =
-                document.querySelector(
-                    `[data-comments="${postId}"]`
-                );
-
-            if(comments){
-
-                comments.classList.add(
-                    "show"
-                );
-
-            }
-
-        },50);
-
-
-    }catch(error){
-
-        console.error(
-            "COMMENT:",
-            error
-        );
-
-        showToast(
-            "Gagal mengirim komentar."
-        );
-
-    }
-
-}
-
-
-/* =========================================
-   DELETE
-========================================= */
-
-async function deletePost(postId){
-
-    if(
-        !confirm(
-            "Hapus postingan ini?"
-        )
-    ){
+        `;
 
         return;
 
     }
 
-
-    try{
-
-        const response =
-            await fetch(
-                `${POSTING_ENDPOINT}/${encodeURIComponent(postId)}`,
-                {
-                    method:"DELETE",
-
-                    credentials:"include"
-                }
-            );
-
-
-        if(!response.ok){
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-
-        }
-
-
-        showToast(
-            "Postingan dihapus."
-        );
-
-
-        await loadPosts();
-
-
-    }catch(error){
-
-        console.error(
-            "DELETE:",
-            error
-        );
-
-        showToast(
-            "Gagal menghapus postingan."
-        );
-
-    }
+    container.innerHTML =
+        posts
+            .map(
+                post =>
+                    renderPost(
+                        post
+                    )
+            )
+            .join("");
 
 }
 
 
-/* =========================================
-   MENU
-========================================= */
+/* =====================================================
+   RENDER SINGLE POST
+===================================================== */
 
-function toggleMenu(postId){
+function renderPost(post){
 
-    const menu =
-        document.querySelector(
-            `[data-menu="${postId}"]`
+    const safeUsername =
+        escapeHTML(
+            post.username
         );
 
-
-    if(!menu){
-        return;
-    }
-
-
-    document
-        .querySelectorAll(
-            ".menu.show"
-        )
-        .forEach(item=>{
-
-            if(item !== menu){
-
-                item.classList.remove(
-                    "show"
-                );
-
-            }
-
-        });
-
-
-    menu.classList.toggle(
-        "show"
-    );
-
-}
-
-
-/* =========================================
-   GALLERY
-========================================= */
-
-function moveGallery(
-    postId,
-    direction
-){
-
-    const track =
-        document.querySelector(
-            `[data-gallery="${postId}"]`
+    const role =
+        formatRole(
+            post.role
         );
 
-
-    if(!track){
-        return;
-    }
-
-
-    track.scrollBy({
-
-        left:
-            track.clientWidth *
-            direction,
-
-        behavior:"smooth"
-
-    });
-
-}
-
-
-function updateDots(postId){
-
-    const track =
-        document.querySelector(
-            `[data-gallery="${postId}"]`
+    const category =
+        escapeHTML(
+            post.category
         );
 
-
-    if(!track){
-        return;
-    }
-
-
-    const index =
-        Math.round(
-            track.scrollLeft /
-            track.clientWidth
+    const caption =
+        escapeHTML(
+            post.caption
         );
 
-
-    const gallery =
-        track.closest(
-            ".gallery"
+    const avatar =
+        avatarHTML(
+            post.avatar,
+            post.username
         );
 
-
-    if(!gallery){
-        return;
-    }
-
-
-    const dots =
-        gallery.querySelectorAll(
-            ".dot"
-        );
-
-
-    dots.forEach(
-        (dot,i)=>{
-
-            dot.classList.toggle(
-                "active",
-                i === index
-            );
-
-        }
-    );
-
-
-    const counter =
-        gallery.querySelector(
-            ".gallery-count"
-        );
-
-
-    if(counter){
-
-        counter.textContent =
-            `${index + 1} / ${dots.length}`;
-
-    }
-
-}
-
-
-/* =========================================
-   GALLERY HTML
-========================================= */
-
-function galleryHTML(post){
-
-    const images =
-        post.foto ||
-        post.images ||
-        [];
-
-
-    if(
-        !Array.isArray(images) ||
-        !images.length
-    ){
-
-        return "";
-
-    }
-
-
-    const slides =
-        images.map(
-            (src,index)=>`
-
-            <div class="gallery-item">
+    const image =
+        post.image
+        ? `
+            <div class="post-image">
 
                 <img
-                    src="${escapeHTML(src)}"
-                    alt="Foto postingan ${index + 1}"
+                    src="${escapeHTML(
+                        post.image
+                    )}"
+                    alt="Post dari ${safeUsername}"
                     loading="lazy"
+                    onerror="
+                        this.parentElement.style.display='none'
+                    "
                 >
 
             </div>
-
         `
-        ).join("");
+        : "";
 
-
-    const dots =
-        images.map(
-            (src,index)=>`
-
+    const verified =
+        [
+            "developer",
+            "tangan-kanan"
+        ].includes(
+            String(
+                post.role
+            ).toLowerCase()
+        )
+        ? `
             <span
-                class="dot ${
-                    index === 0
-                    ? "active"
-                    : ""
-                }"
-            ></span>
-
-        `
-        ).join("");
-
-
-    return `
-
-        <div class="gallery">
-
-            ${
-                images.length > 1
-                ? `
-
-                    <button
-                        class="gallery-arrow left"
-                        onclick="
-                            moveGallery(
-                                '${post.id}',
-                                -1
-                            )
-                        "
-                    >
-                        ‹
-                    </button>
-
-                    <button
-                        class="gallery-arrow right"
-                        onclick="
-                            moveGallery(
-                                '${post.id}',
-                                1
-                            )
-                        "
-                    >
-                        ›
-                    </button>
-
-                `
-                : ""
-            }
-
-
-            <div
-                class="gallery-track"
-                data-gallery="${post.id}"
-                onscroll="
-                    updateDots('${post.id}')
-                "
+                class="verified"
+                title="Verified"
             >
-
-                ${slides}
-
-            </div>
-
-
-            ${
-                images.length > 1
-                ? `
-
-                    <div class="gallery-dots">
-                        ${dots}
-                    </div>
-
-                    <div class="gallery-count">
-                        1 / ${images.length}
-                    </div>
-
-                `
-                : ""
-            }
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================
-   COMMENTS HTML
-========================================= */
-
-function commentsHTML(post){
-
-    const comments =
-        post.comen ||
-        post.comments ||
-        [];
-
+                ✓
+            </span>
+        `
+        : "";
 
     return `
 
-        <div
-            class="comments"
-            data-comments="${post.id}"
+        <article
+            class="post"
+            data-post-id="${escapeHTML(
+                post.id
+            )}"
         >
 
-            <div class="comment-list">
+            <div class="post-header">
 
-                ${
-                    comments.length
+                <div class="post-avatar">
 
-                    ?
+                    ${avatar}
 
-                    comments.map(
-                        comment=>{
+                </div>
 
-                            const username =
-                                comment.username ||
-                                "User";
+                <div class="post-user">
 
-                            const text =
-                                comment.text ||
-                                comment.comen ||
-                                comment.comment ||
-                                "";
+                    <div class="post-user-name">
 
-                            const avatar =
-                                comment.avatar ||
-                                comment.foto ||
-                                "";
+                        ${safeUsername}
 
+                        ${verified}
 
-                            return `
+                    </div>
 
-                                <div class="comment">
+                    <div class="post-meta">
 
-                                    <div class="comment-avatar">
+                        <span>
+                            ${escapeHTML(role)}
+                        </span>
 
-                                        ${
-                                            avatar
+                        <span>•</span>
 
-                                            ?
+                        <span>
+                            ${escapeHTML(
+                                formatDate(
+                                    post.createdAt
+                                )
+                            )}
+                        </span>
 
-                                            `
-                                            <img
-                                                src="${escapeHTML(avatar)}"
-                                                alt=""
-                                            >
-                                            `
+                    </div>
 
-                                            :
-
-                                            avatarLetter(
-                                                username
-                                            )
-                                        }
-
-                                    </div>
-
-
-                                    <div class="comment-body">
-
-                                        <strong>
-                                            ${escapeHTML(username)}
-                                        </strong>
-
-                                        <span>
-                                            ${escapeHTML(text)}
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-                            `;
-
-                        }
-                    ).join("")
-
-                    :
-
-                    `
-
-                        <div
-                            style="
-                                color:#667085;
-                                font-size:10px;
-                                padding:4px 0;
-                            "
-                        >
-                            Belum ada komentar.
-                        </div>
-
-                    `
-                }
-
-            </div>
-
-
-            <div class="comment-input">
-
-                <input
-                    data-comment-input="${post.id}"
-                    type="text"
-                    placeholder="Tulis komentar..."
-                    onkeydown="
-                        if(event.key==='Enter'){
-                            addComment('${post.id}')
-                        }
-                    "
-                >
-
+                </div>
 
                 <button
-                    onclick="
-                        addComment('${post.id}')
-                    "
+                    class="post-more"
+                    onclick="showPostMenu('${escapeHTML(
+                        post.id
+                    )}')"
+                    title="Menu"
                 >
-                    Kirim
+                    •••
                 </button>
 
             </div>
 
-        </div>
 
-    `;
+            <div class="post-content">
 
-}
-
-
-/* =========================================
-   POST HTML
-========================================= */
-
-function postHTML(post){
-
-    const username =
-        getUsername(post);
-
-    const user =
-        getUserData(post);
-
-    const avatar =
-        getAvatar(post);
-
-    const role =
-        getRole(post);
-
-
-    const likes =
-        post.like ||
-        post.likes ||
-        [];
-
-
-    const comments =
-        post.comen ||
-        post.comments ||
-        [];
-
-
-    const liked =
-        Array.isArray(likes) &&
-        likes.includes(
-            window.CURRENT_USERNAME || ""
-        );
-
-
-    const likeCount =
-        Array.isArray(likes)
-        ? likes.length
-        : Number(likes) || 0;
-
-
-    const commentCount =
-        Array.isArray(comments)
-        ? comments.length
-        : Number(comments) || 0;
-
-
-    return `
-
-        <article class="post">
-
-            <div class="post-head">
-
-                <div class="user">
-
-                    <div class="user-avatar">
-
-                        ${
-                            avatar
-
-                            ?
-
-                            `
-                            <img
-                                src="${escapeHTML(avatar)}"
-                                alt="${escapeHTML(username)}"
-                                loading="lazy"
-                            >
-                            `
-
-                            :
-
-                            avatarLetter(
-                                username
-                            )
-                        }
-
-                    </div>
-
-
-                    <div class="user-info">
-
-                        <div class="user-name">
-
-                            ${escapeHTML(username)}
-
+                ${
+                    caption
+                    ? `
+                        <div class="post-text">
+                            ${caption}
                         </div>
+                    `
+                    : ""
+                }
 
-
-                        ${
-                            role
-                            ?
-
-                            `
-                            <div class="user-role">
-                                ${escapeHTML(role)}
-                            </div>
-                            `
-
-                            :
-
-                            ""
-                        }
-
-
-                        <div class="post-time">
-
-                            ${formatDate(
-                                post.createdAt ||
-                                post.date
-                            )}
-
+                ${
+                    category &&
+                    category !== "other"
+                    ? `
+                        <div class="post-category">
+                            #${category}
                         </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="post-menu">
-
-                    <button
-                        class="menu-btn"
-                        onclick="
-                            toggleMenu('${post.id}')
-                        "
-                    >
-                        ⋮
-                    </button>
-
-
-                    <div
-                        class="menu"
-                        data-menu="${post.id}"
-                    >
-
-                        <button
-                            onclick="
-                                showToast(
-                                    'Postingan dilaporkan.'
-                                )
-                            "
-                        >
-                            ⚠ Laporkan
-                        </button>
-
-
-                        <button
-                            class="danger"
-                            onclick="
-                                deletePost(
-                                    '${post.id}'
-                                )
-                            "
-                        >
-                            🗑 Hapus
-                        </button>
-
-                    </div>
-
-                </div>
+                    `
+                    : ""
+                }
 
             </div>
 
 
-            ${
-                post.deskripsi ||
-                post.description
-
-                ?
-
-                `
-
-                    <div class="post-content">
-
-                        <div class="post-description">
-
-                            ${escapeHTML(
-                                post.deskripsi ||
-                                post.description
-                            )}
-
-                        </div>
-
-                    </div>
-
-                `
-
-                :
-
-                ""
-            }
+            ${image}
 
 
-            ${galleryHTML(post)}
+            <div class="post-stats">
+
+                <span>
+                    ${
+                        post.likes > 0
+                        ? `${post.likes} suka`
+                        : "Belum ada suka"
+                    }
+                </span>
+
+                <span>
+                    ${
+                        post.comments > 0
+                        ? `${post.comments} komentar`
+                        : "Belum ada komentar"
+                    }
+                </span>
+
+            </div>
 
 
             <div class="post-actions">
 
                 <button
-                    class="
-                        post-action
-                        ${liked ? "liked" : ""}
-                    "
-                    onclick="
-                        toggleLike(
-                            '${post.id}'
-                        )
-                    "
+                    class="post-action"
+                    onclick="likePost('${escapeHTML(
+                        post.id
+                    )}',this)"
                 >
-
-                    <span>
-                        ${liked ? "♥" : "♡"}
-                    </span>
-
-                    <span>
-                        Like
-                    </span>
-
-                    <span class="like-count">
-                        ${likeCount}
-                    </span>
-
+                    ♡
+                    Suka
                 </button>
-
 
                 <button
                     class="post-action"
-                    onclick="
-                        toggleComments(
-                            '${post.id}'
-                        )
-                    "
+                    onclick="commentPost('${escapeHTML(
+                        post.id
+                    )}')"
                 >
-
-                    💬
-
-                    <span>
-                        Comment
-                    </span>
-
-                    <span>
-                        ${commentCount}
-                    </span>
-
+                    ♧
+                    Komentar
                 </button>
-
 
                 <button
                     class="post-action"
-                    onclick="
-                        sharePost(
-                            '${post.id}'
-                        )
-                    "
+                    onclick="sharePost('${escapeHTML(
+                        post.id
+                    )}')"
                 >
-
                     ↗
-
-                    <span>
-                        Share
-                    </span>
-
+                    Bagikan
                 </button>
 
             </div>
-
-
-            ${
-                likeCount
-
-                ?
-
-                `
-
-                    <div class="post-stats">
-
-                        ❤️ ${likeCount}
-                        orang menyukai postingan ini
-
-                    </div>
-
-                `
-
-                :
-
-                ""
-            }
-
-
-            ${commentsHTML(post)}
 
         </article>
 
@@ -3127,179 +2296,154 @@ function postHTML(post){
 }
 
 
-/* =========================================
-   RENDER
-========================================= */
+/* =====================================================
+   STATS
+===================================================== */
 
-function renderPosts(search=""){
+function updateStats(){
 
-    const feed =
-        $("feed");
+    document.getElementById(
+        "totalPosts"
+    ).textContent =
+        allPosts.length;
 
-
-    const keyword =
-        String(search)
-            .toLowerCase()
-            .trim();
-
-
-    const filtered =
-        posts.filter(post=>{
-
-            const username =
-                getUsername(post)
-                    .toLowerCase();
-
-
-            const description =
-                String(
-                    post.deskripsi ||
-                    post.description ||
-                    ""
+    const categories =
+        new Set(
+            allPosts
+                .map(
+                    post =>
+                        post.category
                 )
-                .toLowerCase();
-
-
-            return (
-                !keyword ||
-                username.includes(keyword) ||
-                description.includes(keyword)
-            );
-
-        });
-
-
-    if(!filtered.length){
-
-        feed.innerHTML = `
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    📭
-                </div>
-
-
-                <h3>
-                    Belum ada postingan
-                </h3>
-
-
-                <p>
-                    Jadilah yang pertama
-                    membuat postingan di
-                    ReyCloud Marketplace.
-                </p>
-
-
-                <button
-                    class="action-btn primary"
-                    style="margin-top:15px"
-                    onclick="openCreate()"
-                >
-                    ＋ Buat Postingan
-                </button>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    feed.innerHTML =
-        filtered
-            .map(postHTML)
-            .join("");
-
-}
-
-
-/* =========================================
-   SEARCH
-========================================= */
-
-function searchPosts(){
-
-    renderPosts(
-        $("searchInput").value
-    );
-
-}
-
-
-/* =========================================
-   SHARE
-========================================= */
-
-async function sharePost(postId){
-
-    const post =
-        posts.find(
-            item =>
-                String(item.id) ===
-                String(postId)
+                .filter(Boolean)
         );
 
+    document.getElementById(
+        "totalCategories"
+    ).textContent =
+        categories.size;
+
+}
+
+
+/* =====================================================
+   LIKE
+===================================================== */
+
+function likePost(
+    postId,
+    button
+){
+
+    const post =
+        allPosts.find(
+            item =>
+                String(
+                    item.id
+                ) ===
+                String(postId)
+        );
 
     if(!post){
         return;
     }
 
+    /*
+        UI lokal dulu.
+        Nanti bisa disambungkan ke:
+        POST /api/posts/:id/like
+    */
 
-    const username =
-        getUsername(post);
+    post.likes++;
+
+    button.classList.add(
+        "liked"
+    );
+
+    renderPosts();
+
+}
 
 
-    const description =
-        post.deskripsi ||
-        post.description ||
-        "Postingan ReyCloud Marketplace";
+/* =====================================================
+   COMMENT
+===================================================== */
 
+function commentPost(
+    postId
+){
 
-    const text =
-        `${username}: ${description}`;
+    const post =
+        allPosts.find(
+            item =>
+                String(
+                    item.id
+                ) ===
+                String(postId)
+        );
 
-
-    if(
-        navigator.share
-    ){
-
-        try{
-
-            await navigator.share({
-
-                title:
-                    "ReyCloud Marketplace",
-
-                text
-
-            });
-
-        }catch(error){}
-
+    if(!post){
         return;
-
     }
 
+    showToast(
+        "Fitur komentar siap disambungkan ke API 💬"
+    );
+
+}
+
+
+/* =====================================================
+   SHARE
+===================================================== */
+
+async function sharePost(
+    postId
+){
+
+    const url =
+        `${location.origin}${location.pathname}#post-${encodeURIComponent(
+            postId
+        )}`;
 
     try{
 
-        await navigator.clipboard.writeText(
-            text
-        );
+        if(
+            navigator.share
+        ){
 
+            await navigator.share({
+                title:
+                    "ReyCloud Marketplace",
+                text:
+                    "Lihat postingan di ReyCloud Marketplace",
+                url
+            });
 
-        showToast(
-            "Postingan berhasil disalin."
-        );
+        }else if(
+            navigator.clipboard
+        ){
+
+            await navigator.clipboard.writeText(
+                url
+            );
+
+            showToast(
+                "Link postingan berhasil disalin! 🔗"
+            );
+
+        }else{
+
+            showToast(
+                "Link postingan siap dibagikan."
+            );
+
+        }
 
     }catch(error){
 
-        showToast(
-            "Gagal menyalin postingan."
+        console.log(
+            "[SHARE]",
+            error
         );
 
     }
@@ -3307,41 +2451,144 @@ async function sharePost(postId){
 }
 
 
-/* =========================================
-   CLOSE MENU
-========================================= */
+/* =====================================================
+   POST MENU
+===================================================== */
 
-document.addEventListener(
-    "click",
-    event=>{
+function showPostMenu(
+    postId
+){
 
-        if(
-            !event.target.closest(
-                ".post-menu"
-            )
-        ){
+    const post =
+        allPosts.find(
+            item =>
+                String(
+                    item.id
+                ) ===
+                String(postId)
+        );
 
-            document
-                .querySelectorAll(
-                    ".menu.show"
-                )
-                .forEach(menu=>{
+    if(!post){
+        return;
+    }
 
-                    menu.classList.remove(
-                        "show"
-                    );
+    showToast(
+        `Postingan @${post.username}`
+    );
 
-                });
+}
 
-        }
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    event => {
+
+        searchQuery =
+            event.target.value
+                .trim();
+
+        renderPosts();
 
     }
 );
 
 
-/* =========================================
-   START
-========================================= */
+/* =====================================================
+   CATEGORY FILTER
+===================================================== */
+
+document.querySelectorAll(
+    ".filter"
+).forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".filter"
+                    )
+                    .forEach(
+                        item =>
+                            item.classList.remove(
+                                "active"
+                            )
+                    );
+
+                button.classList.add(
+                    "active"
+                );
+
+                activeCategory =
+                    button.dataset.category ||
+                    "all";
+
+                renderPosts();
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+document.getElementById(
+    "refreshBtn"
+).addEventListener(
+    "click",
+    async () => {
+
+        const button =
+            document.getElementById(
+                "refreshBtn"
+            );
+
+        button.disabled =
+            true;
+
+        button.style.transform =
+            "rotate(360deg)";
+
+        await loadPosts();
+
+        setTimeout(
+            () => {
+
+                button.style.transform =
+                    "";
+
+                button.disabled =
+                    false;
+
+            },
+            300
+        );
+
+        showToast(
+            "Marketplace diperbarui ✅"
+        );
+
+    }
+);
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+renderCurrentUser();
 
 loadPosts();
 
