@@ -2,8 +2,9 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Server Status - ReyCloud</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#080b12">
+<title>ReyCloud • System Status</title>
 
 <style>
 *{
@@ -12,11 +13,45 @@
     padding:0;
 }
 
+:root{
+    --bg:#06080d;
+    --panel:#0c111a;
+    --panel2:#101722;
+    --border:rgba(255,255,255,.08);
+    --text:#f8fafc;
+    --muted:#8b95a7;
+    --green:#22c55e;
+    --red:#ef4444;
+    --yellow:#f59e0b;
+    --blue:#38bdf8;
+    --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     font-family:Arial,Helvetica,sans-serif;
-    background:#f5f7fa;
-    color:#111827;
+    background:
+        radial-gradient(circle at 10% 0%,rgba(56,189,248,.08),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(34,197,94,.06),transparent 30%),
+        var(--bg);
+    color:var(--text);
     min-height:100vh;
+    overflow-x:hidden;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+    background-size:40px 40px;
+    mask-image:linear-gradient(to bottom,black,transparent);
 }
 
 button{
@@ -24,22 +59,28 @@ button{
 }
 
 .app{
-    max-width:1100px;
+    max-width:1150px;
     margin:auto;
-    padding:20px;
+    padding:22px;
+    position:relative;
+    z-index:1;
 }
 
 .header{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
+    background:rgba(12,17,26,.82);
+    backdrop-filter:blur(18px);
+    border:1px solid var(--border);
+    border-radius:24px;
     padding:18px;
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:15px;
     margin-bottom:18px;
-    box-shadow:0 4px 18px rgba(0,0,0,.04);
+    box-shadow:var(--shadow);
+    position:sticky;
+    top:12px;
+    z-index:20;
 }
 
 .header-left{
@@ -49,170 +90,230 @@ button{
 }
 
 .logo{
-    width:48px;
-    height:48px;
-    border-radius:14px;
-    background:#111827;
-    color:#fff;
+    width:50px;
+    height:50px;
+    border-radius:16px;
+    background:linear-gradient(145deg,#1b2432,#080b12);
+    border:1px solid rgba(255,255,255,.1);
+    color:white;
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:22px;
-    font-weight:bold;
+    font-weight:900;
+    box-shadow:inset 0 0 20px rgba(255,255,255,.04);
 }
 
 .title h1{
     font-size:20px;
+    letter-spacing:-.5px;
 }
 
 .title p{
-    color:#6b7280;
-    font-size:13px;
+    color:var(--muted);
+    font-size:12px;
     margin-top:4px;
 }
 
-.back-btn{
-    border:0;
-    background:#111827;
-    color:#fff;
-    padding:11px 15px;
-    border-radius:11px;
+.header-actions{
+    display:flex;
+    gap:8px;
+}
+
+.action-btn{
+    border:1px solid var(--border);
+    background:#111722;
+    color:white;
+    padding:11px 14px;
+    border-radius:12px;
     cursor:pointer;
-    font-size:13px;
+    font-size:12px;
     font-weight:bold;
+    transition:.2s;
 }
 
-.back-btn:hover{
-    opacity:.9;
+.action-btn:hover{
+    background:#18212e;
+    transform:translateY(-1px);
 }
 
-.status-card{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
-    padding:22px;
+.hero{
+    background:
+        radial-gradient(circle at 100% 0%,rgba(56,189,248,.12),transparent 35%),
+        linear-gradient(145deg,#0d141f,#080b11);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:25px;
     margin-bottom:18px;
-    box-shadow:0 4px 18px rgba(0,0,0,.04);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    position:relative;
 }
 
-.status-top{
+.hero:after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border:1px solid rgba(56,189,248,.08);
+    border-radius:50%;
+    right:-90px;
+    top:-100px;
+}
+
+.hero-top{
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:20px;
+}
+
+.hero-main{
+    display:flex;
+    align-items:center;
     gap:15px;
 }
 
-.status-main{
+.status-ring{
+    width:55px;
+    height:55px;
+    border-radius:50%;
     display:flex;
     align-items:center;
-    gap:14px;
+    justify-content:center;
+    background:rgba(34,197,94,.08);
+    box-shadow:0 0 0 7px rgba(34,197,94,.05);
 }
 
 .status-dot{
-    width:18px;
-    height:18px;
+    width:17px;
+    height:17px;
     border-radius:50%;
-    background:#9ca3af;
-    box-shadow:0 0 0 6px rgba(156,163,175,.12);
+    background:#64748b;
 }
 
 .status-dot.online{
-    background:#16a34a;
-    box-shadow:0 0 0 6px rgba(22,163,74,.12);
+    background:var(--green);
+    box-shadow:0 0 18px rgba(34,197,94,.8);
+    animation:pulse 1.8s infinite;
 }
 
 .status-dot.offline{
-    background:#dc2626;
-    box-shadow:0 0 0 6px rgba(220,38,38,.12);
+    background:var(--red);
+    box-shadow:0 0 18px rgba(239,68,68,.6);
 }
 
-.status-title{
-    font-size:19px;
-    font-weight:bold;
+@keyframes pulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.15)}
 }
 
-.status-message{
-    color:#6b7280;
+.hero-title{
+    font-size:21px;
+    font-weight:800;
+}
+
+.hero-message{
+    color:var(--muted);
     font-size:13px;
+    margin-top:5px;
+}
+
+.ping-box{
+    min-width:105px;
+    padding:12px 15px;
+    border-radius:14px;
+    background:#111722;
+    border:1px solid var(--border);
+    text-align:center;
+}
+
+.ping-label{
+    font-size:10px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.ping-value{
     margin-top:4px;
+    font-size:18px;
+    font-weight:800;
 }
 
-.ping{
-    background:#f3f4f6;
-    border-radius:10px;
-    padding:9px 12px;
-    font-size:13px;
-    font-weight:bold;
+.ping-value.good{
+    color:var(--green);
 }
 
-.ping.good{
-    color:#15803d;
+.ping-value.medium{
+    color:var(--yellow);
 }
 
-.ping.medium{
-    color:#b45309;
+.ping-value.bad{
+    color:var(--red);
 }
 
-.ping.bad{
-    color:#dc2626;
-}
-
-.refresh-info{
-    margin-top:18px;
-    padding-top:15px;
-    border-top:1px solid #f0f0f0;
+.hero-meta{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    color:#6b7280;
-    font-size:12px;
+    gap:15px;
+    flex-wrap:wrap;
 }
 
-.refresh-btn{
-    border:1px solid #e5e7eb;
-    background:#fff;
-    padding:8px 12px;
-    border-radius:9px;
-    cursor:pointer;
-    font-size:12px;
+.meta-item{
+    color:var(--muted);
+    font-size:11px;
 }
 
-.refresh-btn:hover{
-    background:#f9fafb;
+.meta-item b{
+    color:white;
+}
+
+.error-box{
+    margin-top:15px;
+    padding:13px;
+    background:rgba(239,68,68,.08);
+    border:1px solid rgba(239,68,68,.2);
+    color:#fca5a5;
+    border-radius:12px;
+    font-size:12px;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:
-        repeat(2,minmax(0,1fr));
+    grid-template-columns:repeat(2,minmax(0,1fr));
     gap:16px;
 }
 
 .card{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
+    background:rgba(12,17,26,.86);
+    backdrop-filter:blur(14px);
+    border:1px solid var(--border);
+    border-radius:21px;
     padding:20px;
-    box-shadow:0 4px 18px rgba(0,0,0,.04);
+    box-shadow:var(--shadow);
 }
 
 .card.full{
-    grid-column:1 / -1;
+    grid-column:1/-1;
 }
 
 .card-header{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:11px;
     margin-bottom:18px;
 }
 
 .card-icon{
-    width:38px;
-    height:38px;
-    border-radius:11px;
-    background:#f3f4f6;
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    background:#121a25;
+    border:1px solid var(--border);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -220,19 +321,18 @@ button{
 }
 
 .card-header h2{
-    font-size:16px;
+    font-size:15px;
 }
 
 .card-header p{
-    color:#9ca3af;
-    font-size:11px;
+    color:var(--muted);
+    font-size:10px;
     margin-top:3px;
 }
 
 .info-list{
     display:flex;
     flex-direction:column;
-    gap:0;
 }
 
 .info-row{
@@ -240,8 +340,8 @@ button{
     justify-content:space-between;
     align-items:flex-start;
     gap:20px;
-    padding:11px 0;
-    border-bottom:1px solid #f3f4f6;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.055);
 }
 
 .info-row:last-child{
@@ -249,19 +349,19 @@ button{
 }
 
 .info-label{
-    color:#6b7280;
-    font-size:13px;
+    color:var(--muted);
+    font-size:12px;
 }
 
 .info-value{
     text-align:right;
-    font-size:13px;
+    font-size:12px;
     font-weight:bold;
     word-break:break-word;
 }
 
 .muted{
-    color:#9ca3af;
+    color:#667085;
     font-weight:normal;
 }
 
@@ -270,78 +370,160 @@ button{
 }
 
 .memory-bar{
+    height:11px;
     width:100%;
-    height:12px;
-    background:#eef0f3;
+    background:#161d28;
     border-radius:20px;
     overflow:hidden;
 }
 
 .memory-fill{
+    width:0;
     height:100%;
-    width:0%;
     border-radius:20px;
-    background:#111827;
-    transition:.4s ease;
+    background:linear-gradient(90deg,#38bdf8,#22c55e);
+    box-shadow:0 0 14px rgba(34,197,94,.3);
+    transition:.5s ease;
 }
 
 .memory-percent{
     display:flex;
     justify-content:space-between;
     margin-top:8px;
-    font-size:12px;
-    color:#6b7280;
+    color:var(--muted);
+    font-size:11px;
+}
+
+.memory-percent b{
+    color:white;
 }
 
 .uptime-box{
-    background:#f8fafc;
-    border:1px solid #eef0f3;
-    border-radius:14px;
-    padding:15px;
     display:grid;
-    grid-template-columns:
-        repeat(2,minmax(0,1fr));
+    grid-template-columns:repeat(2,minmax(0,1fr));
     gap:12px;
 }
 
 .uptime-item{
-    background:#fff;
-    border:1px solid #eef0f3;
-    border-radius:11px;
-    padding:13px;
+    background:#0e141e;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
 }
 
 .uptime-label{
-    font-size:11px;
-    color:#9ca3af;
+    color:var(--muted);
+    font-size:10px;
 }
 
 .uptime-value{
+    margin-top:7px;
+    font-size:16px;
+    font-weight:800;
+}
+
+.chart-wrap{
+    height:180px;
+    position:relative;
+}
+
+canvas{
+    width:100%;
+    height:100%;
+}
+
+.chart-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:12px;
+}
+
+.chart-stat{
+    background:#0e141e;
+    border:1px solid var(--border);
+    padding:12px;
+    border-radius:12px;
+}
+
+.chart-stat span{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+}
+
+.chart-stat b{
+    display:block;
     margin-top:5px;
-    font-size:15px;
-    font-weight:bold;
+    font-size:14px;
+}
+
+.about{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:18px;
+}
+
+.about-box{
+    background:#0e141e;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+}
+
+.about-box h3{
+    font-size:16px;
+    margin-bottom:9px;
+}
+
+.about-box p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.7;
+}
+
+.feature-list{
+    display:grid;
+    gap:9px;
+}
+
+.feature{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:12px;
+    color:#cbd5e1;
+}
+
+.feature i{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 8px rgba(34,197,94,.5);
+}
+
+.api-endpoint{
+    margin-top:15px;
+    padding:12px;
+    border-radius:11px;
+    background:#080c13;
+    border:1px solid var(--border);
+    font-family:monospace;
+    color:#94a3b8;
+    font-size:11px;
+    word-break:break-all;
 }
 
 .footer{
     text-align:center;
-    color:#9ca3af;
-    font-size:12px;
-    padding:20px 0 5px;
+    color:#596273;
+    font-size:10px;
+    padding:25px 0 8px;
 }
 
 .loading{
-    color:#9ca3af;
-    font-size:13px;
-}
-
-.error-box{
-    background:#fef2f2;
-    border:1px solid #fecaca;
-    color:#b91c1c;
-    padding:13px;
-    border-radius:11px;
-    font-size:13px;
-    margin-top:15px;
+    opacity:.6;
 }
 
 @media(max-width:700px){
@@ -351,47 +533,60 @@ button{
     }
 
     .header{
-        padding:14px;
-    }
-
-    .header-left{
-        min-width:0;
+        top:8px;
+        padding:13px;
+        border-radius:18px;
     }
 
     .logo{
         width:42px;
         height:42px;
-        font-size:19px;
+        border-radius:13px;
+        font-size:18px;
     }
 
     .title h1{
-        font-size:17px;
-    }
-
-    .title p{
-        font-size:11px;
-    }
-
-    .back-btn{
-        padding:9px 11px;
-        font-size:11px;
-    }
-
-    .status-card{
-        padding:17px;
-    }
-
-    .status-top{
-        align-items:flex-start;
-    }
-
-    .status-title{
         font-size:16px;
     }
 
-    .ping{
+    .title p{
+        font-size:10px;
+    }
+
+    .action-btn{
+        padding:9px 10px;
+        font-size:10px;
+    }
+
+    .hero{
+        padding:18px;
+        border-radius:19px;
+    }
+
+    .hero-top{
+        align-items:flex-start;
+    }
+
+    .hero-title{
+        font-size:16px;
+    }
+
+    .hero-message{
         font-size:11px;
-        white-space:nowrap;
+    }
+
+    .status-ring{
+        width:45px;
+        height:45px;
+    }
+
+    .ping-box{
+        min-width:82px;
+        padding:10px;
+    }
+
+    .ping-value{
+        font-size:14px;
     }
 
     .grid{
@@ -406,21 +601,19 @@ button{
         padding:17px;
     }
 
-    .info-row{
-        gap:10px;
-    }
-
-    .info-label,
-    .info-value{
-        font-size:12px;
-    }
-
     .uptime-box{
         grid-template-columns:1fr;
     }
 
-    .refresh-info{
-        align-items:flex-start;
+    .about{
+        grid-template-columns:1fr;
+    }
+
+    .chart-stats{
+        grid-template-columns:1fr;
+    }
+
+    .hero-meta{
         flex-direction:column;
     }
 }
@@ -431,592 +624,571 @@ button{
 
 <div class="app">
 
-    <header class="header">
+<header class="header">
 
-        <div class="header-left">
+    <div class="header-left">
 
-            <div class="logo">
-                R
-            </div>
+        <div class="logo">R</div>
 
-            <div class="title">
-                <h1>Server Status</h1>
-                <p>ReyCloud API Monitoring</p>
-            </div>
-
+        <div class="title">
+            <h1>ReyCloud Status</h1>
+            <p>Real-Time Infrastructure Monitoring</p>
         </div>
 
-        <button
-            class="back-btn"
-            onclick="goDashboard()"
-        >
+    </div>
+
+    <div class="header-actions">
+
+        <button class="action-btn" onclick="scrollAbout()">
+            About
+        </button>
+
+        <button class="action-btn" onclick="goDashboard()">
             ← Dashboard
         </button>
 
-    </header>
+    </div>
 
-    <section class="status-card">
+</header>
 
-        <div class="status-top">
 
-            <div class="status-main">
+<section class="hero">
+
+    <div class="hero-top">
+
+        <div class="hero-main">
+
+            <div class="status-ring">
 
                 <div
                     id="statusDot"
                     class="status-dot"
                 ></div>
 
-                <div>
+            </div>
 
-                    <div
-                        id="statusTitle"
-                        class="status-title"
-                    >
-                        Memeriksa server...
-                    </div>
+            <div>
 
-                    <div
-                        id="statusMessage"
-                        class="status-message"
-                    >
-                        Menghubungkan ke ReyCloud API
-                    </div>
-
+                <div
+                    id="statusTitle"
+                    class="hero-title"
+                >
+                    Memeriksa sistem...
                 </div>
 
+                <div
+                    id="statusMessage"
+                    class="hero-message"
+                >
+                    Menghubungkan ke ReyCloud API
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="ping-box">
+
+            <div class="ping-label">
+                Latency
             </div>
 
             <div
                 id="ping"
-                class="ping"
+                class="ping-value"
             >
-                PING: -
+                -
             </div>
 
         </div>
-
-        <div
-            id="errorBox"
-            class="error-box"
-            style="display:none"
-        ></div>
-
-        <div class="refresh-info">
-
-            <span>
-                Auto refresh setiap
-                <b id="refreshSeconds">5</b>
-                detik
-                • Terakhir update:
-                <b id="lastUpdate">-</b>
-            </span>
-
-            <button
-                class="refresh-btn"
-                onclick="loadStatus()"
-            >
-                ↻ Refresh Sekarang
-            </button>
-
-        </div>
-
-    </section>
-
-    <div class="grid">
-
-        <!-- SYSTEM -->
-
-        <section class="card">
-
-            <div class="card-header">
-
-                <div class="card-icon">
-                    🖥️
-                </div>
-
-                <div>
-                    <h2>Informasi Sistem</h2>
-                    <p>System Runtime</p>
-                </div>
-
-            </div>
-
-            <div class="info-list">
-
-                <div class="info-row">
-                    <span class="info-label">
-                        OS
-                    </span>
-                    <span
-                        id="os"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Platform
-                    </span>
-                    <span
-                        id="platform"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Architecture
-                    </span>
-                    <span
-                        id="architecture"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Hostname
-                    </span>
-                    <span
-                        id="hostname"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        NodeJS
-                    </span>
-                    <span
-                        id="node"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Engine V8
-                    </span>
-                    <span
-                        id="v8"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- CPU -->
-
-        <section class="card">
-
-            <div class="card-header">
-
-                <div class="card-icon">
-                    💻
-                </div>
-
-                <div>
-                    <h2>Informasi CPU</h2>
-                    <p>Processor & Load</p>
-                </div>
-
-            </div>
-
-            <div class="info-list">
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Model
-                    </span>
-                    <span
-                        id="cpuModel"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Cores
-                    </span>
-                    <span
-                        id="cpuCores"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Speed
-                    </span>
-                    <span
-                        id="cpuSpeed"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Load Avg 1m
-                    </span>
-                    <span
-                        id="load1"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Load Avg 5m
-                    </span>
-                    <span
-                        id="load5"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Load Avg 15m
-                    </span>
-                    <span
-                        id="load15"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- MEMORY -->
-
-        <section class="card">
-
-            <div class="card-header">
-
-                <div class="card-icon">
-                    🧠
-                </div>
-
-                <div>
-                    <h2>Penggunaan Memori</h2>
-                    <p>RAM Server</p>
-                </div>
-
-            </div>
-
-            <div class="memory-summary">
-
-                <div class="memory-bar">
-
-                    <div
-                        id="memoryFill"
-                        class="memory-fill"
-                    ></div>
-
-                </div>
-
-                <div class="memory-percent">
-
-                    <span>
-                        Penggunaan RAM
-                    </span>
-
-                    <b id="memoryPercent">
-                        -
-                    </b>
-
-                </div>
-
-            </div>
-
-            <div class="info-list">
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Total RAM
-                    </span>
-                    <span
-                        id="ramTotal"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Dipakai
-                    </span>
-                    <span
-                        id="ramUsed"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Sisa Bebas
-                    </span>
-                    <span
-                        id="ramFree"
-                        class="info-value muted"
-                    >
-                        Menunggu data backend...
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        RSS NodeJS
-                    </span>
-                    <span
-                        id="rss"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- NODE MEMORY -->
-
-        <section class="card">
-
-            <div class="card-header">
-
-                <div class="card-icon">
-                    📦
-                </div>
-
-                <div>
-                    <h2>Memori NodeJS</h2>
-                    <p>Process Memory Usage</p>
-                </div>
-
-            </div>
-
-            <div class="info-list">
-
-                <div class="info-row">
-                    <span class="info-label">
-                        RSS
-                    </span>
-                    <span
-                        id="nodeRss"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Heap Total
-                    </span>
-                    <span
-                        id="heapTotal"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Heap Used
-                    </span>
-                    <span
-                        id="heapUsed"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        External
-                    </span>
-                    <span
-                        id="external"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Heap Usage
-                    </span>
-                    <span
-                        id="heapPercent"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- UPTIME -->
-
-        <section class="card full">
-
-            <div class="card-header">
-
-                <div class="card-icon">
-                    ⏱️
-                </div>
-
-                <div>
-                    <h2>Waktu Aktif</h2>
-                    <p>Server Uptime</p>
-                </div>
-
-            </div>
-
-            <div class="uptime-box">
-
-                <div class="uptime-item">
-
-                    <div class="uptime-label">
-                        Uptime Server
-                    </div>
-
-                    <div
-                        id="serverUptime"
-                        class="uptime-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-                <div class="uptime-item">
-
-                    <div class="uptime-label">
-                        Timestamp Server
-                    </div>
-
-                    <div
-                        id="serverTimestamp"
-                        class="uptime-value"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- RAW API -->
-
-        <section class="card full">
-
-            <div class="card-header">
-
-                <div class="card-icon">
-                    🔌
-                </div>
-
-                <div>
-                    <h2>API Response</h2>
-                    <p>Data yang diterima dari backend</p>
-                </div>
-
-            </div>
-
-            <div class="info-list">
-
-                <div class="info-row">
-                    <span class="info-label">
-                        API Message
-                    </span>
-
-                    <span
-                        id="apiMessage"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        API Status
-                    </span>
-
-                    <span
-                        id="apiStatus"
-                        class="info-value"
-                    >
-                        -
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <span class="info-label">
-                        Endpoint
-                    </span>
-
-                    <span class="info-value">
-                        /api/status
-                    </span>
-                </div>
-
-            </div>
-
-        </section>
 
     </div>
 
-    <footer class="footer">
-        ReyCloud • Server Monitoring
-    </footer>
+    <div
+        id="errorBox"
+        class="error-box"
+        style="display:none"
+    ></div>
+
+    <div class="hero-meta">
+
+        <div class="meta-item">
+            Auto refresh:
+            <b id="refreshSeconds">5</b>s
+        </div>
+
+        <div class="meta-item">
+            Last update:
+            <b id="lastUpdate">-</b>
+        </div>
+
+        <div class="meta-item">
+            Monitoring:
+            <b>ACTIVE</b>
+        </div>
+
+        <button
+            class="action-btn"
+            onclick="loadStatus()"
+        >
+            ↻ Refresh
+        </button>
+
+    </div>
+
+</section>
+
+
+<div class="grid">
+
+
+<section class="card">
+
+    <div class="card-header">
+
+        <div class="card-icon">
+            🖥️
+        </div>
+
+        <div>
+            <h2>System Runtime</h2>
+            <p>Server Environment</p>
+        </div>
+
+    </div>
+
+    <div class="info-list">
+
+        <div class="info-row">
+            <span class="info-label">OS</span>
+            <span id="os" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Platform</span>
+            <span id="platform" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Architecture</span>
+            <span id="architecture" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Hostname</span>
+            <span id="hostname" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">NodeJS</span>
+            <span id="node" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Engine V8</span>
+            <span id="v8" class="info-value muted">-</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="card">
+
+    <div class="card-header">
+
+        <div class="card-icon">
+            ⚙️
+        </div>
+
+        <div>
+            <h2>CPU Monitor</h2>
+            <p>Processor & System Load</p>
+        </div>
+
+    </div>
+
+    <div class="info-list">
+
+        <div class="info-row">
+            <span class="info-label">Model</span>
+            <span id="cpuModel" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Cores</span>
+            <span id="cpuCores" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Speed</span>
+            <span id="cpuSpeed" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Load 1m</span>
+            <span id="load1" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Load 5m</span>
+            <span id="load5" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Load 15m</span>
+            <span id="load15" class="info-value muted">-</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="card">
+
+    <div class="card-header">
+
+        <div class="card-icon">
+            🧠
+        </div>
+
+        <div>
+            <h2>Server Memory</h2>
+            <p>RAM Utilization</p>
+        </div>
+
+    </div>
+
+    <div class="memory-summary">
+
+        <div class="memory-bar">
+
+            <div
+                id="memoryFill"
+                class="memory-fill"
+            ></div>
+
+        </div>
+
+        <div class="memory-percent">
+
+            <span>RAM Usage</span>
+
+            <b id="memoryPercent">-</b>
+
+        </div>
+
+    </div>
+
+    <div class="info-list">
+
+        <div class="info-row">
+            <span class="info-label">Total RAM</span>
+            <span id="ramTotal" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Used</span>
+            <span id="ramUsed" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Free</span>
+            <span id="ramFree" class="info-value muted">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">RSS NodeJS</span>
+            <span id="rss" class="info-value">-</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="card">
+
+    <div class="card-header">
+
+        <div class="card-icon">
+            📦
+        </div>
+
+        <div>
+            <h2>NodeJS Memory</h2>
+            <p>Process Memory Usage</p>
+        </div>
+
+    </div>
+
+    <div class="info-list">
+
+        <div class="info-row">
+            <span class="info-label">RSS</span>
+            <span id="nodeRss" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Heap Total</span>
+            <span id="heapTotal" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Heap Used</span>
+            <span id="heapUsed" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">External</span>
+            <span id="external" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Heap Usage</span>
+            <span id="heapPercent" class="info-value">-</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="card full">
+
+    <div class="card-header">
+
+        <div class="card-icon">
+            📡
+        </div>
+
+        <div>
+            <h2>Network Latency</h2>
+            <p>Real-Time API Response Monitoring</p>
+        </div>
+
+    </div>
+
+    <div class="chart-wrap">
+
+        <canvas id="latencyChart"></canvas>
+
+    </div>
+
+    <div class="chart-stats">
+
+        <div class="chart-stat">
+            <span>MIN</span>
+            <b id="pingMin">-</b>
+        </div>
+
+        <div class="chart-stat">
+            <span>AVERAGE</span>
+            <b id="pingAvg">-</b>
+        </div>
+
+        <div class="chart-stat">
+            <span>MAX</span>
+            <b id="pingMax">-</b>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="card full">
+
+    <div class="card-header">
+
+        <div class="card-icon">
+            ⏱️
+        </div>
+
+        <div>
+            <h2>Server Uptime</h2>
+            <p>Infrastructure Availability</p>
+        </div>
+
+    </div>
+
+    <div class="uptime-box">
+
+        <div class="uptime-item">
+
+            <div class="uptime-label">
+                SERVER UPTIME
+            </div>
+
+            <div
+                id="serverUptime"
+                class="uptime-value"
+            >
+                -
+            </div>
+
+        </div>
+
+        <div class="uptime-item">
+
+            <div class="uptime-label">
+                SERVER TIMESTAMP
+            </div>
+
+            <div
+                id="serverTimestamp"
+                class="uptime-value"
+            >
+                -
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    id="about"
+    class="card full"
+>
+
+    <div class="card-header">
+
+        <div class="card-icon">
+            🚀
+        </div>
+
+        <div>
+            <h2>About ReyCloud API</h2>
+            <p>Infrastructure Monitoring Platform</p>
+        </div>
+
+    </div>
+
+    <div class="about">
+
+        <div class="about-box">
+
+            <h3>ReyCloud API</h3>
+
+            <p>
+                ReyCloud API adalah layanan backend yang
+                digunakan untuk menyediakan endpoint dan
+                informasi sistem secara realtime. Halaman
+                ini mengambil data monitoring langsung dari
+                API untuk menampilkan kondisi server,
+                runtime NodeJS, memory, CPU, uptime,
+                serta latency jaringan.
+            </p>
+
+            <div class="api-endpoint">
+                https://api.legionteknologi.my.id/api/status
+            </div>
+
+        </div>
+
+        <div class="about-box">
+
+            <h3>Monitoring Features</h3>
+
+            <div class="feature-list">
+
+                <div class="feature">
+                    <i></i>
+                    API Health Monitoring
+                </div>
+
+                <div class="feature">
+                    <i></i>
+                    Real-Time Latency
+                </div>
+
+                <div class="feature">
+                    <i></i>
+                    Server Uptime
+                </div>
+
+                <div class="feature">
+                    <i></i>
+                    NodeJS Runtime
+                </div>
+
+                <div class="feature">
+                    <i></i>
+                    RAM Monitoring
+                </div>
+
+                <div class="feature">
+                    <i></i>
+                    CPU Information
+                </div>
+
+                <div class="feature">
+                    <i></i>
+                    Automatic Refresh
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="card full">
+
+    <div class="card-header">
+
+        <div class="card-icon">
+            🔌
+        </div>
+
+        <div>
+            <h2>API Information</h2>
+            <p>Backend Response</p>
+        </div>
+
+    </div>
+
+    <div class="info-list">
+
+        <div class="info-row">
+            <span class="info-label">API Message</span>
+            <span id="apiMessage" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">API Status</span>
+            <span id="apiStatus" class="info-value">-</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Endpoint</span>
+            <span class="info-value">
+                /api/status
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
 
 </div>
+
+
+<footer class="footer">
+    ReyCloud • Infrastructure Monitoring • Live System
+</footer>
+
+</div>
+
 
 <script>
 
@@ -1031,14 +1203,20 @@ const REFRESH_TIME =
 
 let refreshTimer = null;
 
+let latencyHistory = [];
+
+const MAX_HISTORY = 30;
+
+
 function $(id){
     return document.getElementById(id);
 }
 
+
 function setText(
     id,
     value,
-    fallback = "-"
+    fallback="-"
 ){
 
     const el = $(id);
@@ -1053,34 +1231,25 @@ function setText(
         value === ""
     ){
 
-        el.textContent =
-            fallback;
+        el.textContent = fallback;
 
-        el.classList.add(
-            "muted"
-        );
+        el.classList.add("muted");
 
         return;
     }
 
-    el.textContent =
-        value;
+    el.textContent = value;
 
-    el.classList.remove(
-        "muted"
-    );
+    el.classList.remove("muted");
 }
 
-function formatBytes(
-    bytes
-){
+
+function formatBytes(bytes){
 
     if(
         bytes === undefined ||
         bytes === null ||
-        Number.isNaN(
-            Number(bytes)
-        )
+        Number.isNaN(Number(bytes))
     ){
         return "-";
     }
@@ -1108,8 +1277,8 @@ function formatBytes(
 
     const safeIndex =
         Math.min(
-            index,
-            units.length - 1
+            Math.max(index,0),
+            units.length-1
         );
 
     return (
@@ -1127,16 +1296,13 @@ function formatBytes(
     units[safeIndex];
 }
 
-function formatPercent(
-    value
-){
+
+function formatPercent(value){
 
     if(
         value === undefined ||
         value === null ||
-        Number.isNaN(
-            Number(value)
-        )
+        Number.isNaN(Number(value))
     ){
         return "-";
     }
@@ -1145,9 +1311,8 @@ function formatPercent(
         .toFixed(1) + "%";
 }
 
-function formatTimestamp(
-    timestamp
-){
+
+function formatTimestamp(timestamp){
 
     if(!timestamp){
         return "-";
@@ -1173,24 +1338,8 @@ function formatTimestamp(
     );
 }
 
-function formatPing(
-    ms
-){
 
-    if(ms < 100){
-        return "good";
-    }
-
-    if(ms < 300){
-        return "medium";
-    }
-
-    return "bad";
-}
-
-function formatUptime(
-    seconds
-){
+function formatUptime(seconds){
 
     if(
         seconds === undefined ||
@@ -1229,6 +1378,21 @@ function formatUptime(
     return `${days}d ${hours}h ${minutes}m ${secs}s`;
 }
 
+
+function pingClass(ms){
+
+    if(ms < 100){
+        return "good";
+    }
+
+    if(ms < 300){
+        return "medium";
+    }
+
+    return "bad";
+}
+
+
 function setStatus(
     online,
     message
@@ -1250,9 +1414,7 @@ function setStatus(
 
     if(online){
 
-        dot.classList.add(
-            "online"
-        );
+        dot.classList.add("online");
 
         title.textContent =
             "ReyCloud API Online";
@@ -1263,9 +1425,7 @@ function setStatus(
 
     }else{
 
-        dot.classList.add(
-            "offline"
-        );
+        dot.classList.add("offline");
 
         title.textContent =
             "ReyCloud API Offline";
@@ -1276,22 +1436,244 @@ function setStatus(
     }
 }
 
+
+function drawLatencyChart(){
+
+    const canvas =
+        $("latencyChart");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        rect.width * ratio;
+
+    canvas.height =
+        rect.height * ratio;
+
+    ctx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+
+    const width =
+        rect.width;
+
+    const height =
+        rect.height;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    if(latencyHistory.length < 2){
+        return;
+    }
+
+    const max =
+        Math.max(
+            ...latencyHistory,
+            100
+        );
+
+    const min =
+        Math.min(
+            ...latencyHistory,
+            0
+        );
+
+    const range =
+        Math.max(
+            max-min,
+            1
+        );
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,.06)";
+
+    ctx.lineWidth = 1;
+
+    for(let i=1;i<4;i++){
+
+        const y =
+            (height/4)*i;
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            y
+        );
+
+        ctx.lineTo(
+            width,
+            y
+        );
+
+        ctx.stroke();
+    }
+
+    ctx.beginPath();
+
+    latencyHistory.forEach(
+        (value,index)=>{
+
+            const x =
+                index /
+                (latencyHistory.length-1) *
+                width;
+
+            const y =
+                height -
+                (
+                    (value-min) /
+                    range
+                ) *
+                (
+                    height-20
+                ) -
+                10;
+
+            if(index === 0){
+                ctx.moveTo(x,y);
+            }else{
+                ctx.lineTo(x,y);
+            }
+        }
+    );
+
+    ctx.strokeStyle =
+        "#38bdf8";
+
+    ctx.lineWidth = 2;
+
+    ctx.shadowColor =
+        "rgba(56,189,248,.5)";
+
+    ctx.shadowBlur = 10;
+
+    ctx.stroke();
+
+    ctx.shadowBlur = 0;
+
+    latencyHistory.forEach(
+        (value,index)=>{
+
+            if(
+                index !==
+                latencyHistory.length-1
+            ){
+                return;
+            }
+
+            const x =
+                index /
+                (latencyHistory.length-1) *
+                width;
+
+            const y =
+                height -
+                (
+                    (value-min) /
+                    range
+                ) *
+                (
+                    height-20
+                ) -
+                10;
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                4,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fillStyle =
+                "#38bdf8";
+
+            ctx.fill();
+        }
+    );
+}
+
+
+function updatePingStats(){
+
+    if(!latencyHistory.length){
+        return;
+    }
+
+    const min =
+        Math.min(
+            ...latencyHistory
+        );
+
+    const max =
+        Math.max(
+            ...latencyHistory
+        );
+
+    const avg =
+        latencyHistory.reduce(
+            (a,b)=>a+b,
+            0
+        ) /
+        latencyHistory.length;
+
+    setText(
+        "pingMin",
+        Math.round(min)+" ms"
+    );
+
+    setText(
+        "pingAvg",
+        Math.round(avg)+" ms"
+    );
+
+    setText(
+        "pingMax",
+        Math.round(max)+" ms"
+    );
+}
+
+
 function updateStatusData(
     data,
     ping
 ){
 
     const server =
-        data.server ||
-        {};
+        data.server || {};
 
     const runtime =
-        data.runtime ||
-        {};
+        data.runtime || {};
 
     const memory =
-        data.memory ||
-        {};
+        data.memory || {};
+
+    const system =
+        data.system || {};
+
+    const cpu =
+        data.cpu || {};
+
 
     setText(
         "platform",
@@ -1308,6 +1690,7 @@ function updateStatusData(
         runtime.node
     );
 
+
     setText(
         "serverUptime",
         server.uptimeFormatted ||
@@ -1316,12 +1699,14 @@ function updateStatusData(
         )
     );
 
+
     setText(
         "serverTimestamp",
         formatTimestamp(
             server.timestamp
         )
     );
+
 
     setText(
         "nodeRss",
@@ -1358,20 +1743,20 @@ function updateStatusData(
         )
     );
 
+
     if(
         memory.heapUsed !== undefined &&
         memory.heapTotal
     ){
 
         const heapPercent =
-            (
-                Number(
-                    memory.heapUsed
-                ) /
-                Number(
-                    memory.heapTotal
-                )
-            ) * 100;
+            Number(
+                memory.heapUsed
+            ) /
+            Number(
+                memory.heapTotal
+            ) *
+            100;
 
         setText(
             "heapPercent",
@@ -1381,16 +1766,6 @@ function updateStatusData(
         );
     }
 
-    /*
-     * Backend saat ini belum mengirim
-     * total RAM server.
-     *
-     * Jika nanti backend mengirim:
-     *
-     * memory.total
-     *
-     * maka otomatis digunakan.
-     */
 
     if(
         memory.total !== undefined
@@ -1421,6 +1796,11 @@ function updateStatusData(
                 )
             );
 
+        const percent =
+            total > 0
+                ? used/total*100
+                : 0;
+
         setText(
             "ramTotal",
             formatBytes(total)
@@ -1435,14 +1815,6 @@ function updateStatusData(
             "ramFree",
             formatBytes(free)
         );
-
-        const percent =
-            total > 0
-                ? (
-                    used /
-                    total
-                ) * 100
-                : 0;
 
         $("memoryFill")
             .style.width =
@@ -1461,29 +1833,6 @@ function updateStatusData(
             );
     }
 
-    /*
-     * Field berikut belum ada
-     * pada response backend sekarang.
-     *
-     * Kalau backend nanti menambahkan
-     * system.os
-     * system.hostname
-     * system.v8
-     * cpu.model
-     * cpu.cores
-     * cpu.speed
-     * cpu.load
-     *
-     * halaman ini langsung mendukung.
-     */
-
-    const system =
-        data.system ||
-        {};
-
-    const cpu =
-        data.cpu ||
-        {};
 
     setText(
         "os",
@@ -1503,6 +1852,7 @@ function updateStatusData(
         data.v8
     );
 
+
     setText(
         "cpuModel",
         cpu.model ||
@@ -1520,6 +1870,7 @@ function updateStatusData(
         cpu.speed ||
         data.cpuSpeed
     );
+
 
     const load =
         cpu.load ||
@@ -1563,14 +1914,17 @@ function updateStatusData(
         );
     }
 
-    $("ping").textContent =
-        `PING: ${ping}ms`;
 
-    $("ping").className =
-        "ping " +
-        formatPing(
-            ping
-        );
+    const pingEl =
+        $("ping");
+
+    pingEl.textContent =
+        ping + " ms";
+
+    pingEl.className =
+        "ping-value " +
+        pingClass(ping);
+
 
     setText(
         "apiMessage",
@@ -1583,7 +1937,25 @@ function updateStatusData(
             ? "ONLINE"
             : "OFFLINE"
     );
+
+
+    latencyHistory.push(
+        ping
+    );
+
+    if(
+        latencyHistory.length >
+        MAX_HISTORY
+    ){
+
+        latencyHistory.shift();
+    }
+
+    updatePingStats();
+
+    drawLatencyChart();
 }
+
 
 async function loadStatus(){
 
@@ -1666,10 +2038,10 @@ async function loadStatus(){
         );
 
         $("ping").textContent =
-            "PING: ERROR";
+            "ERROR";
 
         $("ping").className =
-            "ping bad";
+            "ping-value bad";
 
         errorBox.style.display =
             "block";
@@ -1678,8 +2050,8 @@ async function loadStatus(){
             "Gagal mengambil status server: " +
             error.message;
     }
-
 }
+
 
 function startAutoRefresh(){
 
@@ -1696,15 +2068,32 @@ function startAutoRefresh(){
         );
 }
 
+
+function scrollAbout(){
+
+    $("about").scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+
 function goDashboard(){
 
     window.location.href =
         "dashboard.html";
 }
 
+
+window.addEventListener(
+    "resize",
+    drawLatencyChart
+);
+
+
 $("refreshSeconds")
     .textContent =
-    REFRESH_TIME / 1000;
+    REFRESH_TIME/1000;
+
 
 loadStatus();
 
