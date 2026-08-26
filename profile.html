@@ -32,8 +32,6 @@ button{
     display:flex;
 }
 
-/* SIDEBAR */
-
 .sidebar{
     width:250px;
     background:#fff;
@@ -173,8 +171,6 @@ button{
     margin-top:2px;
 }
 
-/* MAIN */
-
 .main{
     width:calc(100% - 250px);
     margin-left:250px;
@@ -216,8 +212,6 @@ button{
     padding:30px;
 }
 
-/* PROFILE HEADER */
-
 .profile-header{
     background:#111827;
     color:#fff;
@@ -236,8 +230,6 @@ button{
     margin-top:7px;
 }
 
-/* CARD */
-
 .card{
     background:#fff;
     border:1px solid #e5e7eb;
@@ -245,8 +237,6 @@ button{
     padding:25px;
     margin-bottom:18px;
 }
-
-/* PROFILE */
 
 .avatar-section{
     display:flex;
@@ -290,8 +280,6 @@ button{
     font-size:12px;
     font-weight:700;
 }
-
-/* FORM */
 
 .form{
     padding-top:25px;
@@ -356,8 +344,6 @@ button{
     cursor:not-allowed;
 }
 
-/* STATUS */
-
 .status-message{
     display:none;
     padding:11px 13px;
@@ -379,8 +365,6 @@ button{
     background:#fef2f2;
     color:#b91c1c;
 }
-
-/* INFO */
 
 .info-grid{
     display:grid;
@@ -411,8 +395,6 @@ button{
     margin-top:3px;
 }
 
-/* SECTION */
-
 .section-title{
     display:flex;
     justify-content:space-between;
@@ -439,8 +421,6 @@ button{
     font-size:11px;
     font-weight:700;
 }
-
-/* IMAGE UPLOAD */
 
 .post-textarea{
     min-height:130px !important;
@@ -508,8 +488,6 @@ button{
     cursor:pointer;
     font-size:16px;
 }
-
-/* POSTS */
 
 .posts-list{
     display:flex;
@@ -664,8 +642,6 @@ button{
     font-size:10px;
 }
 
-/* COMMENTS */
-
 .comments{
     display:none;
     padding:12px 15px 15px;
@@ -810,8 +786,6 @@ button{
     margin-top:5px;
 }
 
-/* EDIT */
-
 .edit-area{
     display:none;
     padding:0 15px 14px;
@@ -857,8 +831,6 @@ button{
     color:#374151;
 }
 
-/* LOADING */
-
 .loading{
     text-align:center;
     padding:30px;
@@ -877,10 +849,10 @@ button{
 }
 
 @keyframes spin{
-    to{transform:rotate(360deg)}
+    to{
+        transform:rotate(360deg)
+    }
 }
-
-/* MOBILE */
 
 @media(max-width:800px){
 
@@ -1078,13 +1050,9 @@ button{
 
         <div class="avatar-info">
 
-            <h2 id="profileName">
-                User
-            </h2>
+            <h2 id="profileName">User</h2>
 
-            <p id="profileRole">
-                member
-            </p>
+            <p id="profileRole">member</p>
 
             <input
                 type="file"
@@ -1181,8 +1149,6 @@ button{
 
 </div>
 
-<!-- CREATE POST -->
-
 <div class="card">
 
     <div class="section-title">
@@ -1233,9 +1199,7 @@ button{
 
                 <div class="upload-icon">🖼️</div>
 
-                <strong>
-                    Pilih gambar
-                </strong>
+                <strong>Pilih gambar</strong>
 
                 <span>
                     JPG, PNG, WEBP atau GIF
@@ -1276,8 +1240,6 @@ button{
     </div>
 
 </div>
-
-<!-- MY POSTS -->
 
 <div class="card">
 
@@ -1320,10 +1282,6 @@ button{
 </div>
 
 <script>
-
-/* =========================================================
-   CONFIG
-========================================================= */
 
 const API_BASE =
     localStorage.getItem("apiBase") ||
@@ -1387,17 +1345,11 @@ function getUser(){
                 return data.result.user;
             }
 
-            if(
-                data &&
-                data.user
-            ){
+            if(data && data.user){
                 return data.user;
             }
 
-            if(
-                data &&
-                data.username
-            ){
+            if(data && data.username){
                 return data;
             }
 
@@ -1441,14 +1393,6 @@ function saveLocalUser(user){
 
 function authHeaders(){
 
-    /*
-      Backend requireUser harus bisa membaca
-      autentikasi yang sudah digunakan project kamu.
-
-      Kita kirim beberapa header umum tanpa
-      mengubah data user.
-    */
-
     const headers = {
         "Accept":"application/json"
     };
@@ -1489,11 +1433,7 @@ function formatDate(value){
     const date =
         new Date(value);
 
-    if(
-        Number.isNaN(
-            date.getTime()
-        )
-    ){
+    if(Number.isNaN(date.getTime())){
         return "-";
     }
 
@@ -1516,11 +1456,7 @@ function formatDateTime(value){
     const date =
         new Date(value);
 
-    if(
-        Number.isNaN(
-            date.getTime()
-        )
-    ){
+    if(Number.isNaN(date.getTime())){
         return "-";
     }
 
@@ -1554,16 +1490,12 @@ function showStatus(
     box.className =
         `status-message show ${type}`;
 
-    clearTimeout(
-        showStatus.timer
-    );
+    clearTimeout(showStatus.timer);
 
     showStatus.timer =
         setTimeout(
             () => {
-                box.classList.remove(
-                    "show"
-                );
+                box.classList.remove("show");
             },
             4000
         );
@@ -1611,11 +1543,9 @@ function renderAvatar(
     }
 
     const initial =
-        String(
-            username || "U"
-        )
-        .charAt(0)
-        .toUpperCase();
+        String(username || "U")
+            .charAt(0)
+            .toUpperCase();
 
     profile.textContent =
         initial;
@@ -1644,9 +1574,7 @@ function renderUser(user){
     document.getElementById(
         "profileRole"
     ).textContent =
-        formatRole(
-            user.role
-        );
+        formatRole(user.role);
 
     document.getElementById(
         "username"
@@ -1661,9 +1589,7 @@ function renderUser(user){
     document.getElementById(
         "infoRole"
     ).textContent =
-        formatRole(
-            user.role
-        );
+        formatRole(user.role);
 
     document.getElementById(
         "infoStatus"
@@ -1673,9 +1599,7 @@ function renderUser(user){
     document.getElementById(
         "infoCreated"
     ).textContent =
-        formatDate(
-            user.createdAt
-        );
+        formatDate(user.createdAt);
 
     document.getElementById(
         "infoDuration"
@@ -1685,9 +1609,7 @@ function renderUser(user){
     document.getElementById(
         "infoExpires"
     ).textContent =
-        formatDate(
-            user.expiresAt
-        );
+        formatDate(user.expiresAt);
 
     document.getElementById(
         "infoId"
@@ -1702,9 +1624,7 @@ function renderUser(user){
     document.getElementById(
         "miniRole"
     ).textContent =
-        formatRole(
-            user.role
-        );
+        formatRole(user.role);
 
     updateBioCount();
 
@@ -1717,7 +1637,7 @@ function renderUser(user){
 
 
 /* =========================================================
-   PROFILE LOAD
+   LOAD PROFILE
 ========================================================= */
 
 async function loadProfile(){
@@ -1737,9 +1657,7 @@ async function loadProfile(){
 
     }
 
-    renderUser(
-        localUser
-    );
+    renderUser(localUser);
 
     try{
 
@@ -1763,19 +1681,17 @@ async function loadProfile(){
             data.status !== true ||
             !data.result
         ){
+
             throw new Error(
                 data.message ||
                 "Profile tidak ditemukan."
             );
+
         }
 
-        renderUser(
-            data.result
-        );
+        renderUser(data.result);
 
-        saveLocalUser(
-            data.result
-        );
+        saveLocalUser(data.result);
 
         return true;
 
@@ -1827,7 +1743,6 @@ document.getElementById(
 function extractUploadUrl(data){
 
     const candidates = [
-
         data?.url,
         data?.result?.url,
         data?.result?.fileUrl,
@@ -1835,7 +1750,6 @@ function extractUploadUrl(data){
         data?.result?.link,
         data?.data?.url,
         data?.file?.url
-
     ];
 
     return candidates.find(
@@ -1882,9 +1796,7 @@ async function uploadFile(file){
     }
 
     const url =
-        extractUploadUrl(
-            data
-        );
+        extractUploadUrl(data);
 
     if(!url){
 
@@ -1923,10 +1835,7 @@ document.getElementById(
 
     if(!file) return;
 
-    if(
-        file.size >
-        MAX_AVATAR_SIZE
-    ){
+    if(file.size > MAX_AVATAR_SIZE){
 
         showStatus(
             "Avatar maksimal 5MB.",
@@ -1948,8 +1857,7 @@ document.getElementById(
     );
 
     showStatus(
-        "Avatar siap disimpan.",
-        "success"
+        "Avatar siap disimpan."
     );
 
 };
@@ -1967,9 +1875,7 @@ document.getElementById(
 
 async function saveProfile(){
 
-    if(
-        !currentUser?.username
-    ){
+    if(!currentUser?.username){
         return;
     }
 
@@ -2032,10 +1938,12 @@ async function saveProfile(){
             !response.ok ||
             data.status !== true
         ){
+
             throw new Error(
                 data.message ||
                 "Gagal update profile."
             );
+
         }
 
         currentUser =
@@ -2045,8 +1953,7 @@ async function saveProfile(){
             currentUser
         );
 
-        selectedAvatar =
-            null;
+        selectedAvatar = null;
 
         renderUser(
             currentUser
@@ -2058,9 +1965,7 @@ async function saveProfile(){
 
     }catch(error){
 
-        console.error(
-            error
-        );
+        console.error(error);
 
         showStatus(
             error.message,
@@ -2069,8 +1974,7 @@ async function saveProfile(){
 
     }finally{
 
-        button.disabled =
-            false;
+        button.disabled = false;
 
         button.textContent =
             "Simpan Profile";
@@ -2104,10 +2008,7 @@ document.getElementById(
 
     if(!file) return;
 
-    if(
-        file.size >
-        MAX_POST_IMAGE_SIZE
-    ){
+    if(file.size > MAX_POST_IMAGE_SIZE){
 
         showStatus(
             "Gambar maksimal 10MB.",
@@ -2130,9 +2031,7 @@ document.getElementById(
 
     document.getElementById(
         "previewWrap"
-    ).classList.add(
-        "show"
-    );
+    ).classList.add("show");
 
 };
 
@@ -2141,8 +2040,7 @@ document.getElementById(
     "removePreview"
 ).onclick = () => {
 
-    selectedPostImage =
-        null;
+    selectedPostImage = null;
 
     document.getElementById(
         "postImageInput"
@@ -2154,9 +2052,7 @@ document.getElementById(
 
     document.getElementById(
         "previewWrap"
-    ).classList.remove(
-        "show"
-    );
+    ).classList.remove("show");
 
 };
 
@@ -2186,14 +2082,15 @@ document.getElementById(
 
 async function createPost(){
 
-    if(
-        !currentUser?.username
-    ){
+    if(!currentUser?.username){
+
         showStatus(
             "User tidak ditemukan.",
             "error"
         );
+
         return;
+
     }
 
     const caption =
@@ -2224,19 +2121,6 @@ async function createPost(){
 
     try{
 
-        /*
-         * Backend kamu membuat postingan melalui:
-         * POST /api/posting/upload
-         *
-         * Endpoint tersebut membutuhkan:
-         * multipart/form-data
-         * username
-         * file
-         *
-         * Karena endpoint itu membuat post foto,
-         * gunakan endpoint tersebut bila ada gambar.
-         */
-
         if(selectedPostImage){
 
             button.textContent =
@@ -2250,18 +2134,29 @@ async function createPost(){
                 currentUser.username
             );
 
+            /*
+             * Endpoint BARU:
+             * /api/posting/upload
+             */
+
             form.append(
                 "file",
                 selectedPostImage
             );
+
+            if(caption){
+                form.append(
+                    "caption",
+                    caption
+                );
+            }
 
             const response =
                 await fetch(
                     `${API_BASE}/api/posting/upload`,
                     {
                         method:"POST",
-                        headers:
-                            authHeaders(),
+                        headers:authHeaders(),
                         body:form
                     }
                 );
@@ -2284,15 +2179,47 @@ async function createPost(){
         }else{
 
             /*
-             * Backend yang kamu kirim belum menunjukkan
-             * POST /api/posts.
-             *
-             * Jadi posting text-only tidak dipaksakan.
+             * Text-only posting.
+             * Endpoint:
+             * POST /api/posting
              */
 
-            throw new Error(
-                "Backend /api/posts belum memiliki endpoint POST untuk postingan text-only. Gunakan gambar atau tambahkan endpoint POST /api/posts."
-            );
+            button.textContent =
+                "Membuat postingan...";
+
+            const response =
+                await fetch(
+                    `${API_BASE}/api/posting`,
+                    {
+                        method:"POST",
+                        headers:{
+                            ...authHeaders(),
+                            "Content-Type":
+                                "application/json"
+                        },
+                        body:
+                            JSON.stringify({
+                                username:
+                                    currentUser.username,
+                                caption
+                            })
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if(
+                !response.ok ||
+                data.status !== true
+            ){
+
+                throw new Error(
+                    data.message ||
+                    "Gagal membuat postingan."
+                );
+
+            }
 
         }
 
@@ -2304,8 +2231,7 @@ async function createPost(){
             "captionCount"
         ).textContent = "0";
 
-        selectedPostImage =
-            null;
+        selectedPostImage = null;
 
         document.getElementById(
             "postImageInput"
@@ -2317,9 +2243,7 @@ async function createPost(){
 
         document.getElementById(
             "previewWrap"
-        ).classList.remove(
-            "show"
-        );
+        ).classList.remove("show");
 
         showStatus(
             "Postingan berhasil dibuat. 🚀"
@@ -2341,8 +2265,7 @@ async function createPost(){
 
     }finally{
 
-        button.disabled =
-            false;
+        button.disabled = false;
 
         button.textContent =
             "🚀 Posting Sekarang";
@@ -2354,6 +2277,7 @@ async function createPost(){
 
 /* =========================================================
    LOAD POSTS
+   ENDPOINT: /api/posting
 ========================================================= */
 
 async function loadPosts(){
@@ -2374,7 +2298,7 @@ async function loadPosts(){
 
         const response =
             await fetch(
-                `${API_BASE}/api/posts`,
+                `${API_BASE}/api/posting`,
                 {
                     method:"GET",
                     cache:"no-store",
@@ -2387,7 +2311,7 @@ async function loadPosts(){
 
         if(
             !response.ok ||
-            data.status !== true
+            data.status === false
         ){
 
             throw new Error(
@@ -2397,17 +2321,44 @@ async function loadPosts(){
 
         }
 
-        postsCache =
-            Array.isArray(
-                data.result
-            )
-                ? data.result
-                : [];
-
         /*
-         * Hanya tampilkan postingan milik user ini
-         * di halaman profile.
+         * Backend bisa mengembalikan:
+         *
+         * [
+         *   {...},
+         *   {...}
+         * ]
+         *
+         * atau:
+         *
+         * {
+         *   status:true,
+         *   result:[...]
+         * }
          */
+
+        if(Array.isArray(data)){
+
+            postsCache = data;
+
+        }else if(Array.isArray(data.result)){
+
+            postsCache =
+                data.result;
+
+        }else if(
+            data.result &&
+            Array.isArray(data.result.posts)
+        ){
+
+            postsCache =
+                data.result.posts;
+
+        }else{
+
+            postsCache = [];
+
+        }
 
         const username =
             String(
@@ -2430,7 +2381,7 @@ async function loadPosts(){
     }catch(error){
 
         console.error(
-            "[GET POSTS]",
+            "[GET POSTING]",
             error
         );
 
@@ -2467,10 +2418,18 @@ function getPostId(post){
 
 function getPostImage(post){
 
+    /*
+     * Struktur posting.json:
+     *
+     * image
+     * atau
+     * foto
+     */
+
     return (
         post.image ||
-        post.imageUrl ||
         post.foto ||
+        post.imageUrl ||
         post.media ||
         ""
     );
@@ -2490,46 +2449,113 @@ function getPostCaption(post){
 }
 
 
+/*
+ * Struktur JSON kamu:
+ *
+ * "like": []
+ *
+ * BUKAN:
+ *
+ * "likes": []
+ */
+
 function getLikes(post){
 
-    if(
-        Array.isArray(
-            post.likes
-        )
-    ){
+    if(Array.isArray(post.like)){
+        return post.like.length;
+    }
+
+    if(Array.isArray(post.likes)){
         return post.likes.length;
     }
 
     return Number(
-        post.likes || 0
+        post.like ||
+        post.likes ||
+        0
     );
+
+}
+
+
+function getLikeUsers(post){
+
+    if(Array.isArray(post.like)){
+        return post.like;
+    }
+
+    if(Array.isArray(post.likes)){
+        return post.likes;
+    }
+
+    return [];
 
 }
 
 
 function isLiked(post){
 
-    if(
-        !currentUser?.username
-    ){
+    if(!currentUser?.username){
         return false;
     }
 
-    if(
-        !Array.isArray(
-            post.likes
-        )
-    ){
-        return false;
-    }
+    const likes =
+        getLikeUsers(post);
 
-    return post.likes.some(
-        username =>
-            String(username).toLowerCase() ===
-            String(
-                currentUser.username
-            ).toLowerCase()
+    const username =
+        String(
+            currentUser.username
+        ).toLowerCase();
+
+    return likes.some(
+        item => {
+
+            if(
+                typeof item === "string"
+            ){
+
+                return item.toLowerCase() ===
+                    username;
+
+            }
+
+            if(
+                item &&
+                typeof item === "object"
+            ){
+
+                return String(
+                    item.username || ""
+                ).toLowerCase() ===
+                    username;
+
+            }
+
+            return false;
+
+        }
     );
+
+}
+
+
+function getComments(post){
+
+    /*
+     * Struktur JSON kamu:
+     *
+     * "comen": []
+     */
+
+    if(Array.isArray(post.comen)){
+        return post.comen;
+    }
+
+    if(Array.isArray(post.comments)){
+        return post.comments;
+    }
+
+    return [];
 
 }
 
@@ -2568,9 +2594,7 @@ function renderPosts(posts){
 
     list.innerHTML =
         posts
-            .map(
-                createPostHTML
-            )
+            .map(createPostHTML)
             .join("");
 
 }
@@ -2606,11 +2630,10 @@ function createPostHTML(post){
         getLikes(post);
 
     const comments =
-        Number(
-            post.comments ??
-            post.commentCount ??
-            0
-        );
+        getComments(post);
+
+    const commentCount =
+        comments.length;
 
     const avatarHTML =
         avatar
@@ -2771,7 +2794,7 @@ function createPostHTML(post){
             >
                 💬 Komentar
                 <span class="comment-count">
-                    ${comments}
+                    ${commentCount}
                 </span>
             </button>
 
@@ -2784,7 +2807,7 @@ function createPostHTML(post){
             </span>
 
             <span>
-                💬 ${comments} komentar
+                💬 ${commentCount} komentar
             </span>
 
         </div>
@@ -2829,6 +2852,7 @@ function createPostHTML(post){
 
 /* =========================================================
    LIKE
+   ENDPOINT: /api/posting/:id/like
 ========================================================= */
 
 async function toggleLike(
@@ -2836,9 +2860,7 @@ async function toggleLike(
     button
 ){
 
-    if(
-        !currentUser?.username
-    ){
+    if(!currentUser?.username){
 
         showStatus(
             "Silakan login terlebih dahulu.",
@@ -2849,19 +2871,27 @@ async function toggleLike(
 
     }
 
-    button.disabled =
-        true;
+    button.disabled = true;
 
     try{
 
         const response =
             await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(
+                `${API_BASE}/api/posting/${encodeURIComponent(
                     id
                 )}/like`,
                 {
                     method:"POST",
-                    headers:authHeaders()
+                    headers:{
+                        ...authHeaders(),
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify({
+                            username:
+                                currentUser.username
+                        })
                 }
             );
 
@@ -2870,7 +2900,7 @@ async function toggleLike(
 
         if(
             !response.ok ||
-            data.status !== true
+            data.status === false
         ){
 
             throw new Error(
@@ -2880,92 +2910,7 @@ async function toggleLike(
 
         }
 
-        const post =
-            postsCache.find(
-                item =>
-                    getPostId(item) ===
-                    String(id)
-            );
-
-        if(post){
-
-            if(
-                !Array.isArray(
-                    post.likes
-                )
-            ){
-                post.likes = [];
-            }
-
-            const username =
-                String(
-                    currentUser.username
-                );
-
-            const index =
-                post.likes.findIndex(
-                    item =>
-                        String(item) ===
-                        username
-                );
-
-            if(data.liked){
-
-                if(index === -1){
-                    post.likes.push(
-                        username
-                    );
-                }
-
-            }else{
-
-                if(index !== -1){
-                    post.likes.splice(
-                        index,
-                        1
-                    );
-                }
-
-            }
-
-        }
-
-        const article =
-            document.querySelector(
-                `.post-item[data-post-id="${CSS.escape(String(id))}"]`
-            );
-
-        if(article){
-
-            const likeButton =
-                article.querySelector(
-                    ".post-action"
-                );
-
-            const likeCount =
-                Number(
-                    data.likes ?? 0
-                );
-
-            likeButton.classList.toggle(
-                "liked",
-                Boolean(data.liked)
-            );
-
-            likeButton.innerHTML =
-                `${data.liked ? "👍" : "♡"} Like <span>${likeCount}</span>`;
-
-            const meta =
-                article.querySelector(
-                    ".post-meta span:first-child"
-                );
-
-            if(meta){
-                meta.textContent =
-                    `❤️ ${likeCount} like`;
-            }
-
-        }
+        await loadPosts();
 
     }catch(error){
 
@@ -2981,8 +2926,7 @@ async function toggleLike(
 
     }finally{
 
-        button.disabled =
-            false;
+        button.disabled = false;
 
     }
 
@@ -2991,6 +2935,7 @@ async function toggleLike(
 
 /* =========================================================
    COMMENTS
+   ENDPOINT: /api/posting/:id/comments
 ========================================================= */
 
 async function toggleComments(id){
@@ -3003,19 +2948,13 @@ async function toggleComments(id){
     if(!box) return;
 
     const opening =
-        !box.classList.contains(
-            "show"
-        );
+        !box.classList.contains("show");
 
-    box.classList.toggle(
-        "show"
-    );
+    box.classList.toggle("show");
 
     if(opening){
 
-        await loadComments(
-            id
-        );
+        await loadComments(id);
 
     }
 
@@ -3031,70 +2970,53 @@ async function loadComments(id){
 
     if(!list) return;
 
-    list.innerHTML = `
-        <div class="empty-comment">
-            Mengambil komentar...
-        </div>
-    `;
+    /*
+     * Pertama coba ambil komentar dari
+     * posting.json melalui endpoint posting.
+     */
 
-    try{
+    const cachedPost =
+        postsCache.find(
+            post =>
+                getPostId(post) ===
+                String(id)
+        );
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(
-                    id
-                )}/comments`,
-                {
-                    method:"GET",
-                    cache:"no-store",
-                    headers:authHeaders()
-                }
+    if(cachedPost){
+
+        const localComments =
+            getComments(cachedPost);
+
+        if(localComments.length){
+
+            renderComments(
+                id,
+                localComments
             );
 
-        const data =
-            await response.json();
-
-        if(
-            !response.ok ||
-            data.status !== true
-        ){
-
-            throw new Error(
-                data.message ||
-                "Gagal mengambil komentar."
-            );
+            return;
 
         }
 
-        const comments =
-            Array.isArray(
-                data.result
-            )
-                ? data.result
-                : [];
-
-        renderComments(
-            id,
-            comments
-        );
-
-    }catch(error){
-
-        console.error(
-            "[COMMENTS]",
-            error
-        );
-
-        list.innerHTML = `
-            <div class="empty-comment">
-                ${escapeHTML(error.message)}
-            </div>
-        `;
-
     }
+
+    list.innerHTML = `
+        <div class="empty-comment">
+            Belum ada komentar.
+        </div>
+    `;
+
+    updateCommentCount(
+        id,
+        0
+    );
 
 }
 
+
+/* =========================================================
+   RENDER COMMENTS
+========================================================= */
 
 function renderComments(
     postId,
@@ -3149,12 +3071,29 @@ function createCommentHTML(
     comment
 ){
 
+    /*
+     * Support beberapa bentuk object komentar.
+     */
+
     const username =
         comment.username ||
+        comment.user ||
         "User";
 
     const avatar =
         comment.avatar ||
+        "";
+
+    const text =
+        comment.text ||
+        comment.comment ||
+        comment.content ||
+        comment.caption ||
+        "";
+
+    const commentId =
+        comment.id ||
+        comment._id ||
         "";
 
     const currentUsername =
@@ -3163,24 +3102,19 @@ function createCommentHTML(
         ).toLowerCase();
 
     const commentUsername =
-        String(
-            username
-        ).toLowerCase();
+        String(username).toLowerCase();
 
     const role =
         String(
             currentUser?.role || ""
         ).toLowerCase();
 
-    const staff =
-        [
-            "admin",
-            "developer",
-            "owner",
-            "tangan-kanan"
-        ].includes(
-            role
-        );
+    const staff = [
+        "admin",
+        "developer",
+        "owner",
+        "tangan-kanan"
+    ].includes(role);
 
     const canDelete =
         currentUsername ===
@@ -3206,7 +3140,7 @@ function createCommentHTML(
         <div
             class="comment"
             data-comment-id="${escapeHTML(
-                comment.id
+                commentId
             )}"
         >
 
@@ -3231,23 +3165,18 @@ function createCommentHTML(
                 </div>
 
                 <p>
-                    ${escapeHTML(
-                        comment.text ||
-                        comment.comment ||
-                        comment.content ||
-                        ""
-                    )}
+                    ${escapeHTML(text)}
                 </p>
 
                 ${
-                    canDelete
+                    canDelete && commentId
                         ? `
                             <button
                                 class="delete-comment"
                                 type="button"
                                 onclick="deleteComment(
                                     '${escapeHTML(postId)}',
-                                    '${escapeHTML(comment.id)}'
+                                    '${escapeHTML(commentId)}'
                                 )"
                             >
                                 Hapus
@@ -3272,20 +3201,25 @@ function updateCommentCount(
 
     const article =
         document.querySelector(
-            `.post-item[data-post-id="${CSS.escape(String(postId))}"]`
+            `.post-item[data-post-id="${CSS.escape(
+                String(postId)
+            )}"]`
         );
 
     if(!article) return;
 
-    const button =
+    const buttons =
         article.querySelectorAll(
             ".post-action"
-        )[1];
+        );
 
-    if(button){
+    const commentButton =
+        buttons[1];
+
+    if(commentButton){
 
         const span =
-            button.querySelector(
+            commentButton.querySelector(
                 ".comment-count"
             );
 
@@ -3302,8 +3236,10 @@ function updateCommentCount(
         );
 
     if(meta){
+
         meta.textContent =
             `💬 ${count} komentar`;
+
     }
 
 }
@@ -3311,6 +3247,7 @@ function updateCommentCount(
 
 /* =========================================================
    CREATE COMMENT
+   ENDPOINT: /api/posting/:id/comments
 ========================================================= */
 
 async function submitComment(id){
@@ -3336,11 +3273,22 @@ async function submitComment(id){
 
     }
 
+    if(!currentUser?.username){
+
+        showStatus(
+            "Silakan login terlebih dahulu.",
+            "error"
+        );
+
+        return;
+
+    }
+
     try{
 
         const response =
             await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(
+                `${API_BASE}/api/posting/${encodeURIComponent(
                     id
                 )}/comments`,
                 {
@@ -3352,6 +3300,8 @@ async function submitComment(id){
                     },
                     body:
                         JSON.stringify({
+                            username:
+                                currentUser.username,
                             text
                         })
                 }
@@ -3362,7 +3312,7 @@ async function submitComment(id){
 
         if(
             !response.ok ||
-            data.status !== true
+            data.status === false
         ){
 
             throw new Error(
@@ -3374,9 +3324,23 @@ async function submitComment(id){
 
         input.value = "";
 
-        await loadComments(
-            id
-        );
+        await loadPosts();
+
+        const post =
+            postsCache.find(
+                item =>
+                    getPostId(item) ===
+                    String(id)
+            );
+
+        if(post){
+
+            renderComments(
+                id,
+                getComments(post)
+            );
+
+        }
 
         showStatus(
             "Komentar berhasil ditambahkan. 💬"
@@ -3401,6 +3365,7 @@ async function submitComment(id){
 
 /* =========================================================
    DELETE COMMENT
+   ENDPOINT: /api/posting/:id/comments/:commentId
 ========================================================= */
 
 async function deleteComment(
@@ -3420,7 +3385,7 @@ async function deleteComment(
 
         const response =
             await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(
+                `${API_BASE}/api/posting/${encodeURIComponent(
                     postId
                 )}/comments/${encodeURIComponent(
                     commentId
@@ -3436,7 +3401,7 @@ async function deleteComment(
 
         if(
             !response.ok ||
-            data.status !== true
+            data.status === false
         ){
 
             throw new Error(
@@ -3446,9 +3411,23 @@ async function deleteComment(
 
         }
 
-        await loadComments(
-            postId
-        );
+        await loadPosts();
+
+        const post =
+            postsCache.find(
+                item =>
+                    getPostId(item) ===
+                    String(postId)
+            );
+
+        if(post){
+
+            renderComments(
+                postId,
+                getComments(post)
+            );
+
+        }
 
         showStatus(
             "Komentar berhasil dihapus."
@@ -3543,6 +3522,7 @@ document.addEventListener(
 
 /* =========================================================
    EDIT POST
+   ENDPOINT: /api/posting/:id
 ========================================================= */
 
 function editPost(id){
@@ -3556,9 +3536,7 @@ function editPost(id){
 
     if(edit){
 
-        edit.classList.add(
-            "show"
-        );
+        edit.classList.add("show");
 
     }
 
@@ -3574,9 +3552,7 @@ function cancelEdit(id){
 
     if(edit){
 
-        edit.classList.remove(
-            "show"
-        );
+        edit.classList.remove("show");
 
     }
 
@@ -3599,7 +3575,7 @@ async function saveEdit(id){
 
         const response =
             await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(
+                `${API_BASE}/api/posting/${encodeURIComponent(
                     id
                 )}`,
                 {
@@ -3621,7 +3597,7 @@ async function saveEdit(id){
 
         if(
             !response.ok ||
-            data.status !== true
+            data.status === false
         ){
 
             throw new Error(
@@ -3631,54 +3607,7 @@ async function saveEdit(id){
 
         }
 
-        const post =
-            postsCache.find(
-                item =>
-                    getPostId(item) ===
-                    String(id)
-            );
-
-        if(post){
-
-            post.caption =
-                caption;
-
-        }
-
-        const captionElement =
-            document.getElementById(
-                `caption-${id}`
-            );
-
-        if(captionElement){
-
-            captionElement.textContent =
-                caption;
-
-        }else if(caption){
-
-            const edit =
-                document.getElementById(
-                    `edit-${id}`
-                );
-
-            edit.insertAdjacentHTML(
-                "beforebegin",
-                `
-                    <div
-                        class="post-caption"
-                        id="caption-${escapeHTML(id)}"
-                    >
-                        ${escapeHTML(caption)}
-                    </div>
-                `
-            );
-
-        }
-
-        cancelEdit(
-            id
-        );
+        await loadPosts();
 
         showStatus(
             "Postingan berhasil diperbarui. ✏️"
@@ -3703,6 +3632,7 @@ async function saveEdit(id){
 
 /* =========================================================
    DELETE POST
+   ENDPOINT: /api/posting/:id
 ========================================================= */
 
 async function deletePost(id){
@@ -3721,7 +3651,7 @@ async function deletePost(id){
 
         const response =
             await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(
+                `${API_BASE}/api/posting/${encodeURIComponent(
                     id
                 )}`,
                 {
@@ -3735,7 +3665,7 @@ async function deletePost(id){
 
         if(
             !response.ok ||
-            data.status !== true
+            data.status === false
         ){
 
             throw new Error(
@@ -3752,42 +3682,17 @@ async function deletePost(id){
                     String(id)
             );
 
-        const article =
-            document.querySelector(
-                `.post-item[data-post-id="${CSS.escape(String(id))}"]`
-            );
-
-        if(article){
-
-            article.remove();
-
-        }
-
-        const remaining =
-            document.querySelectorAll(
-                ".post-item"
-            ).length;
-
-        document.getElementById(
-            "postCount"
-        ).textContent =
-            `${remaining} Post`;
-
-        if(!remaining){
-
-            document.getElementById(
-                "postsList"
-            ).innerHTML = `
-                <div class="empty-post">
-                    <div class="icon">📝</div>
-                    <strong>Belum ada postingan</strong>
-                    <span>
-                        Buat postingan pertamamu di atas.
-                    </span>
-                </div>
-            `;
-
-        }
+        renderPosts(
+            postsCache.filter(
+                post =>
+                    String(
+                        post.username || ""
+                    ).toLowerCase() ===
+                    String(
+                        currentUser?.username || ""
+                    ).toLowerCase()
+            )
+        );
 
         showStatus(
             "Postingan berhasil dihapus. 🗑️"
@@ -3847,9 +3752,7 @@ document.getElementById(
             "sidebar"
         )
         .classList
-        .toggle(
-            "open"
-        );
+        .toggle("open");
 
 };
 
@@ -3868,9 +3771,7 @@ document.querySelectorAll(
                         "sidebar"
                     )
                     .classList
-                    .remove(
-                        "open"
-                    );
+                    .remove("open");
 
             }
         );
@@ -3928,4 +3829,4 @@ init();
 </script>
 
 </body>
-    </html>
+</html>
