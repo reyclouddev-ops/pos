@@ -482,6 +482,34 @@ canvas{
     line-height:1.7;
 }
 
+.about-list{
+    display:grid;
+    gap:10px;
+    margin-top:15px;
+}
+
+.about-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:11px 12px;
+    border-radius:12px;
+    background:#080c13;
+    border:1px solid var(--border);
+}
+
+.about-item span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.about-item strong{
+    color:#f8fafc;
+    font-size:12px;
+    text-align:right;
+}
+
 .feature-list{
     display:grid;
     gap:9px;
@@ -501,6 +529,7 @@ canvas{
     border-radius:50%;
     background:var(--green);
     box-shadow:0 0 8px rgba(34,197,94,.5);
+    flex-shrink:0;
 }
 
 .api-endpoint{
@@ -513,6 +542,28 @@ canvas{
     color:#94a3b8;
     font-size:11px;
     word-break:break-all;
+}
+
+.company-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:15px;
+    padding:8px 11px;
+    border-radius:10px;
+    background:rgba(56,189,248,.06);
+    border:1px solid rgba(56,189,248,.14);
+    color:#7dd3fc;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.company-badge span{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--blue);
+    box-shadow:0 0 8px rgba(56,189,248,.7);
 }
 
 .footer{
@@ -615,6 +666,16 @@ canvas{
 
     .hero-meta{
         flex-direction:column;
+    }
+
+    .about-item{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:4px;
+    }
+
+    .about-item strong{
+        text-align:left;
     }
 }
 </style>
@@ -1085,11 +1146,41 @@ canvas{
                 serta latency jaringan.
             </p>
 
+            <div class="company-badge">
+                <span></span>
+                Infrastructure powered by ReyCloud
+            </div>
+
+            <div class="about-list">
+
+                <div class="about-item">
+                    <span>Developer</span>
+                    <strong>ReyCloudShop Developer</strong>
+                </div>
+
+                <div class="about-item">
+                    <span>Company</span>
+                    <strong>PT Legion Teknologi Inc</strong>
+                </div>
+
+                <div class="about-item">
+                    <span>Platform</span>
+                    <strong>ReyCloud API</strong>
+                </div>
+
+                <div class="about-item">
+                    <span>Monitoring</span>
+                    <strong>Real-Time Infrastructure</strong>
+                </div>
+
+            </div>
+
             <div class="api-endpoint">
                 https://api.legionteknologi.my.id/api/status
             </div>
 
         </div>
+
 
         <div class="about-box">
 
@@ -1175,6 +1266,20 @@ canvas{
             </span>
         </div>
 
+        <div class="info-row">
+            <span class="info-label">Developer</span>
+            <span class="info-value">
+                ReyCloudShop Developer
+            </span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Company</span>
+            <span class="info-value">
+                PT Legion Teknologi Inc
+            </span>
+        </div>
+
     </div>
 
 </section>
@@ -1185,6 +1290,8 @@ canvas{
 
 <footer class="footer">
     ReyCloud • Infrastructure Monitoring • Live System
+    <br>
+    ReyCloudShop Developer • PT Legion Teknologi Inc
 </footer>
 
 </div>
