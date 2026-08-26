@@ -19,9 +19,12 @@ body{
     color:#111827;
 }
 
-button,
-input{
+button,input{
     font-family:inherit;
+}
+
+button{
+    -webkit-tap-highlight-color:transparent;
 }
 
 .app{
@@ -137,6 +140,7 @@ input{
     width:36px;
     height:36px;
     font-size:13px;
+    flex-shrink:0;
 }
 
 .avatar img,
@@ -302,6 +306,7 @@ input{
     display:flex;
     gap:10px;
     max-width:82%;
+    position:relative;
 }
 
 .message.mine{
@@ -362,6 +367,7 @@ input{
     font-size:13px;
     line-height:1.5;
     word-break:break-word;
+    position:relative;
 }
 
 .message.mine .bubble{
@@ -380,10 +386,176 @@ input{
     cursor:pointer;
 }
 
+.reply-preview{
+    border-left:3px solid #9ca3af;
+    background:rgba(0,0,0,.04);
+    padding:6px 8px;
+    border-radius:7px;
+    margin-bottom:7px;
+    font-size:10px;
+    color:#6b7280;
+}
+
+.message.mine .reply-preview{
+    background:rgba(255,255,255,.1);
+    color:#d1d5db;
+}
+
+.reply-author{
+    font-weight:800;
+    margin-bottom:2px;
+}
+
+.reactions{
+    display:flex;
+    gap:4px;
+    flex-wrap:wrap;
+    margin-top:5px;
+}
+
+.reaction{
+    border:1px solid #e5e7eb;
+    background:#fff;
+    border-radius:20px;
+    padding:3px 7px;
+    font-size:11px;
+    cursor:pointer;
+    user-select:none;
+}
+
+.reaction:hover{
+    background:#f3f4f6;
+}
+
+.message.mine .reaction{
+    background:#fff;
+    color:#111827;
+}
+
+.message-actions{
+    display:none;
+    gap:4px;
+    margin-top:5px;
+    flex-wrap:wrap;
+}
+
+.message:hover .message-actions{
+    display:flex;
+}
+
+.action-btn{
+    border:1px solid #e5e7eb;
+    background:#fff;
+    border-radius:7px;
+    padding:5px 7px;
+    font-size:10px;
+    cursor:pointer;
+}
+
+.action-btn:hover{
+    background:#f3f4f6;
+}
+
+.delete-btn{
+    color:#dc2626;
+}
+
 .chat-input{
     padding:13px;
     border-top:1px solid #e5e7eb;
     background:#fff;
+}
+
+.reply-bar{
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#f3f4f6;
+    border-radius:9px;
+    padding:9px 11px;
+    margin-bottom:8px;
+}
+
+.reply-bar.show{
+    display:flex;
+}
+
+.reply-bar-content{
+    min-width:0;
+}
+
+.reply-bar-title{
+    font-size:10px;
+    font-weight:800;
+    color:#374151;
+}
+
+.reply-bar-text{
+    font-size:11px;
+    color:#6b7280;
+    margin-top:2px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.cancel-reply{
+    border:0;
+    background:transparent;
+    cursor:pointer;
+    font-size:18px;
+    color:#6b7280;
+}
+
+.selected-file{
+    display:none;
+    align-items:center;
+    gap:8px;
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    border-radius:9px;
+    padding:7px;
+    margin-bottom:8px;
+}
+
+.selected-file.show{
+    display:flex;
+}
+
+.preview-image{
+    width:48px;
+    height:48px;
+    object-fit:cover;
+    border-radius:7px;
+}
+
+.file-info{
+    flex:1;
+    min-width:0;
+}
+
+.file-info strong{
+    display:block;
+    font-size:11px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.file-info span{
+    display:block;
+    color:#9ca3af;
+    font-size:9px;
+    margin-top:2px;
+}
+
+.remove-file{
+    border:0;
+    background:transparent;
+    color:#dc2626;
+    cursor:pointer;
+    font-size:18px;
 }
 
 .input-wrap{
@@ -393,6 +565,7 @@ input{
 
 .input-wrap input[type="text"]{
     flex:1;
+    min-width:0;
     border:1px solid #e5e7eb;
     outline:none;
     border-radius:10px;
@@ -401,9 +574,15 @@ input{
     background:#fafafa;
 }
 
+.input-wrap input[type="text"]:focus{
+    background:#fff;
+    border-color:#9ca3af;
+}
+
 .file-btn,
 .send-btn{
     width:45px;
+    min-width:45px;
     border-radius:10px;
     cursor:pointer;
     font-size:16px;
@@ -420,6 +599,11 @@ input{
     color:#fff;
 }
 
+.send-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
 .input-info{
     display:flex;
     justify-content:space-between;
@@ -428,16 +612,8 @@ input{
     font-size:10px;
 }
 
-.mobile-menu{
-    display:none;
-    border:0;
-    background:#f3f4f6;
-    width:35px;
-    height:35px;
-    border-radius:8px;
-}
-
-.profile-modal{
+.profile-modal,
+.reaction-modal{
     display:none;
     position:fixed;
     inset:0;
@@ -449,7 +625,8 @@ input{
     padding:20px;
 }
 
-.profile-modal.show{
+.profile-modal.show,
+.reaction-modal.show{
     display:flex;
 }
 
@@ -540,6 +717,51 @@ input{
     font-weight:700;
 }
 
+.reaction-card{
+    width:min(330px,94vw);
+    background:#fff;
+    border-radius:18px;
+    padding:18px;
+}
+
+.reaction-card h3{
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.reaction-list{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.reaction-option{
+    width:48px;
+    height:48px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:24px;
+}
+
+.reaction-option:hover{
+    background:#f3f4f6;
+    transform:scale(1.05);
+}
+
+.reaction-cancel{
+    width:100%;
+    margin-top:14px;
+    height:38px;
+    border:0;
+    border-radius:9px;
+    background:#f3f4f6;
+    cursor:pointer;
+    font-weight:700;
+}
+
 .empty{
     flex:1;
     display:flex;
@@ -581,6 +803,10 @@ input{
     .message{
         max-width:92%;
     }
+
+    .message-actions{
+        display:flex;
+    }
 }
 
 @media(max-width:480px){
@@ -596,6 +822,19 @@ input{
     .message{
         max-width:96%;
     }
+
+    .chat-box{
+        height:calc(100vh - 210px);
+        min-height:450px;
+    }
+
+    .messages{
+        padding:12px;
+    }
+
+    .chat-image{
+        max-width:240px;
+    }
 }
 </style>
 </head>
@@ -606,80 +845,76 @@ input{
 
 <aside class="sidebar" id="sidebar">
 
-    <div class="logo">
-        <div class="logo-icon">R</div>
-        <div class="logo-text">
-            ReyCloud <span>Panel</span>
-        </div>
+<div class="logo">
+    <div class="logo-icon">R</div>
+    <div class="logo-text">
+        ReyCloud <span>Panel</span>
     </div>
+</div>
 
-    <div class="nav-title">
-        Main
-    </div>
+<div class="nav-title">
+    Main
+</div>
 
-    <nav class="nav">
+<nav class="nav">
 
-        <a href="dashboard.html">
-            ⌂ Dashboard
-        </a>
+<a href="dashboard.html">
+    ⌂ Dashboard
+</a>
 
-        <a href="profile.html">
-            ◉ Profile
-        </a>
+<a href="profile.html">
+    ◉ Profile
+</a>
 
-        <a href="cpanel.html">
-            ▣ Create Panel
-        </a>
+<a href="cpanel.html">
+    ▣ Create Panel
+</a>
 
-        <a href="cadmin.html">
-            ♙ Create Admin
-        </a>
+<a href="cadmin.html">
+    ♙ Create Admin
+</a>
 
-        <a href="chat.html" class="active">
-            ☁ Public Chat
-        </a>
+<a href="chat.html" class="active">
+    ☁ Public Chat
+</a>
 
-        <a href="privatechat.html">
-            ✉ Private Chat
-        </a>
+</nav>
 
-    </nav>
+<div class="nav-title">
+    Account
+</div>
 
-    <div class="nav-title">
-        Account
-    </div>
+<nav class="nav">
 
-    <nav class="nav">
+<a href="javascript:void(0)" id="logout">
+    ↪ Logout
+</a>
 
-        <a href="javascript:void(0)" id="logout">
-            ↪ Logout
-        </a>
+</nav>
 
-    </nav>
+<div class="sidebar-user">
 
-    <div class="sidebar-user">
+<div class="user-mini">
 
-        <div class="user-mini">
+<div class="avatar" id="sidebarAvatar">
+    U
+</div>
 
-            <div class="avatar" id="sidebarAvatar">
-                U
-            </div>
+<div class="user-info">
 
-            <div class="user-info">
+<strong id="sidebarUsername">
+    User
+</strong>
 
-                <strong id="sidebarUsername">
-                    User
-                </strong>
+<span id="sidebarRole">
+    member
+</span>
 
-                <span id="sidebarRole">
-                    member
-                </span>
+</div>
 
-            </div>
+</div>
 
-        </div>
-
-    </div>
+</div>
 
 </aside>
 
@@ -687,33 +922,33 @@ input{
 
 <header class="topbar">
 
-    <div style="display:flex;align-items:center;gap:10px">
+<div style="display:flex;align-items:center;gap:10px">
 
-        <button
-            class="mobile-menu"
-            id="mobileMenu"
-        >
-            ☰
-        </button>
+<button
+    class="mobile-menu"
+    id="mobileMenu"
+>
+    ☰
+</button>
 
-        <div class="page-title">
-            Public Chat
-        </div>
+<div class="page-title">
+    Public Chat
+</div>
 
-    </div>
+</div>
 
-    <div class="status">
+<div class="status">
 
-        <span
-            class="status-dot"
-            id="statusDot"
-        ></span>
+<span
+    class="status-dot"
+    id="statusDot"
+></span>
 
-        <span id="statusText">
-            Connecting...
-        </span>
+<span id="statusText">
+    Connecting...
+</span>
 
-    </div>
+</div>
 
 </header>
 
@@ -721,13 +956,13 @@ input{
 
 <div class="chat-header">
 
-    <h1>
-        💬 Public Chat
-    </h1>
+<h1>
+    💬 Public Chat
+</h1>
 
-    <p>
-        Ngobrol bersama pengguna ReyCloud lainnya.
-    </p>
+<p>
+    Ngobrol bersama pengguna ReyCloud lainnya.
+</p>
 
 </div>
 
@@ -735,32 +970,32 @@ input{
 
 <div class="chat-top">
 
-    <div class="chat-top-left">
+<div class="chat-top-left">
 
-        <div class="chat-icon">
-            💬
-        </div>
+<div class="chat-icon">
+    💬
+</div>
 
-        <div>
+<div>
 
-            <strong>
-                ReyCloud Community
-            </strong>
+<strong>
+    ReyCloud Community
+</strong>
 
-            <small id="messageCount">
-                Memuat pesan...
-            </small>
+<small id="messageCount">
+    Memuat pesan...
+</small>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
-    <button
-        class="refresh-btn"
-        id="refreshBtn"
-    >
-        ↻ Refresh
-    </button>
+<button
+    class="refresh-btn"
+    id="refreshBtn"
+>
+    ↻ Refresh
+</button>
 
 </div>
 
@@ -769,46 +1004,126 @@ input{
     id="messages"
 >
 
-    <div class="empty">
-        <strong>
-            Memuat chat...
-        </strong>
-    </div>
+<div class="empty">
+    <strong>
+        Memuat chat...
+    </strong>
+</div>
 
 </div>
 
 <div class="chat-input">
 
-    <div class="input-wrap">
+<div
+    class="reply-bar"
+    id="replyBar"
+>
 
-        <input
-            type="text"
-            id="messageInput"
-            maxlength="1000"
-            autocomplete="off"
-            placeholder="Tulis pesan..."
-        >
+<div class="reply-bar-content">
 
-        <button
-            class="send-btn"
-            id="sendBtn"
-        >
-            ➤
-        </button>
+<div
+    class="reply-bar-title"
+    id="replyBarTitle"
+>
+    Membalas
+</div>
 
-    </div>
+<div
+    class="reply-bar-text"
+    id="replyBarText"
+>
+    -
+</div>
 
-    <div class="input-info">
+</div>
 
-        <span>
-            Chat publik
-        </span>
+<button
+    class="cancel-reply"
+    id="cancelReply"
+>
+    ×
+</button>
 
-        <span id="charCount">
-            0/1000
-        </span>
+</div>
 
-    </div>
+<div
+    class="selected-file"
+    id="selectedFile"
+>
+
+<img
+    class="preview-image"
+    id="previewImage"
+    alt="Preview"
+>
+
+<div class="file-info">
+
+<strong id="fileName">
+    Foto
+</strong>
+
+<span id="fileSize">
+    -
+</span>
+
+</div>
+
+<button
+    class="remove-file"
+    id="removeFile"
+>
+    ×
+</button>
+
+</div>
+
+<div class="input-wrap">
+
+<input
+    type="file"
+    id="imageInput"
+    accept="image/jpeg,image/png,image/webp,image/gif"
+    hidden
+>
+
+<button
+    class="file-btn"
+    id="fileBtn"
+    type="button"
+>
+    📷
+</button>
+
+<input
+    type="text"
+    id="messageInput"
+    maxlength="1000"
+    autocomplete="off"
+    placeholder="Tulis pesan..."
+>
+
+<button
+    class="send-btn"
+    id="sendBtn"
+    type="button"
+>
+    ➤
+</button>
+
+</div>
+
+<div class="input-info">
+
+<span>
+    Chat publik
+</span>
+
+<span id="charCount">
+    0/1000
+</span>
+
+</div>
 
 </div>
 
@@ -825,55 +1140,90 @@ input{
     id="profileModal"
 >
 
-    <div class="profile-card">
+<div class="profile-card">
 
-        <div class="profile-cover"></div>
+<div class="profile-cover"></div>
 
-        <div
-            class="profile-avatar"
-            id="profileAvatar"
-        >
-            U
-        </div>
+<div
+    class="profile-avatar"
+    id="profileAvatar"
+>
+    U
+</div>
 
-        <div class="profile-body">
+<div class="profile-body">
 
-            <div
-                class="profile-username"
-                id="profileUsername"
-            >
-                User
-            </div>
+<div
+    class="profile-username"
+    id="profileUsername"
+>
+    User
+</div>
 
-            <div
-                class="profile-role"
-                id="profileRole"
-            >
-                Member
-            </div>
+<div
+    class="profile-role"
+    id="profileRole"
+>
+    Member
+</div>
 
-            <div
-                class="profile-bio"
-                id="profileBio"
-            >
-                -
-            </div>
+<div
+    class="profile-bio"
+    id="profileBio"
+>
+    -
+</div>
 
-            <div
-                class="profile-info"
-                id="profileInfo"
-            ></div>
+<div
+    class="profile-info"
+    id="profileInfo"
+></div>
 
-            <button
-                class="profile-close"
-                id="profileClose"
-            >
-                Tutup
-            </button>
+<button
+    class="profile-close"
+    id="profileClose"
+>
+    Tutup
+</button>
 
-        </div>
+</div>
 
-    </div>
+</div>
+
+</div>
+
+<div
+    class="reaction-modal"
+    id="reactionModal"
+>
+
+<div class="reaction-card">
+
+<h3>
+    Pilih Reaction
+</h3>
+
+<div class="reaction-list">
+
+<button class="reaction-option" data-reaction="❤️">❤️</button>
+<button class="reaction-option" data-reaction="😂">😂</button>
+<button class="reaction-option" data-reaction="😮">😮</button>
+<button class="reaction-option" data-reaction="😢">😢</button>
+<button class="reaction-option" data-reaction="😡">😡</button>
+<button class="reaction-option" data-reaction="👍">👍</button>
+<button class="reaction-option" data-reaction="🔥">🔥</button>
+<button class="reaction-option" data-reaction="🎉">🎉</button>
+
+</div>
+
+<button
+    class="reaction-cancel"
+    id="reactionCancel"
+>
+    Batal
+</button>
+
+</div>
 
 </div>
 
@@ -886,10 +1236,20 @@ const API_BASE =
 const API_CHAT =
     `${API_BASE}/api/chat`;
 
+const API_UPLOAD =
+    `${API_BASE}/upload`;
+
 let currentUser = null;
 let messages = [];
 let lastHash = "";
 let loading = false;
+
+let selectedImage = null;
+let replyMessage = null;
+let reactionMessageId = null;
+
+const MAX_IMAGE_SIZE =
+    5 * 1024 * 1024;
 
 function getUser(){
 
@@ -917,21 +1277,15 @@ function getUser(){
             const data =
                 JSON.parse(raw);
 
-            if(
-                data?.result?.user
-            ){
+            if(data?.result?.user){
                 return data.result.user;
             }
 
-            if(
-                data?.user
-            ){
+            if(data?.user){
                 return data.user;
             }
 
-            if(
-                data?.username
-            ){
+            if(data?.username){
                 return data;
             }
 
@@ -947,25 +1301,20 @@ function saveLocalUser(user){
     const json =
         JSON.stringify(user);
 
-    localStorage.setItem(
+    [
         "user",
-        json
-    );
-
-    localStorage.setItem(
         "userData",
-        json
-    );
-
-    localStorage.setItem(
         "currentUser",
-        json
+        "reycloud_user",
+        "loginUser"
+    ].forEach(
+        key =>
+            localStorage.setItem(
+                key,
+                json
+            )
     );
 
-    localStorage.setItem(
-        "reycloud_user",
-        json
-    );
 }
 
 function escapeHTML(value){
@@ -987,7 +1336,8 @@ function formatRole(value){
         value || "member"
     ).replace(
         /\b\w/g,
-        char => char.toUpperCase()
+        char =>
+            char.toUpperCase()
     );
 
 }
@@ -1001,11 +1351,7 @@ function formatDate(value){
     const date =
         new Date(value);
 
-    if(
-        Number.isNaN(
-            date.getTime()
-        )
-    ){
+    if(Number.isNaN(date.getTime())){
         return "-";
     }
 
@@ -1025,11 +1371,7 @@ function formatTime(value){
     const date =
         new Date(value);
 
-    if(
-        Number.isNaN(
-            date.getTime()
-        )
-    ){
+    if(Number.isNaN(date.getTime())){
         return "-";
     }
 
@@ -1057,19 +1399,13 @@ function setApiStatus(online){
 
     if(online){
 
-        dot.classList.remove(
-            "offline"
-        );
-
+        dot.classList.remove("offline");
         text.textContent =
             "API Connected";
 
     }else{
 
-        dot.classList.add(
-            "offline"
-        );
-
+        dot.classList.add("offline");
         text.textContent =
             "API Offline";
 
@@ -1135,15 +1471,8 @@ function setupUser(){
     }
 
     return true;
+
 }
-
-/*
-Sinkronisasi profile terbaru.
-
-Ini membuat chat langsung mendapatkan
-avatar, username, role dan bio terbaru
-setelah profile diubah.
-*/
 
 async function syncCurrentUser(){
 
@@ -1244,18 +1573,14 @@ async function loadMessages(
             `${messages.length} pesan`;
 
         const hash =
-            JSON.stringify(
-                messages
-            );
+            JSON.stringify(messages);
 
         if(
             hash === lastHash &&
             !force
         ){
-
             loading = false;
             return;
-
         }
 
         lastHash =
@@ -1266,7 +1591,7 @@ async function loadMessages(
     }catch(error){
 
         console.error(
-            "[CHAT]",
+            "[CHAT GET]",
             error
         );
 
@@ -1282,6 +1607,17 @@ async function loadMessages(
         loading = false;
 
     }
+
+}
+
+function getMessageId(chat){
+
+    return (
+        chat.id ||
+        chat._id ||
+        chat.messageId ||
+        ""
+    );
 
 }
 
@@ -1312,10 +1648,8 @@ function renderMessages(){
     container.innerHTML =
         messages
             .map(
-                message =>
-                    renderMessage(
-                        message
-                    )
+                chat =>
+                    renderMessage(chat)
             )
             .join("");
 
@@ -1341,6 +1675,118 @@ function renderMessages(){
 
             }
         );
+
+    container
+        .querySelectorAll(
+            ".reply-action"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    event => {
+
+                        event.stopPropagation();
+
+                        const id =
+                            button.dataset.id;
+
+                        const message =
+                            messages.find(
+                                item =>
+                                    String(
+                                        getMessageId(item)
+                                    ) === String(id)
+                            );
+
+                        if(message){
+                            startReply(message);
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    container
+        .querySelectorAll(
+            ".delete-action"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    async event => {
+
+                        event.stopPropagation();
+
+                        const id =
+                            button.dataset.id;
+
+                        await deleteMessage(id);
+
+                    }
+                );
+
+            }
+        );
+
+    container
+        .querySelectorAll(
+            ".reaction"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    async event => {
+
+                        event.stopPropagation();
+
+                        const id =
+                            button.dataset.id;
+
+                        const reaction =
+                            button.dataset.reaction;
+
+                        await reactToMessage(
+                            id,
+                            reaction
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    container
+        .querySelectorAll(
+            ".chat-image"
+        )
+        .forEach(
+            image => {
+
+                image.addEventListener(
+                    "click",
+                    () => {
+
+                        window.open(
+                            image.src,
+                            "_blank"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    setupLongPress();
 
 }
 
@@ -1373,7 +1819,11 @@ function renderMessage(chat){
 
     const image =
         chat.image ||
+        chat.imageUrl ||
         "";
+
+    const id =
+        getMessageId(chat);
 
     const avatarHTML =
         avatar
@@ -1389,29 +1839,141 @@ function renderMessage(chat){
                 .toUpperCase()
         );
 
-    const imageHTML =
-        image
-        ? `
+    let imageHTML = "";
+
+    if(image){
+
+        imageHTML = `
             <img
                 class="chat-image"
                 src="${escapeHTML(image)}"
                 alt="Foto"
+                loading="lazy"
             >
+        `;
+
+    }
+
+    let replyHTML = "";
+
+    if(chat.replyTo){
+
+        const reply =
+            typeof chat.replyTo === "object"
+            ? chat.replyTo
+            : messages.find(
+                item =>
+                    String(
+                        getMessageId(item)
+                    ) ===
+                    String(chat.replyTo)
+            );
+
+        if(reply){
+
+            replyHTML = `
+                <div class="reply-preview">
+
+                    <div class="reply-author">
+                        ${escapeHTML(
+                            reply.username ||
+                            "User"
+                        )}
+                    </div>
+
+                    <div>
+                        ${escapeHTML(
+                            reply.message ||
+                            "📷 Foto"
+                        )}
+                    </div>
+
+                </div>
+            `;
+
+        }
+
+    }
+
+    const reactions =
+        Array.isArray(chat.reactions)
+        ? chat.reactions
+        : [];
+
+    const reactionHTML =
+        reactions.length
+        ? `
+            <div class="reactions">
+
+                ${reactions
+                    .map(
+                        reaction => {
+
+                            if(
+                                typeof reaction ===
+                                "string"
+                            ){
+
+                                return `
+                                    <button
+                                        class="reaction"
+                                        data-id="${escapeHTML(id)}"
+                                        data-reaction="${escapeHTML(reaction)}"
+                                    >
+                                        ${escapeHTML(reaction)}
+                                    </button>
+                                `;
+
+                            }
+
+                            return `
+                                <button
+                                    class="reaction"
+                                    data-id="${escapeHTML(id)}"
+                                    data-reaction="${escapeHTML(
+                                        reaction.reaction || ""
+                                    )}"
+                                >
+                                    ${escapeHTML(
+                                        reaction.reaction || ""
+                                    )}
+                                    ${
+                                        reaction.count
+                                        ? ` ${reaction.count}`
+                                        : ""
+                                    }
+                                </button>
+                            `;
+
+                        }
+                    )
+                    .join("")}
+
+            </div>
+        `
+        : "";
+
+    const deleteButton =
+        mine && id
+        ? `
+            <button
+                class="action-btn delete-btn delete-action"
+                data-id="${escapeHTML(id)}"
+            >
+                🗑️ Hapus
+            </button>
         `
         : "";
 
     return `
         <div
-            class="message ${
-                mine ? "mine" : ""
-            }"
+            class="message ${mine ? "mine" : ""}"
+            data-message-id="${escapeHTML(id)}"
         >
 
             <div
                 class="message-avatar"
-                data-profile="${escapeHTML(
-                    username
-                )}"
+                data-profile="${escapeHTML(username)}"
                 title="Lihat profile"
             >
                 ${avatarHTML}
@@ -1423,9 +1985,7 @@ function renderMessage(chat){
 
                     <span
                         class="message-name"
-                        data-profile="${escapeHTML(
-                            username
-                        )}"
+                        data-profile="${escapeHTML(username)}"
                     >
                         ${escapeHTML(username)}
                     </span>
@@ -1438,13 +1998,16 @@ function renderMessage(chat){
 
                     <span class="message-time">
                         ${formatTime(
-                            chat.createdAt
+                            chat.createdAt ||
+                            chat.timestamp
                         )}
                     </span>
 
                 </div>
 
                 <div class="bubble">
+
+                    ${replyHTML}
 
                     ${imageHTML}
 
@@ -1456,10 +2019,447 @@ function renderMessage(chat){
 
                 </div>
 
+                ${reactionHTML}
+
+                <div class="message-actions">
+
+                    <button
+                        class="action-btn reply-action"
+                        data-id="${escapeHTML(id)}"
+                    >
+                        ↩️ Reply
+                    </button>
+
+                    ${deleteButton}
+
+                </div>
+
             </div>
 
         </div>
     `;
+
+}
+
+function setupLongPress(){
+
+    let timer = null;
+    let targetId = null;
+
+    document
+        .querySelectorAll(
+            ".message"
+        )
+        .forEach(
+            element => {
+
+                const start = event => {
+
+                    targetId =
+                        element.dataset.messageId;
+
+                    if(!targetId){
+                        return;
+                    }
+
+                    timer =
+                        setTimeout(
+                            () => {
+
+                                openReactionModal(
+                                    targetId
+                                );
+
+                            },
+                            650
+                        );
+
+                };
+
+                const cancel = () => {
+
+                    if(timer){
+
+                        clearTimeout(timer);
+
+                        timer = null;
+
+                    }
+
+                };
+
+                element.addEventListener(
+                    "touchstart",
+                    start,
+                    {
+                        passive:true
+                    }
+                );
+
+                element.addEventListener(
+                    "touchend",
+                    cancel
+                );
+
+                element.addEventListener(
+                    "touchmove",
+                    cancel
+                );
+
+                element.addEventListener(
+                    "mousedown",
+                    start
+                );
+
+                element.addEventListener(
+                    "mouseup",
+                    cancel
+                );
+
+                element.addEventListener(
+                    "mouseleave",
+                    cancel
+                );
+
+            }
+        );
+
+}
+
+function startReply(message){
+
+    replyMessage =
+        message;
+
+    const bar =
+        document.getElementById(
+            "replyBar"
+        );
+
+    const title =
+        document.getElementById(
+            "replyBarTitle"
+        );
+
+    const text =
+        document.getElementById(
+            "replyBarText"
+        );
+
+    title.textContent =
+        `Membalas ${message.username || "User"}`;
+
+    text.textContent =
+        message.message ||
+        "📷 Foto";
+
+    bar.classList.add(
+        "show"
+    );
+
+    document.getElementById(
+        "messageInput"
+    ).focus();
+
+}
+
+function cancelReply(){
+
+    replyMessage =
+        null;
+
+    document
+        .getElementById(
+            "replyBar"
+        )
+        .classList
+        .remove(
+            "show"
+        );
+
+}
+
+document.getElementById(
+    "cancelReply"
+).addEventListener(
+    "click",
+    cancelReply
+);
+
+function openReactionModal(id){
+
+    reactionMessageId =
+        id;
+
+    document
+        .getElementById(
+            "reactionModal"
+        )
+        .classList
+        .add(
+            "show"
+        );
+
+}
+
+document
+    .querySelectorAll(
+        ".reaction-option"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                async () => {
+
+                    const reaction =
+                        button.dataset.reaction;
+
+                    const id =
+                        reactionMessageId;
+
+                    document
+                        .getElementById(
+                            "reactionModal"
+                        )
+                        .classList
+                        .remove(
+                            "show"
+                        );
+
+                    reactionMessageId =
+                        null;
+
+                    if(id){
+                        await reactToMessage(
+                            id,
+                            reaction
+                        );
+                    }
+
+                }
+            );
+
+        }
+    );
+
+document.getElementById(
+    "reactionCancel"
+).addEventListener(
+    "click",
+    () => {
+
+        document
+            .getElementById(
+                "reactionModal"
+            )
+            .classList
+            .remove(
+                "show"
+            );
+
+        reactionMessageId =
+            null;
+
+    }
+);
+
+document.getElementById(
+    "reactionModal"
+).addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target.id ===
+            "reactionModal"
+        ){
+
+            event.currentTarget
+                .classList
+                .remove(
+                    "show"
+                );
+
+            reactionMessageId =
+                null;
+
+        }
+
+    }
+);
+
+async function reactToMessage(
+    id,
+    reaction
+){
+
+    if(!id){
+        return;
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                `${API_CHAT}/${encodeURIComponent(
+                    id
+                )}/reaction`,
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+                        "Accept":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify({
+                            username:
+                                currentUser.username,
+                            reaction
+                        })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            data.status === false
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal reaction"
+            );
+
+        }
+
+        lastHash =
+            "";
+
+        await loadMessages(
+            true
+        );
+
+    }catch(error){
+
+        console.error(
+            "[REACTION]",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Gagal memberikan reaction"
+        );
+
+    }
+
+}
+
+async function deleteMessage(id){
+
+    if(!id){
+        return;
+    }
+
+    const message =
+        messages.find(
+            item =>
+                String(
+                    getMessageId(item)
+                ) === String(id)
+        );
+
+    if(!message){
+        return;
+    }
+
+    const username =
+        String(
+            message.username ||
+            ""
+        ).toLowerCase();
+
+    const current =
+        String(
+            currentUser?.username ||
+            ""
+        ).toLowerCase();
+
+    if(username !== current){
+
+        alert(
+            "Kamu hanya bisa menghapus pesan sendiri."
+        );
+
+        return;
+
+    }
+
+    if(
+        !confirm(
+            "Hapus pesan ini?"
+        )
+    ){
+        return;
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                `${API_CHAT}/${encodeURIComponent(
+                    id
+                )}`,
+                {
+                    method:"DELETE",
+                    headers:{
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            data.status === false
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal menghapus pesan"
+            );
+
+        }
+
+        lastHash =
+            "";
+
+        await loadMessages(
+            true
+        );
+
+    }catch(error){
+
+        console.error(
+            "[DELETE CHAT]",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Gagal menghapus pesan"
+        );
+
+    }
 
 }
 
@@ -1512,9 +2512,7 @@ async function openProfile(
             .toUpperCase();
 
     info.innerHTML = `
-        <div
-            style="grid-column:1/-1;text-align:center;padding:30px;color:#9ca3af"
-        >
+        <div style="grid-column:1/-1;text-align:center;padding:30px;color:#9ca3af">
             Memuat profile...
         </div>
     `;
@@ -1558,10 +2556,6 @@ async function openProfile(
             user.username ||
             username;
 
-        const userAvatar =
-            user.avatar ||
-            "";
-
         name.textContent =
             realUsername;
 
@@ -1574,12 +2568,12 @@ async function openProfile(
             user.bio ||
             "Belum ada bio.";
 
-        if(userAvatar){
+        if(user.avatar){
 
             avatar.innerHTML = `
                 <img
                     src="${escapeHTML(
-                        userAvatar
+                        user.avatar
                     )}"
                     alt="Avatar"
                 >
@@ -1606,98 +2600,55 @@ async function openProfile(
         info.innerHTML = `
 
             <div class="profile-stat">
-
                 <strong>
                     ${messageCount}
                 </strong>
-
-                <span>
-                    Pesan
-                </span>
-
+                <span>Pesan</span>
             </div>
 
             <div class="profile-stat">
-
                 <strong>
                     ${escapeHTML(
-                        formatRole(
-                            user.role
-                        )
+                        formatRole(user.role)
                     )}
                 </strong>
-
-                <span>
-                    Role
-                </span>
-
+                <span>Role</span>
             </div>
 
             <div class="profile-stat">
-
                 <strong>
                     ${escapeHTML(
-                        formatRole(
-                            user.status
-                        )
+                        formatRole(user.status)
                     )}
                 </strong>
-
-                <span>
-                    Status
-                </span>
-
+                <span>Status</span>
             </div>
 
             <div class="profile-stat">
-
                 <strong>
                     ${escapeHTML(
-                        user.duration ||
-                        "-"
+                        user.duration || "-"
                     )}
                 </strong>
-
-                <span>
-                    Durasi
-                </span>
-
+                <span>Durasi</span>
             </div>
 
             <div class="profile-stat">
-
                 <strong>
-                    ${
+                    ${formatDate(
                         user.createdAt
-                        ? formatDate(
-                            user.createdAt
-                        )
-                        : "-"
-                    }
+                    )}
                 </strong>
-
-                <span>
-                    Bergabung
-                </span>
-
+                <span>Bergabung</span>
             </div>
 
             <div class="profile-stat">
-
                 <strong>
-                    ${
+                    ${formatDate(
                         user.expiresAt
-                        ? formatDate(
-                            user.expiresAt
-                        )
-                        : "-"
-                    }
+                    )}
                 </strong>
-
-                <span>
-                    Expired
-                </span>
-
+                <span>Expired</span>
             </div>
 
         `;
@@ -1716,9 +2667,7 @@ async function openProfile(
             "";
 
         info.innerHTML = `
-            <div
-                style="grid-column:1/-1;text-align:center;padding:30px;color:#dc2626"
-            >
+            <div style="grid-column:1/-1;text-align:center;padding:30px;color:#dc2626">
                 ${escapeHTML(
                     error.message ||
                     "Gagal mengambil profile"
@@ -1759,10 +2708,7 @@ document.getElementById(
             "profileModal"
         ){
 
-            document
-                .getElementById(
-                    "profileModal"
-                )
+            event.currentTarget
                 .classList
                 .remove(
                     "show"
@@ -1772,6 +2718,231 @@ document.getElementById(
 
     }
 );
+
+document.getElementById(
+    "fileBtn"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "imageInput"
+        ).click();
+
+    }
+);
+
+document.getElementById(
+    "imageInput"
+).addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+        if(!file){
+            return;
+        }
+
+        if(
+            file.size >
+            MAX_IMAGE_SIZE
+        ){
+
+            alert(
+                "Foto maksimal 5MB."
+            );
+
+            event.target.value =
+                "";
+
+            return;
+
+        }
+
+        const allowed = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/gif"
+        ];
+
+        if(
+            !allowed.includes(
+                file.type
+            )
+        ){
+
+            alert(
+                "Format harus JPG, PNG, WEBP atau GIF."
+            );
+
+            event.target.value =
+                "";
+
+            return;
+
+        }
+
+        selectedImage =
+            file;
+
+        const url =
+            URL.createObjectURL(
+                file
+            );
+
+        document.getElementById(
+            "previewImage"
+        ).src =
+            url;
+
+        document.getElementById(
+            "fileName"
+        ).textContent =
+            file.name;
+
+        document.getElementById(
+            "fileSize"
+        ).textContent =
+            formatFileSize(
+                file.size
+            );
+
+        document.getElementById(
+            "selectedFile"
+        ).classList.add(
+            "show"
+        );
+
+    }
+);
+
+function formatFileSize(size){
+
+    if(size < 1024){
+        return `${size} B`;
+    }
+
+    if(size < 1024 * 1024){
+        return `${(
+            size / 1024
+        ).toFixed(1)} KB`;
+    }
+
+    return `${(
+        size /
+        1024 /
+        1024
+    ).toFixed(1)} MB`;
+
+}
+
+function removeSelectedImage(){
+
+    selectedImage =
+        null;
+
+    const input =
+        document.getElementById(
+            "imageInput"
+        );
+
+    input.value =
+        "";
+
+    document.getElementById(
+        "selectedFile"
+    ).classList.remove(
+        "show"
+    );
+
+    document.getElementById(
+        "previewImage"
+    ).removeAttribute(
+        "src"
+    );
+
+}
+
+document.getElementById(
+    "removeFile"
+).addEventListener(
+    "click",
+    removeSelectedImage
+);
+
+function extractUploadUrl(data){
+
+    const candidates = [
+        data?.url,
+        data?.result?.url,
+        data?.result?.fileUrl,
+        data?.result?.urlFile,
+        data?.result?.link,
+        data?.data?.url,
+        data?.file?.url
+    ];
+
+    return candidates.find(
+        value =>
+            typeof value === "string" &&
+            /^https?:\/\//i.test(value)
+    ) || "";
+
+}
+
+async function uploadImage(file){
+
+    const form =
+        new FormData();
+
+    form.append(
+        "file",
+        file
+    );
+
+    const response =
+        await fetch(
+            API_UPLOAD,
+            {
+                method:"POST",
+                body:form
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if(
+        !response.ok ||
+        data.status === false
+    ){
+
+        throw new Error(
+            data.message ||
+            "Upload foto gagal"
+        );
+
+    }
+
+    const url =
+        extractUploadUrl(
+            data
+        );
+
+    if(!url){
+
+        throw new Error(
+            "URL foto tidak ditemukan dari response upload."
+        );
+
+    }
+
+    return url;
+
+}
 
 async function sendMessage(){
 
@@ -1788,7 +2959,10 @@ async function sendMessage(){
     const message =
         input.value.trim();
 
-    if(!message){
+    if(
+        !message &&
+        !selectedImage
+    ){
         return;
     }
 
@@ -1796,6 +2970,43 @@ async function sendMessage(){
         true;
 
     try{
+
+        let image = "";
+
+        if(selectedImage){
+
+            button.textContent =
+                "⏳";
+
+            image =
+                await uploadImage(
+                    selectedImage
+                );
+
+        }
+
+        button.textContent =
+            "➤";
+
+        const body = {
+
+            username:
+                currentUser.username,
+
+            message,
+
+            image
+
+        };
+
+        if(replyMessage){
+
+            body.replyTo =
+                getMessageId(
+                    replyMessage
+                );
+
+        }
 
         const response =
             await fetch(
@@ -1809,14 +3020,9 @@ async function sendMessage(){
                             "application/json"
                     },
                     body:
-                        JSON.stringify({
-
-                            username:
-                                currentUser.username,
-
-                            message
-
-                        })
+                        JSON.stringify(
+                            body
+                        )
                 }
             );
 
@@ -1838,6 +3044,10 @@ async function sendMessage(){
         input.value =
             "";
 
+        removeSelectedImage();
+
+        cancelReply();
+
         updateCount();
 
         lastHash =
@@ -1849,6 +3059,11 @@ async function sendMessage(){
 
     }catch(error){
 
+        console.error(
+            "[SEND CHAT]",
+            error
+        );
+
         alert(
             error.message ||
             "Gagal mengirim pesan"
@@ -1858,6 +3073,9 @@ async function sendMessage(){
 
         button.disabled =
             false;
+
+        button.textContent =
+            "➤";
 
         input.focus();
 
@@ -1893,7 +3111,8 @@ document.getElementById(
     event => {
 
         if(
-            event.key === "Enter"
+            event.key === "Enter" &&
+            !event.shiftKey
         ){
 
             event.preventDefault();
@@ -1975,9 +3194,7 @@ document.getElementById(
 
 async function init(){
 
-    if(
-        !setupUser()
-    ){
+    if(!setupUser()){
         return;
     }
 
