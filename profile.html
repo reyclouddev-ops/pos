@@ -32,6 +32,10 @@ button{
     display:flex;
 }
 
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar{
     width:250px;
     background:#fff;
@@ -165,6 +169,10 @@ button{
     margin-top:2px;
 }
 
+/* =========================
+   MAIN
+========================= */
+
 .main{
     width:calc(100% - 250px);
     margin-left:250px;
@@ -202,10 +210,14 @@ button{
 }
 
 .content{
-    max-width:900px;
+    max-width:950px;
     margin:auto;
     padding:30px;
 }
+
+/* =========================
+   PROFILE HEADER
+========================= */
 
 .profile-header{
     background:#111827;
@@ -226,12 +238,21 @@ button{
     margin-top:7px;
 }
 
-.profile-card{
+/* =========================
+   CARD
+========================= */
+
+.card{
     background:#fff;
     border:1px solid #e5e7eb;
     border-radius:16px;
     padding:25px;
+    margin-bottom:18px;
 }
+
+/* =========================
+   AVATAR
+========================= */
 
 .avatar-section{
     display:flex;
@@ -293,6 +314,10 @@ button{
     background:#f3f4f6;
 }
 
+/* =========================
+   FORM
+========================= */
+
 .form{
     padding-top:25px;
 }
@@ -321,19 +346,20 @@ button{
     color:#111827;
 }
 
-.form-group input:disabled{
-    color:#6b7280;
-    cursor:not-allowed;
-}
-
 .form-group textarea{
     resize:vertical;
     min-height:110px;
 }
 
-.form-group textarea:focus{
+.form-group textarea:focus,
+.form-group input:focus{
     background:#fff;
     border-color:#9ca3af;
+}
+
+.form-group input:disabled{
+    color:#6b7280;
+    cursor:not-allowed;
 }
 
 .counter{
@@ -364,6 +390,10 @@ button{
     cursor:not-allowed;
 }
 
+/* =========================
+   STATUS
+========================= */
+
 .status-message{
     display:none;
     padding:11px 13px;
@@ -385,6 +415,10 @@ button{
     background:#fef2f2;
     color:#b91c1c;
 }
+
+/* =========================
+   INFO GRID
+========================= */
 
 .info-grid{
     display:grid;
@@ -416,6 +450,282 @@ button{
     margin-top:3px;
 }
 
+/* =========================
+   CREATE POST
+========================= */
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.section-title h2{
+    font-size:17px;
+}
+
+.section-title p{
+    color:#9ca3af;
+    font-size:11px;
+    margin-top:3px;
+}
+
+.post-count{
+    background:#f3f4f6;
+    color:#374151;
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.post-textarea{
+    min-height:130px !important;
+}
+
+.image-upload-box{
+    border:1.5px dashed #d1d5db;
+    border-radius:12px;
+    min-height:150px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+    cursor:pointer;
+    background:#fafafa;
+    transition:.2s;
+    overflow:hidden;
+}
+
+.image-upload-box:hover{
+    background:#f3f4f6;
+    border-color:#9ca3af;
+}
+
+.image-upload-box .upload-icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.image-upload-box strong{
+    font-size:13px;
+}
+
+.image-upload-box span{
+    font-size:10px;
+    color:#9ca3af;
+    margin-top:5px;
+}
+
+.preview-wrap{
+    display:none;
+    position:relative;
+    margin-top:12px;
+    border-radius:12px;
+    overflow:hidden;
+    background:#f3f4f6;
+}
+
+.preview-wrap.show{
+    display:block;
+}
+
+.preview-wrap img{
+    display:block;
+    width:100%;
+    max-height:400px;
+    object-fit:contain;
+}
+
+.remove-preview{
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:50%;
+    background:rgba(17,24,39,.85);
+    color:#fff;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* =========================
+   POSTS
+========================= */
+
+.posts-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.empty-post{
+    text-align:center;
+    padding:45px 20px;
+    border:1px dashed #d1d5db;
+    border-radius:12px;
+    background:#fafafa;
+}
+
+.empty-post .icon{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.empty-post strong{
+    display:block;
+    font-size:14px;
+}
+
+.empty-post span{
+    display:block;
+    color:#9ca3af;
+    font-size:11px;
+    margin-top:5px;
+}
+
+.post-item{
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    overflow:hidden;
+    background:#fff;
+}
+
+.post-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:14px 15px;
+}
+
+.post-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+}
+
+.post-avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#111827;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.post-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.post-user-info{
+    min-width:0;
+}
+
+.post-user-info strong{
+    display:block;
+    font-size:13px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.post-user-info span{
+    display:block;
+    font-size:10px;
+    color:#9ca3af;
+    margin-top:2px;
+}
+
+.delete-post{
+    border:0;
+    background:#fef2f2;
+    color:#b91c1c;
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    cursor:pointer;
+    flex-shrink:0;
+}
+
+.delete-post:hover{
+    background:#fee2e2;
+}
+
+.post-caption{
+    padding:0 15px 14px;
+    font-size:13px;
+    line-height:1.6;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.post-image{
+    width:100%;
+    max-height:600px;
+    object-fit:contain;
+    display:block;
+    background:#f3f4f6;
+}
+
+.post-bottom{
+    padding:11px 15px;
+    border-top:1px solid #f0f1f3;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.post-date{
+    font-size:10px;
+    color:#9ca3af;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+    text-align:center;
+    padding:30px;
+    color:#9ca3af;
+    font-size:12px;
+}
+
+.spinner{
+    width:24px;
+    height:24px;
+    border:3px solid #e5e7eb;
+    border-top-color:#111827;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+    margin:0 auto 10px;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:800px){
 
     .sidebar{
@@ -444,6 +754,7 @@ button{
     .content{
         padding:15px;
     }
+
 }
 
 @media(max-width:500px){
@@ -461,7 +772,7 @@ button{
         font-size:21px;
     }
 
-    .profile-card{
+    .card{
         padding:18px;
         border-radius:13px;
     }
@@ -474,6 +785,11 @@ button{
     .info-grid{
         grid-template-columns:1fr;
     }
+
+    .section-title{
+        align-items:flex-start;
+    }
+
 }
 </style>
 </head>
@@ -482,14 +798,22 @@ button{
 
 <div class="app">
 
+<!-- =========================
+     SIDEBAR
+========================= -->
+
 <aside class="sidebar" id="sidebar">
 
     <div class="logo">
-        <div class="logo-icon">R</div>
+
+        <div class="logo-icon">
+            R
+        </div>
 
         <div class="logo-text">
             ReyCloud <span>Panel</span>
         </div>
+
     </div>
 
     <div class="nav-title">
@@ -506,6 +830,11 @@ button{
         <a href="profile.html" class="active">
             <span>◉</span>
             Profile
+        </a>
+
+        <a href="marketplace.html">
+            <span>▤</span>
+            Marketplace
         </a>
 
         <a href="cpanel.html">
@@ -569,6 +898,11 @@ button{
 
 </aside>
 
+
+<!-- =========================
+     MAIN
+========================= -->
+
 <main class="main">
 
 <header class="topbar">
@@ -591,7 +925,13 @@ button{
 
 </header>
 
+
 <section class="content">
+
+
+<!-- =========================
+     PROFILE HEADER
+========================= -->
 
 <div class="profile-header">
 
@@ -600,169 +940,363 @@ button{
     </h1>
 
     <p>
-        Kelola avatar dan informasi profile kamu.
+        Kelola profile, bio, dan postingan kamu dari satu tempat.
     </p>
 
 </div>
 
-<div class="profile-card">
 
-<div
-    class="status-message"
-    id="statusMessage"
-></div>
+<!-- =========================
+     PROFILE CARD
+========================= -->
 
-<div class="avatar-section">
+<div class="card">
 
     <div
-        class="profile-avatar"
-        id="profileAvatar"
-    >
-        U
+        class="status-message"
+        id="statusMessage"
+    ></div>
+
+
+    <!-- AVATAR -->
+
+    <div class="avatar-section">
+
+        <div
+            class="profile-avatar"
+            id="profileAvatar"
+        >
+            U
+        </div>
+
+        <div class="avatar-info">
+
+            <h2 id="profileName">
+                User
+            </h2>
+
+            <p id="profileRole">
+                member
+            </p>
+
+            <input
+                type="file"
+                id="avatarInput"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                hidden
+            >
+
+            <button
+                class="upload-btn"
+                id="uploadBtn"
+                type="button"
+            >
+                🖼️ Pilih Avatar
+            </button>
+
+        </div>
+
     </div>
 
-    <div class="avatar-info">
 
-        <h2 id="profileName">
-            User
-        </h2>
+    <!-- PROFILE FORM -->
 
-        <p id="profileRole">
-            member
-        </p>
+    <div class="form">
 
-        <input
-            type="file"
-            id="avatarInput"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            hidden
-        >
+        <div class="form-group">
+
+            <label>
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                disabled
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Bio
+            </label>
+
+            <textarea
+                id="bio"
+                maxlength="300"
+                placeholder="Tulis bio kamu..."
+            ></textarea>
+
+            <div class="counter">
+                <span id="bioCount">0</span>/300
+            </div>
+
+        </div>
+
 
         <button
-            class="upload-btn"
-            id="uploadBtn"
+            class="save-btn"
+            id="saveBtn"
             type="button"
         >
-            🖼️ Pilih Avatar
+            Simpan Profile
+        </button>
+
+
+        <!-- INFO -->
+
+        <div class="info-grid">
+
+            <div class="info-box">
+
+                <strong id="infoRole">
+                    -
+                </strong>
+
+                <span>
+                    Role
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong id="infoStatus">
+                    -
+                </strong>
+
+                <span>
+                    Status
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong id="infoCreated">
+                    -
+                </strong>
+
+                <span>
+                    Bergabung
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong id="infoDuration">
+                    -
+                </strong>
+
+                <span>
+                    Durasi
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong id="infoExpires">
+                    -
+                </strong>
+
+                <span>
+                    Berakhir
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong id="infoId">
+                    -
+                </strong>
+
+                <span>
+                    User ID
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CREATE POST
+========================= -->
+
+<div class="card">
+
+    <div class="section-title">
+
+        <div>
+
+            <h2>
+                📝 Buat Postingan
+            </h2>
+
+            <p>
+                Postingan yang dibuat di sini akan muncul di Marketplace.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form">
+
+
+        <!-- CAPTION -->
+
+        <div class="form-group">
+
+            <label>
+                Caption
+            </label>
+
+            <textarea
+                id="postCaption"
+                class="post-textarea"
+                maxlength="1000"
+                placeholder="Apa yang ingin kamu bagikan?"
+            ></textarea>
+
+            <div class="counter">
+                <span id="captionCount">0</span>/1000
+            </div>
+
+        </div>
+
+
+        <!-- IMAGE -->
+
+        <div class="form-group">
+
+            <label>
+                Gambar Postingan
+            </label>
+
+            <input
+                type="file"
+                id="postImageInput"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                hidden
+            >
+
+            <div
+                class="image-upload-box"
+                id="imageUploadBox"
+            >
+
+                <div class="upload-icon">
+                    🖼️
+                </div>
+
+                <strong>
+                    Pilih gambar
+                </strong>
+
+                <span>
+                    JPG, PNG, WEBP atau GIF • Maksimal 10MB
+                </span>
+
+            </div>
+
+
+            <!-- PREVIEW -->
+
+            <div
+                class="preview-wrap"
+                id="previewWrap"
+            >
+
+                <img
+                    id="previewImage"
+                    alt="Preview"
+                >
+
+                <button
+                    class="remove-preview"
+                    id="removePreview"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- POST BUTTON -->
+
+        <button
+            class="save-btn"
+            id="createPostBtn"
+            type="button"
+        >
+            🚀 Posting Sekarang
         </button>
 
     </div>
 
 </div>
 
-<div class="form">
 
-    <div class="form-group">
+<!-- =========================
+     MY POSTS
+========================= -->
 
-        <label>
-            Username
-        </label>
+<div class="card">
 
-        <input
-            type="text"
-            id="username"
-            disabled
+    <div class="section-title">
+
+        <div>
+
+            <h2>
+                📦 Postingan Saya
+            </h2>
+
+            <p>
+                Semua postingan yang pernah kamu buat.
+            </p>
+
+        </div>
+
+        <div
+            class="post-count"
+            id="postCount"
         >
-
-    </div>
-
-    <div class="form-group">
-
-        <label>
-            Bio
-        </label>
-
-        <textarea
-            id="bio"
-            maxlength="300"
-            placeholder="Tulis bio kamu..."
-        ></textarea>
-
-        <div class="counter">
-            <span id="bioCount">0</span>/300
+            0 Post
         </div>
 
     </div>
 
-    <button
-        class="save-btn"
-        id="saveBtn"
-        type="button"
+
+    <div
+        class="posts-list"
+        id="postsList"
     >
-        Simpan Profile
-    </button>
 
-    <div class="info-grid">
+        <div class="loading">
 
-        <div class="info-box">
+            <div class="spinner"></div>
 
-            <strong id="infoRole">
-                -
-            </strong>
-
-            <span>
-                Role
-            </span>
-
-        </div>
-
-        <div class="info-box">
-
-            <strong id="infoStatus">
-                -
-            </strong>
-
-            <span>
-                Status
-            </span>
-
-        </div>
-
-        <div class="info-box">
-
-            <strong id="infoCreated">
-                -
-            </strong>
-
-            <span>
-                Bergabung
-            </span>
-
-        </div>
-
-        <div class="info-box">
-
-            <strong id="infoDuration">
-                -
-            </strong>
-
-            <span>
-                Durasi
-            </span>
-
-        </div>
-
-        <div class="info-box">
-
-            <strong id="infoExpires">
-                -
-            </strong>
-
-            <span>
-                Berakhir
-            </span>
-
-        </div>
-
-        <div class="info-box">
-
-            <strong id="infoId">
-                -
-            </strong>
-
-            <span>
-                User ID
-            </span>
+            Mengambil postingan...
 
         </div>
 
@@ -770,7 +1304,6 @@ button{
 
 </div>
 
-</div>
 
 </section>
 
@@ -778,7 +1311,12 @@ button{
 
 </div>
 
+
 <script>
+
+/* =========================================================
+   CONFIG
+========================================================= */
 
 const API_BASE =
     localStorage.getItem("apiBase") ||
@@ -787,8 +1325,19 @@ const API_BASE =
 const MAX_AVATAR_SIZE =
     5 * 1024 * 1024;
 
+const MAX_POST_IMAGE_SIZE =
+    10 * 1024 * 1024;
+
 let currentUser = null;
+
 let selectedAvatar = null;
+
+let selectedPostImage = null;
+
+
+/* =========================================================
+   HELPER
+========================================================= */
 
 function escapeHTML(value){
 
@@ -801,14 +1350,17 @@ function escapeHTML(value){
 
 }
 
+
 function getUser(){
 
     const keys = [
+
         "user",
         "currentUser",
         "userData",
         "reycloud_user",
         "loginUser"
+
     ];
 
     for(const key of keys){
@@ -868,6 +1420,7 @@ function getUser(){
 
 }
 
+
 function saveLocalUser(user){
 
     const json =
@@ -900,6 +1453,7 @@ function saveLocalUser(user){
 
 }
 
+
 function formatRole(role){
 
     return String(
@@ -911,6 +1465,7 @@ function formatRole(role){
     );
 
 }
+
 
 function formatDate(value){
 
@@ -942,6 +1497,40 @@ function formatDate(value){
 
 }
 
+
+function formatDateTime(value){
+
+    if(!value){
+        return "-";
+    }
+
+    const date =
+        new Date(value);
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+
+        return "-";
+
+    }
+
+    return date.toLocaleString(
+        "id-ID",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
+}
+
+
 function showStatus(
     message,
     type
@@ -959,6 +1548,11 @@ function showStatus(
         `status-message show ${type}`;
 
 }
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
 
 function renderAvatar(
     avatar,
@@ -1009,6 +1603,11 @@ function renderAvatar(
         initial;
 
 }
+
+
+/* =========================================================
+   RENDER USER
+========================================================= */
 
 function renderUser(user){
 
@@ -1107,6 +1706,11 @@ function renderUser(user){
 
 }
 
+
+/* =========================================================
+   COUNTERS
+========================================================= */
+
 function updateBioCount(){
 
     const bio =
@@ -1120,6 +1724,26 @@ function updateBioCount(){
         bio.value.length;
 
 }
+
+
+function updateCaptionCount(){
+
+    const caption =
+        document.getElementById(
+            "postCaption"
+        );
+
+    document.getElementById(
+        "captionCount"
+    ).textContent =
+        caption.value.length;
+
+}
+
+
+/* =========================================================
+   LOAD PROFILE
+========================================================= */
 
 async function loadProfile(
     showError = true
@@ -1210,6 +1834,11 @@ async function loadProfile(
 
 }
 
+
+/* =========================================================
+   EXTRACT UPLOAD URL
+========================================================= */
+
 function extractUploadUrl(data){
 
     const candidates = [
@@ -1240,47 +1869,17 @@ function extractUploadUrl(data){
 
 }
 
-async function uploadAvatar(file){
+
+/* =========================================================
+   UPLOAD FILE
+========================================================= */
+
+async function uploadFile(file){
 
     if(!file){
 
         throw new Error(
-            "File avatar tidak ditemukan."
-        );
-
-    }
-
-    if(
-        file.size >
-        MAX_AVATAR_SIZE
-    ){
-
-        throw new Error(
-            "Ukuran avatar maksimal 5MB."
-        );
-
-    }
-
-    const allowedTypes = [
-
-        "image/jpeg",
-
-        "image/png",
-
-        "image/webp",
-
-        "image/gif"
-
-    ];
-
-    if(
-        !allowedTypes.includes(
-            file.type
-        )
-    ){
-
-        throw new Error(
-            "Format avatar harus JPG, PNG, WEBP, atau GIF."
+            "File tidak ditemukan."
         );
 
     }
@@ -1312,7 +1911,7 @@ async function uploadAvatar(file){
 
         throw new Error(
             data.message ||
-            "Upload avatar gagal."
+            "Upload file gagal."
         );
 
     }
@@ -1330,7 +1929,7 @@ async function uploadAvatar(file){
         );
 
         throw new Error(
-            "URL avatar tidak ditemukan dari response upload."
+            "URL file tidak ditemukan."
         );
 
     }
@@ -1338,6 +1937,11 @@ async function uploadAvatar(file){
     return url;
 
 }
+
+
+/* =========================================================
+   AVATAR SELECT
+========================================================= */
 
 document.getElementById(
     "avatarInput"
@@ -1368,11 +1972,8 @@ document.getElementById(
             const allowedTypes = [
 
                 "image/jpeg",
-
                 "image/png",
-
                 "image/webp",
-
                 "image/gif"
 
             ];
@@ -1425,6 +2026,7 @@ document.getElementById(
     }
 );
 
+
 document.getElementById(
     "uploadBtn"
 ).addEventListener(
@@ -1438,6 +2040,11 @@ document.getElementById(
     }
 );
 
+
+/* =========================================================
+   SAVE PROFILE
+========================================================= */
+
 document.getElementById(
     "bio"
 ).addEventListener(
@@ -1445,12 +2052,14 @@ document.getElementById(
     updateBioCount
 );
 
+
 document.getElementById(
     "saveBtn"
 ).addEventListener(
     "click",
     saveProfile
 );
+
 
 async function saveProfile(){
 
@@ -1508,7 +2117,7 @@ async function saveProfile(){
                 "Mengupload avatar...";
 
             avatar =
-                await uploadAvatar(
+                await uploadFile(
                     selectedAvatar
                 );
 
@@ -1606,6 +2215,747 @@ async function saveProfile(){
 
 }
 
+
+/* =========================================================
+   POST IMAGE PREVIEW
+========================================================= */
+
+document.getElementById(
+    "imageUploadBox"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "postImageInput"
+        ).click();
+
+    }
+);
+
+
+document.getElementById(
+    "postImageInput"
+).addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+        if(!file){
+            return;
+        }
+
+        try{
+
+            if(
+                file.size >
+                MAX_POST_IMAGE_SIZE
+            ){
+
+                throw new Error(
+                    "Ukuran gambar posting maksimal 10MB."
+                );
+
+            }
+
+            const allowedTypes = [
+
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+                "image/gif"
+
+            ];
+
+            if(
+                !allowedTypes.includes(
+                    file.type
+                )
+            ){
+
+                throw new Error(
+                    "Format gambar harus JPG, PNG, WEBP, atau GIF."
+                );
+
+            }
+
+            selectedPostImage =
+                file;
+
+            const url =
+                URL.createObjectURL(
+                    file
+                );
+
+            document.getElementById(
+                "previewImage"
+            ).src =
+                url;
+
+            document.getElementById(
+                "previewWrap"
+            ).classList.add(
+                "show"
+            );
+
+        }catch(error){
+
+            selectedPostImage =
+                null;
+
+            event.target.value =
+                "";
+
+            showStatus(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   REMOVE PREVIEW
+========================================================= */
+
+document.getElementById(
+    "removePreview"
+).addEventListener(
+    "click",
+    () => {
+
+        selectedPostImage =
+            null;
+
+        document.getElementById(
+            "postImageInput"
+        ).value =
+            "";
+
+        document.getElementById(
+            "previewImage"
+        ).src =
+            "";
+
+        document.getElementById(
+            "previewWrap"
+        ).classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   CREATE POST
+========================================================= */
+
+document.getElementById(
+    "postCaption"
+).addEventListener(
+    "input",
+    updateCaptionCount
+);
+
+
+document.getElementById(
+    "createPostBtn"
+).addEventListener(
+    "click",
+    createPost
+);
+
+
+async function createPost(){
+
+    if(
+        !currentUser ||
+        !currentUser.username
+    ){
+
+        showStatus(
+            "User belum ditemukan.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    const button =
+        document.getElementById(
+            "createPostBtn"
+        );
+
+    const caption =
+        document.getElementById(
+            "postCaption"
+        ).value
+        .trim();
+
+    if(
+        !caption &&
+        !selectedPostImage
+    ){
+
+        showStatus(
+            "Isi caption atau pilih gambar terlebih dahulu.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    button.disabled =
+        true;
+
+    try{
+
+        let imageUrl =
+            "";
+
+        /* UPLOAD IMAGE */
+
+        if(selectedPostImage){
+
+            button.textContent =
+                "Mengupload gambar...";
+
+            imageUrl =
+                await uploadFile(
+                    selectedPostImage
+                );
+
+        }
+
+        /* CREATE POST */
+
+        button.textContent =
+            "Membuat postingan...";
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/posts`,
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+                        "Accept":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify({
+
+                            username:
+                                currentUser.username,
+
+                            caption,
+
+                            image:
+                                imageUrl
+
+                        })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            data.status !== true
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal membuat postingan."
+            );
+
+        }
+
+        /* RESET FORM */
+
+        document.getElementById(
+            "postCaption"
+        ).value =
+            "";
+
+        document.getElementById(
+            "captionCount"
+        ).textContent =
+            "0";
+
+        selectedPostImage =
+            null;
+
+        document.getElementById(
+            "postImageInput"
+        ).value =
+            "";
+
+        document.getElementById(
+            "previewImage"
+        ).src =
+            "";
+
+        document.getElementById(
+            "previewWrap"
+        ).classList.remove(
+            "show"
+        );
+
+        showStatus(
+            "Postingan berhasil dibuat! 🚀",
+            "success"
+        );
+
+        await loadMyPosts();
+
+        document.getElementById(
+            "postsList"
+        ).scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    }catch(error){
+
+        console.error(
+            "[CREATE POST]",
+            error
+        );
+
+        showStatus(
+            error.message ||
+            "Gagal membuat postingan.",
+            "error"
+        );
+
+    }finally{
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "🚀 Posting Sekarang";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD MY POSTS
+========================================================= */
+
+async function loadMyPosts(){
+
+    if(
+        !currentUser ||
+        !currentUser.username
+    ){
+
+        return;
+
+    }
+
+    const list =
+        document.getElementById(
+            "postsList"
+        );
+
+    list.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            Mengambil postingan...
+        </div>
+    `;
+
+    try{
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/posts/user/${encodeURIComponent(
+                    currentUser.username
+                )}`,
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            data.status !== true
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal mengambil postingan."
+            );
+
+        }
+
+        let posts =
+            data.result ||
+            data.posts ||
+            data.data ||
+            [];
+
+        if(!Array.isArray(posts)){
+
+            posts = [];
+
+        }
+
+        renderPosts(
+            posts
+        );
+
+    }catch(error){
+
+        console.error(
+            "[MY POSTS]",
+            error
+        );
+
+        list.innerHTML = `
+            <div class="empty-post">
+                <div class="icon">⚠️</div>
+                <strong>Gagal mengambil postingan</strong>
+                <span>
+                    ${escapeHTML(
+                        error.message ||
+                        "Terjadi kesalahan."
+                    )}
+                </span>
+            </div>
+        `;
+
+        document.getElementById(
+            "postCount"
+        ).textContent =
+            "0 Post";
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER POSTS
+========================================================= */
+
+function renderPosts(posts){
+
+    const list =
+        document.getElementById(
+            "postsList"
+        );
+
+    document.getElementById(
+        "postCount"
+    ).textContent =
+        `${posts.length} Post`;
+
+    if(!posts.length){
+
+        list.innerHTML = `
+            <div class="empty-post">
+
+                <div class="icon">
+                    📝
+                </div>
+
+                <strong>
+                    Belum ada postingan
+                </strong>
+
+                <span>
+                    Buat postingan pertamamu di atas.
+                </span>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+    list.innerHTML =
+        posts.map(
+            post =>
+                createPostHTML(
+                    post
+                )
+        ).join("");
+
+}
+
+
+/* =========================================================
+   POST HTML
+========================================================= */
+
+function createPostHTML(post){
+
+    const username =
+        post.username ||
+        currentUser?.username ||
+        "User";
+
+    const avatar =
+        post.avatar ||
+        currentUser?.avatar ||
+        "";
+
+    const caption =
+        post.caption ||
+        post.text ||
+        "";
+
+    const image =
+        post.image ||
+        post.imageUrl ||
+        post.media ||
+        "";
+
+    const date =
+        post.createdAt ||
+        post.created_at ||
+        post.date;
+
+    const id =
+        post.id ||
+        post._id ||
+        post.postId;
+
+    const avatarHTML =
+        avatar
+        ? `
+            <img
+                src="${escapeHTML(avatar)}"
+                alt="Avatar"
+            >
+        `
+        : escapeHTML(
+            username
+                .charAt(0)
+                .toUpperCase()
+        );
+
+    const imageHTML =
+        image
+        ? `
+            <img
+                class="post-image"
+                src="${escapeHTML(image)}"
+                alt="Post image"
+                loading="lazy"
+            >
+        `
+        : "";
+
+    return `
+
+        <article
+            class="post-item"
+            data-post-id="${escapeHTML(id)}"
+        >
+
+            <div class="post-top">
+
+                <div class="post-user">
+
+                    <div class="post-avatar">
+
+                        ${avatarHTML}
+
+                    </div>
+
+                    <div class="post-user-info">
+
+                        <strong>
+                            ${escapeHTML(username)}
+                        </strong>
+
+                        <span>
+                            ${formatDateTime(date)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="delete-post"
+                    type="button"
+                    data-id="${escapeHTML(id)}"
+                    title="Hapus postingan"
+                >
+                    🗑️
+                </button>
+
+            </div>
+
+            ${
+                caption
+                ? `
+                    <div class="post-caption">
+                        ${escapeHTML(caption)}
+                    </div>
+                `
+                : ""
+            }
+
+            ${imageHTML}
+
+            <div class="post-bottom">
+
+                <span class="post-date">
+                    📦 Postingan saya
+                </span>
+
+                <span class="post-date">
+                    ReyCloud Marketplace
+                </span>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =========================================================
+   DELETE POST
+========================================================= */
+
+document.getElementById(
+    "postsList"
+).addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                ".delete-post"
+            );
+
+        if(!button){
+            return;
+        }
+
+        const id =
+            button.dataset.id;
+
+        if(!id){
+
+            showStatus(
+                "ID postingan tidak ditemukan.",
+                "error"
+            );
+
+            return;
+
+        }
+
+        deletePost(
+            id
+        );
+
+    }
+);
+
+
+async function deletePost(id){
+
+    const confirmed =
+        confirm(
+            "Yakin ingin menghapus postingan ini?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/posts/${encodeURIComponent(
+                    id
+                )}`,
+                {
+                    method:"DELETE",
+                    headers:{
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(
+            !response.ok ||
+            data.status !== true
+        ){
+
+            throw new Error(
+                data.message ||
+                "Gagal menghapus postingan."
+            );
+
+        }
+
+        showStatus(
+            "Postingan berhasil dihapus. 🗑️",
+            "success"
+        );
+
+        await loadMyPosts();
+
+    }catch(error){
+
+        console.error(
+            "[DELETE POST]",
+            error
+        );
+
+        showStatus(
+            error.message ||
+            "Gagal menghapus postingan.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
 document.getElementById(
     "refreshProfile"
 ).addEventListener(
@@ -1613,7 +2963,7 @@ document.getElementById(
     async () => {
 
         showStatus(
-            "Mengambil data profile terbaru...",
+            "Mengambil data terbaru...",
             "success"
         );
 
@@ -1624,15 +2974,17 @@ document.getElementById(
 
         if(success){
 
+            await loadMyPosts();
+
             showStatus(
-                "Data profile berhasil diperbarui dari server. ✅",
+                "Profile dan postingan berhasil diperbarui. ✅",
                 "success"
             );
 
         }else{
 
             showStatus(
-                "Gagal mengambil data terbaru dari server.",
+                "Gagal mengambil data terbaru.",
                 "error"
             );
 
@@ -1640,6 +2992,11 @@ document.getElementById(
 
     }
 );
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
 
 document.getElementById(
     "mobileMenu"
@@ -1658,6 +3015,7 @@ document.getElementById(
 
     }
 );
+
 
 document.querySelectorAll(
     ".nav a"
@@ -1684,6 +3042,11 @@ document.querySelectorAll(
     }
 );
 
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
 document.getElementById(
     "logout"
 ).addEventListener(
@@ -1709,9 +3072,29 @@ document.getElementById(
     }
 );
 
-loadProfile();
+
+/* =========================================================
+   INIT
+========================================================= */
+
+async function init(){
+
+    const success =
+        await loadProfile(
+            true
+        );
+
+    if(success){
+
+        await loadMyPosts();
+
+    }
+
+}
+
+init();
 
 </script>
 
 </body>
-</html>
+    </html>
