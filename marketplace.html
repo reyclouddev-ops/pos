@@ -1081,6 +1081,7 @@ a{
     <button
         class="icon-btn"
         id="refreshBtn"
+        type="button"
     >
         ↻
     </button>
@@ -1142,7 +1143,6 @@ a{
 
 <section class="feed">
 
-
 <div class="hero">
 
 <div class="hero-content">
@@ -1197,6 +1197,7 @@ a{
 
 <button
     class="create-btn"
+    type="button"
     onclick="location.href='profile.html'"
 >
     + Post
@@ -1212,6 +1213,7 @@ a{
 <button
     class="filter active"
     data-category="all"
+    type="button"
 >
     Semua
 </button>
@@ -1219,6 +1221,7 @@ a{
 <button
     class="filter"
     data-category="hosting"
+    type="button"
 >
     ☁ Hosting
 </button>
@@ -1226,6 +1229,7 @@ a{
 <button
     class="filter"
     data-category="project"
+    type="button"
 >
     ◇ Project
 </button>
@@ -1233,6 +1237,7 @@ a{
 <button
     class="filter"
     data-category="service"
+    type="button"
 >
     ⚡ Service
 </button>
@@ -1240,6 +1245,7 @@ a{
 <button
     class="filter"
     data-category="other"
+    type="button"
 >
     Lainnya
 </button>
@@ -1327,8 +1333,20 @@ const API_BASE =
     localStorage.getItem("apiBase") ||
     "https://api.legionteknologi.my.id";
 
-const POSTS_API =
-    `${API_BASE}/api/posts`;
+/*
+    PENTING:
+
+    postingan kamu disimpan di posting.json
+    dan backend menyediakan:
+
+    GET /api/posting
+
+    Jadi JANGAN menggunakan /api/posts
+    untuk mengambil feed marketplace.
+*/
+
+const POSTING_API =
+    `${API_BASE}/api/posting`;
 
 
 /* =====================================================
@@ -1373,16 +1391,16 @@ function getCurrentUser(){
         const raw =
             localStorage.getItem(key);
 
-        if(!raw) continue;
+        if(!raw){
+            continue;
+        }
 
         try{
 
             const data =
                 JSON.parse(raw);
 
-            if(
-                data?.result?.user
-            ){
+            if(data?.result?.user){
                 return data.result.user;
             }
 
@@ -1450,15 +1468,15 @@ function formatDate(value){
     }
 
     if(diff < 3600){
-        return `${Math.floor(diff/60)} menit lalu`;
+        return `${Math.floor(diff / 60)} menit lalu`;
     }
 
     if(diff < 86400){
-        return `${Math.floor(diff/3600)} jam lalu`;
+        return `${Math.floor(diff / 3600)} jam lalu`;
     }
 
     if(diff < 604800){
-        return `${Math.floor(diff/86400)} hari lalu`;
+        return `${Math.floor(diff / 86400)} hari lalu`;
     }
 
     return date.toLocaleDateString(
@@ -1485,7 +1503,7 @@ function avatarHTML(
                 src="${escapeHTML(avatar)}"
                 alt=""
                 loading="lazy"
-                onerror="this.remove()"
+                onerror="this.style.display='none'"
             >
         `;
 
@@ -1542,9 +1560,11 @@ function renderUser(){
             >
         `;
 
-        top.innerHTML = html;
+        top.innerHTML =
+            html;
 
-        create.innerHTML = html;
+        create.innerHTML =
+            html;
 
     }else{
 
@@ -1553,8 +1573,11 @@ function renderUser(){
                 .charAt(0)
                 .toUpperCase();
 
-        top.textContent = letter;
-        create.textContent = letter;
+        top.textContent =
+            letter;
+
+        create.textContent =
+            letter;
 
     }
 
@@ -1562,22 +1585,85 @@ function renderUser(){
 
 
 /* =====================================================
-   NORMALIZE
+   NORMALIZE POSTING.JSON
 ===================================================== */
 
+/*
+    Struktur posting.json dari backend kamu:
+
+    {
+        id,
+        username,
+        foto,
+        comen: [],
+        like: [],
+        createdAt
+    }
+
+    Backend /api/posting juga menjalankan
+    enrichPosting(post), sehingga properti
+    tambahan dari enrichPosting tetap diterima.
+*/
+
 function normalizePost(post){
+
+    if(!post || typeof post !== "object"){
+        return null;
+    }
+
+    const likesArray =
+        Array.isArray(post.like)
+            ? post.like
+            : [];
+
+    const commentsArray =
+        Array.isArray(post.comen)
+            ? post.comen
+            : [];
 
     const user =
         post.user ||
         post.author ||
         {};
 
+    let likes =
+        likesArray.length;
+
+    /*
+        Kalau enrichPosting/backend mengirim
+        angka likes, tetap dukung.
+    */
+
+    if(
+        !likes &&
+        typeof post.likes === "number"
+    ){
+
+        likes =
+            post.likes;
+
+    }
+
+    let comments =
+        commentsArray.length;
+
+    if(
+        !comments &&
+        typeof post.comments === "number"
+    ){
+
+        comments =
+            post.comments;
+
+    }
+
     return {
 
         id:
             post.id ||
             post._id ||
-            post.postId,
+            post.postId ||
+            "",
 
         username:
             post.username ||
@@ -1602,32 +1688,35 @@ function normalizePost(post){
             post.text ||
             "",
 
+        /*
+            posting.json menggunakan "foto".
+        */
+
         image:
+            post.foto ||
+            post.photo ||
             post.image ||
             post.imageUrl ||
             post.media ||
-            post.photo ||
             "",
 
         category:
             String(
                 post.category ||
                 "other"
-            ).toLowerCase(),
+            )
+            .trim()
+            .toLowerCase(),
 
-        likes:
-            Number(
-                post.likes ??
-                post.likeCount ??
-                0
-            ),
+        likes,
 
-        comments:
-            Number(
-                post.comments ??
-                post.commentCount ??
-                0
-            ),
+        comments,
+
+        likeUsers:
+            likesArray,
+
+        commentData:
+            commentsArray,
 
         liked:
             Boolean(
@@ -1647,7 +1736,7 @@ function normalizePost(post){
 
 
 /* =====================================================
-   LOAD POSTS
+   LOAD POSTING
 ===================================================== */
 
 async function loadPosts(){
@@ -1659,8 +1748,11 @@ async function loadPosts(){
 
     container.innerHTML = `
         <div class="loading">
+
             <div class="skeleton skeleton-user"></div>
+
             <div class="skeleton skeleton-image"></div>
+
         </div>
     `;
 
@@ -1668,10 +1760,12 @@ async function loadPosts(){
 
         const response =
             await fetch(
-                POSTS_API,
+                POSTING_API,
                 {
                     method:"GET",
+
                     cache:"no-store",
+
                     headers:{
                         "Accept":
                             "application/json"
@@ -1679,8 +1773,20 @@ async function loadPosts(){
                 }
             );
 
-        const data =
-            await response.json();
+        let data;
+
+        try{
+
+            data =
+                await response.json();
+
+        }catch{
+
+            throw new Error(
+                "Server tidak mengembalikan JSON"
+            );
+
+        }
 
         if(
             !response.ok ||
@@ -1689,24 +1795,35 @@ async function loadPosts(){
 
             throw new Error(
                 data.message ||
-                "Gagal mengambil postingan"
+                `Gagal mengambil postingan (${response.status})`
             );
 
         }
 
-        let posts =
-            data.result ??
-            data.posts ??
-            data.data ??
-            [];
+        /*
+            Endpoint kamu:
 
-        if(
-            !Array.isArray(posts) &&
-            Array.isArray(posts.posts)
-        ){
+            {
+                status:true,
+                total,
+                page,
+                limit,
+                totalPages,
+                hasNextPage,
+                hasPreviousPage,
+                result:[]
+            }
+        */
+
+        let posts =
+            data.result;
+
+        if(!Array.isArray(posts)){
 
             posts =
-                posts.posts;
+                data.posts ||
+                data.data ||
+                [];
 
         }
 
@@ -1715,7 +1832,9 @@ async function loadPosts(){
         }
 
         allPosts =
-            posts.map(normalizePost);
+            posts
+                .map(normalizePost)
+                .filter(Boolean);
 
         updateStats();
 
@@ -1723,11 +1842,18 @@ async function loadPosts(){
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "[MARKETPLACE LOAD]",
+            error
+        );
 
         container.innerHTML = `
+
             <div class="empty">
-                <div class="empty-icon">⚠️</div>
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
 
                 <h3>
                     Gagal memuat postingan
@@ -1735,10 +1861,30 @@ async function loadPosts(){
 
                 <p>
                     ${escapeHTML(
-                        error.message
+                        error.message ||
+                        "Terjadi kesalahan"
                     )}
                 </p>
+
+                <button
+                    type="button"
+                    onclick="loadPosts()"
+                    style="
+                        margin-top:15px;
+                        padding:9px 15px;
+                        border:0;
+                        border-radius:8px;
+                        background:#111;
+                        color:#fff;
+                        font-weight:700;
+                        font-size:11px;
+                    "
+                >
+                    Coba Lagi
+                </button>
+
             </div>
+
         `;
 
     }
@@ -1775,10 +1921,15 @@ function getFilteredPosts(){
             posts.filter(post => {
 
                 return [
+
                     post.username,
+
                     post.caption,
+
                     post.category,
+
                     post.role
+
                 ]
                 .join(" ")
                 .toLowerCase()
@@ -1794,7 +1945,7 @@ function getFilteredPosts(){
 
 
 /* =====================================================
-   RENDER
+   RENDER POSTS
 ===================================================== */
 
 function renderPosts(){
@@ -1810,6 +1961,7 @@ function renderPosts(){
     if(!posts.length){
 
         container.innerHTML = `
+
             <div class="empty">
 
                 <div class="empty-icon">
@@ -1825,6 +1977,7 @@ function renderPosts(){
                 </p>
 
             </div>
+
         `;
 
         return;
@@ -1849,6 +2002,7 @@ function renderPost(post){
         [
             "developer",
             "admin",
+            "owner",
             "tangan-kanan"
         ].includes(
             String(post.role)
@@ -1858,18 +2012,32 @@ function renderPost(post){
     const image =
         post.image
         ? `
+
             <div class="post-image">
+
                 <img
                     src="${escapeHTML(post.image)}"
-                    alt=""
+                    alt="Postingan"
                     loading="lazy"
                     onerror="
-                        this.parentElement.remove()
+                        this.parentElement.style.display='none'
                     "
                 >
+
             </div>
+
         `
         : "";
+
+    const likesText =
+        post.likes > 0
+        ? `${post.likes} suka`
+        : "Belum ada suka";
+
+    const commentsText =
+        post.comments > 0
+        ? `${post.comments} komentar`
+        : "Belum ada komentar";
 
     return `
 
@@ -1880,49 +2048,59 @@ function renderPost(post){
 
 <div class="post-header">
 
-<div class="avatar">
-    ${avatarHTML(
-        post.avatar,
-        post.username
-    )}
-</div>
+    <div class="avatar">
 
-<div class="user">
+        ${avatarHTML(
+            post.avatar,
+            post.username
+        )}
 
-<div class="username">
+    </div>
 
-    ${escapeHTML(post.username)}
 
-    ${
-        verified
-        ? `<span class="verified">✓</span>`
-        : ""
-    }
+    <div class="user">
 
-</div>
+        <div class="username">
 
-<div class="meta">
+            ${escapeHTML(
+                post.username
+            )}
 
-    ${escapeHTML(post.role)}
+            ${
+                verified
+                ? `<span class="verified">✓</span>`
+                : ""
+            }
 
-    ·
+        </div>
 
-    ${escapeHTML(
-        formatDate(
-            post.createdAt
-        )
-    )}
 
-</div>
+        <div class="meta">
 
-</div>
+            ${escapeHTML(
+                post.role
+            )}
 
-<button
-    class="more"
-    onclick="showPostMenu('${escapeHTML(post.id)}')"
->
-    •••
-</button>
+            ·
+
+            ${escapeHTML(
+                formatDate(
+                    post.createdAt
+                )
+            )}
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="more"
+        type="button"
+        onclick="showPostMenu('${escapeHTML(post.id)}')"
+    >
+        •••
+    </button>
 
 </div>
 
@@ -1932,20 +2110,33 @@ function renderPost(post){
 ${
     post.caption
     ? `
+
         <div class="caption">
-            ${escapeHTML(post.caption)}
+
+            ${escapeHTML(
+                post.caption
+            )}
+
         </div>
+
     `
     : ""
 }
+
 
 ${
     post.category &&
     post.category !== "other"
     ? `
+
         <div class="category">
-            #${escapeHTML(post.category)}
+
+            #${escapeHTML(
+                post.category
+            )}
+
         </div>
+
     `
     : ""
 }
@@ -1958,21 +2149,13 @@ ${image}
 
 <div class="stats">
 
-<span>
-    ${
-        post.likes > 0
-        ? `${post.likes} suka`
-        : "Belum ada suka"
-    }
-</span>
+    <span>
+        ${escapeHTML(likesText)}
+    </span>
 
-<span>
-    ${
-        post.comments > 0
-        ? `${post.comments} komentar`
-        : "Belum ada komentar"
-    }
-</span>
+    <span>
+        ${escapeHTML(commentsText)}
+    </span>
 
 </div>
 
@@ -1981,24 +2164,36 @@ ${image}
 
 <button
     class="action ${post.liked ? "liked" : ""}"
+    type="button"
     onclick="likePost('${escapeHTML(post.id)}',this)"
 >
+
     ${post.liked ? "♥" : "♡"}
+
     ${post.liked ? "Disukai" : "Suka"}
+
 </button>
+
 
 <button
     class="action"
+    type="button"
     onclick="toggleComments('${escapeHTML(post.id)}')"
 >
+
     ♧ Komentar
+
 </button>
+
 
 <button
     class="action"
+    type="button"
     onclick="sharePost('${escapeHTML(post.id)}')"
 >
+
     ↗ Bagikan
+
 </button>
 
 </div>
@@ -2010,31 +2205,38 @@ ${image}
     style="display:none"
 >
 
-<div
-    class="comment-list"
-    id="comment-list-${escapeHTML(post.id)}"
->
-</div>
+    <div
+        class="comment-list"
+        id="comment-list-${escapeHTML(post.id)}"
+    >
+    </div>
 
-<form
-    class="comment-form"
-    onsubmit="submitComment(event,'${escapeHTML(post.id)}')"
->
 
-<input
-    id="comment-input-${escapeHTML(post.id)}"
-    type="text"
-    placeholder="Tulis komentar..."
-    maxlength="500"
-    autocomplete="off"
-    required
->
+    <form
+        class="comment-form"
+        onsubmit="
+            submitComment(
+                event,
+                '${escapeHTML(post.id)}'
+            )
+        "
+    >
 
-<button type="submit">
-    ↑
-</button>
+        <input
+            id="comment-input-${escapeHTML(post.id)}"
+            type="text"
+            placeholder="Tulis komentar..."
+            maxlength="1000"
+            autocomplete="off"
+            required
+        >
 
-</form>
+
+        <button type="submit">
+            ↑
+        </button>
+
+    </form>
 
 </div>
 
@@ -2048,6 +2250,20 @@ ${image}
 /* =====================================================
    LIKE
 ===================================================== */
+
+/*
+    Backend kamu:
+
+    POST /api/posts/:id/like
+
+    menggunakan requireUser.
+
+    Username user diambil dari req.marketUser,
+    bukan dari body userId.
+
+    Karena itu frontend hanya perlu
+    request POST ke endpoint tersebut.
+*/
 
 async function likePost(
     postId,
@@ -2073,36 +2289,35 @@ async function likePost(
 
     try{
 
-        const user =
-            getCurrentUser();
-
         const response =
             await fetch(
-                `${POSTS_API}/${encodeURIComponent(postId)}/like`,
+                `${API_BASE}/api/posts/${encodeURIComponent(postId)}/like`,
                 {
                     method:"POST",
 
                     headers:{
-                        "Content-Type":
-                            "application/json",
                         "Accept":
                             "application/json"
                     },
 
-                    body:JSON.stringify({
-
-                        userId:
-                            user?.id ||
-                            user?._id ||
-                            user?.username ||
-                            null
-
-                    })
+                    credentials:"include"
                 }
             );
 
-        const data =
-            await response.json();
+        let data;
+
+        try{
+
+            data =
+                await response.json();
+
+        }catch{
+
+            throw new Error(
+                "Server tidak mengembalikan JSON"
+            );
+
+        }
 
         if(
             !response.ok ||
@@ -2116,18 +2331,6 @@ async function likePost(
 
         }
 
-        /*
-            Backend sebaiknya mengembalikan:
-
-            {
-                status:true,
-                result:{
-                    liked:true,
-                    likes:10
-                }
-            }
-        */
-
         const result =
             data.result ||
             data.data ||
@@ -2135,15 +2338,12 @@ async function likePost(
 
         post.liked =
             Boolean(
-                result.liked ??
-                result.isLiked ??
-                !post.liked
+                result.liked
             );
 
         post.likes =
             Number(
                 result.likes ??
-                result.likeCount ??
                 post.likes
             );
 
@@ -2235,6 +2435,7 @@ async function loadComments(
     }
 
     container.innerHTML = `
+
         <div
             style="
                 color:#65676b;
@@ -2243,25 +2444,46 @@ async function loadComments(
         >
             Memuat komentar...
         </div>
+
     `;
 
     try{
 
+        /*
+            Backend comment endpoint menggunakan
+            /api/posts/:id/comments
+        */
+
         const response =
             await fetch(
-                `${POSTS_API}/${encodeURIComponent(postId)}/comments`,
+                `${API_BASE}/api/posts/${encodeURIComponent(postId)}/comments`,
                 {
                     method:"GET",
                     cache:"no-store",
+
                     headers:{
                         "Accept":
                             "application/json"
-                    }
+                    },
+
+                    credentials:"include"
                 }
             );
 
-        const data =
-            await response.json();
+        let data;
+
+        try{
+
+            data =
+                await response.json();
+
+        }catch{
+
+            throw new Error(
+                "Server tidak mengembalikan JSON"
+            );
+
+        }
 
         if(
             !response.ok ||
@@ -2276,9 +2498,9 @@ async function loadComments(
         }
 
         let comments =
-            data.result ??
-            data.comments ??
-            data.data ??
+            data.result ||
+            data.comments ||
+            data.data ||
             [];
 
         if(
@@ -2295,9 +2517,22 @@ async function loadComments(
             comments = [];
         }
 
+        const post =
+            allPosts.find(
+                p =>
+                    String(p.id) ===
+                    String(postId)
+            );
+
+        if(post){
+            post.comments =
+                comments.length;
+        }
+
         if(!comments.length){
 
             container.innerHTML = `
+
                 <div
                     style="
                         color:#65676b;
@@ -2308,7 +2543,10 @@ async function loadComments(
                 >
                     Belum ada komentar.
                 </div>
+
             `;
+
+            updateStats();
 
             return;
 
@@ -2319,6 +2557,8 @@ async function loadComments(
                 .map(renderComment)
                 .join("");
 
+        updateStats();
+
     }catch(error){
 
         console.error(
@@ -2327,6 +2567,7 @@ async function loadComments(
         );
 
         container.innerHTML = `
+
             <div
                 style="
                     color:#d00;
@@ -2337,6 +2578,7 @@ async function loadComments(
                     error.message
                 )}
             </div>
+
         `;
 
     }
@@ -2373,30 +2615,58 @@ function renderComment(
         comment.content ||
         "";
 
+    const role =
+        comment.role ||
+        user.role ||
+        "";
+
     return `
 
 <div class="comment">
 
-<div class="comment-avatar">
+    <div class="comment-avatar">
 
-    ${avatarHTML(
-        avatar,
-        username
-    )}
+        ${avatarHTML(
+            avatar,
+            username
+        )}
 
-</div>
+    </div>
 
-<div class="comment-body">
 
-<div class="comment-name">
-    ${escapeHTML(username)}
-</div>
+    <div class="comment-body">
 
-<div class="comment-text">
-    ${escapeHTML(text)}
-</div>
+        <div class="comment-name">
 
-</div>
+            ${escapeHTML(
+                username
+            )}
+
+            ${
+                [
+                    "admin",
+                    "developer",
+                    "owner",
+                    "tangan-kanan"
+                ].includes(
+                    String(role).toLowerCase()
+                )
+                ? `<span style="color:#1877f2">✓</span>`
+                : ""
+            }
+
+        </div>
+
+
+        <div class="comment-text">
+
+            ${escapeHTML(
+                text
+            )}
+
+        </div>
+
+    </div>
 
 </div>
 
@@ -2408,6 +2678,17 @@ function renderComment(
 /* =====================================================
    SUBMIT COMMENT
 ===================================================== */
+
+/*
+    Backend:
+
+    POST /api/posts/:id/comments
+
+    requireUser mengambil username/avatar/role
+    dari req.marketUser.
+
+    Jadi tidak perlu mengirim username manual.
+*/
 
 async function submitComment(
     event,
@@ -2441,48 +2722,45 @@ async function submitComment(
 
     try{
 
-        const user =
-            getCurrentUser();
-
         const response =
             await fetch(
-                `${POSTS_API}/${encodeURIComponent(postId)}/comments`,
+                `${API_BASE}/api/posts/${encodeURIComponent(postId)}/comments`,
                 {
                     method:"POST",
 
                     headers:{
                         "Content-Type":
                             "application/json",
+
                         "Accept":
                             "application/json"
                     },
 
+                    credentials:"include",
+
                     body:JSON.stringify({
 
-                        text,
-
-                        userId:
-                            user?.id ||
-                            user?._id ||
-                            user?.username ||
-                            null,
-
-                        username:
-                            user?.username ||
-                            user?.name ||
-                            "User",
-
-                        avatar:
-                            user?.avatar ||
-                            user?.profilePicture ||
-                            ""
+                        text
 
                     })
+
                 }
             );
 
-        const data =
-            await response.json();
+        let data;
+
+        try{
+
+            data =
+                await response.json();
+
+        }catch{
+
+            throw new Error(
+                "Server tidak mengembalikan JSON"
+            );
+
+        }
 
         if(
             !response.ok ||
@@ -2498,50 +2776,9 @@ async function submitComment(
 
         input.value = "";
 
-        const post =
-            allPosts.find(
-                p =>
-                    String(p.id) ===
-                    String(postId)
-            );
-
-        if(post){
-
-            post.comments++;
-
-        }
-
         await loadComments(
             postId
         );
-
-        updateStats();
-
-        /*
-            Update angka komentar
-            tanpa reload seluruh page.
-        */
-
-        const article =
-            document.getElementById(
-                `post-${postId}`
-            );
-
-        if(article){
-
-            const stat =
-                article.querySelector(
-                    ".stats span:last-child"
-                );
-
-            if(stat){
-
-                stat.textContent =
-                    `${post.comments} komentar`;
-
-            }
-
-        }
 
         showToast(
             "Komentar berhasil dikirim"
@@ -2659,7 +2896,11 @@ function updateStats(){
                 .map(
                     p => p.category
                 )
-                .filter(Boolean)
+                .filter(
+                    category =>
+                        category &&
+                        category !== "other"
+                )
         );
 
     document.getElementById(
@@ -2681,8 +2922,7 @@ document
     event => {
 
         searchQuery =
-            event.target.value
-                .trim();
+            event.target.value.trim();
 
         renderPosts();
 
@@ -2744,15 +2984,35 @@ document
 
         button.disabled = true;
 
-        await loadPosts();
+        try{
 
-        button.disabled = false;
+            await loadPosts();
 
-        showToast(
-            "Marketplace diperbarui"
-        );
+            showToast(
+                "Marketplace diperbarui"
+            );
+
+        }finally{
+
+            button.disabled = false;
+
+        }
 
     }
+);
+
+
+/* =====================================================
+   AUTO REFRESH
+===================================================== */
+
+setInterval(
+    () => {
+
+        loadPosts();
+
+    },
+    60000
 );
 
 
