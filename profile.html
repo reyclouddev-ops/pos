@@ -23,6 +23,10 @@ button,input,textarea{
     font-family:inherit;
 }
 
+button{
+    -webkit-tap-highlight-color:transparent;
+}
+
 .app{
     min-height:100vh;
     display:flex;
@@ -94,6 +98,7 @@ button,input,textarea{
     gap:11px;
     font-size:14px;
     font-weight:600;
+    transition:.2s;
 }
 
 .nav a:hover{
@@ -132,6 +137,7 @@ button,input,textarea{
     justify-content:center;
     font-weight:800;
     overflow:hidden;
+    flex-shrink:0;
 }
 
 .avatar-mini img{
@@ -191,6 +197,8 @@ button,input,textarea{
     width:35px;
     height:35px;
     border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
 }
 
 .content{
@@ -209,6 +217,7 @@ button,input,textarea{
 
 .profile-header h1{
     font-size:25px;
+    letter-spacing:-.5px;
 }
 
 .profile-header p{
@@ -253,8 +262,13 @@ button,input,textarea{
     object-fit:cover;
 }
 
+.avatar-info{
+    min-width:0;
+}
+
 .avatar-info h2{
     font-size:18px;
+    word-break:break-word;
 }
 
 .avatar-info p{
@@ -307,19 +321,19 @@ button,input,textarea{
     color:#111827;
 }
 
-.form-group input:focus,
-.form-group textarea:focus{
-    background:#fff;
-    border-color:#9ca3af;
-}
-
 .form-group input:disabled{
-    color:#9ca3af;
+    color:#6b7280;
+    cursor:not-allowed;
 }
 
 .form-group textarea{
     resize:vertical;
     min-height:110px;
+}
+
+.form-group textarea:focus{
+    background:#fff;
+    border-color:#9ca3af;
 }
 
 .counter{
@@ -339,6 +353,10 @@ button,input,textarea{
     cursor:pointer;
     font-size:13px;
     font-weight:750;
+}
+
+.save-btn:hover{
+    opacity:.92;
 }
 
 .save-btn:disabled{
@@ -380,11 +398,15 @@ button,input,textarea{
     border:1px solid #f0f1f3;
     border-radius:10px;
     padding:12px;
+    min-width:0;
 }
 
 .info-box strong{
     display:block;
     font-size:13px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
 .info-box span{
@@ -399,6 +421,7 @@ button,input,textarea{
     .sidebar{
         transform:translateX(-100%);
         transition:.25s;
+        box-shadow:10px 0 30px rgba(0,0,0,.08);
     }
 
     .sidebar.open{
@@ -429,8 +452,18 @@ button,input,textarea{
         padding:10px;
     }
 
+    .profile-header{
+        padding:21px;
+        border-radius:13px;
+    }
+
+    .profile-header h1{
+        font-size:21px;
+    }
+
     .profile-card{
         padding:18px;
+        border-radius:13px;
     }
 
     .avatar-section{
@@ -453,6 +486,7 @@ button,input,textarea{
 
     <div class="logo">
         <div class="logo-icon">R</div>
+
         <div class="logo-text">
             ReyCloud <span>Panel</span>
         </div>
@@ -489,11 +523,6 @@ button,input,textarea{
             Public Chat
         </a>
 
-        <a href="privatechat.html">
-            <span>✉</span>
-            Private Chat
-        </a>
-
     </nav>
 
     <div class="nav-title">
@@ -501,6 +530,11 @@ button,input,textarea{
     </div>
 
     <nav class="nav">
+
+        <a href="javascript:void(0)" id="refreshProfile">
+            <span>↻</span>
+            Refresh Data
+        </a>
 
         <a href="javascript:void(0)" id="logout">
             <span>↪</span>
@@ -518,6 +552,7 @@ button,input,textarea{
             </div>
 
             <div class="user-info">
+
                 <strong id="miniUsername">
                     User
                 </strong>
@@ -525,6 +560,7 @@ button,input,textarea{
                 <span id="miniRole">
                     member
                 </span>
+
             </div>
 
         </div>
@@ -542,6 +578,7 @@ button,input,textarea{
         <button
             class="mobile-menu"
             id="mobileMenu"
+            type="button"
         >
             ☰
         </button>
@@ -658,39 +695,75 @@ button,input,textarea{
     <div class="info-grid">
 
         <div class="info-box">
+
             <strong id="infoRole">
                 -
             </strong>
+
             <span>
                 Role
             </span>
+
         </div>
 
         <div class="info-box">
+
             <strong id="infoStatus">
                 -
             </strong>
+
             <span>
                 Status
             </span>
+
         </div>
 
         <div class="info-box">
+
             <strong id="infoCreated">
                 -
             </strong>
+
             <span>
                 Bergabung
             </span>
+
         </div>
 
         <div class="info-box">
+
             <strong id="infoDuration">
                 -
             </strong>
+
             <span>
                 Durasi
             </span>
+
+        </div>
+
+        <div class="info-box">
+
+            <strong id="infoExpires">
+                -
+            </strong>
+
+            <span>
+                Berakhir
+            </span>
+
+        </div>
+
+        <div class="info-box">
+
+            <strong id="infoId">
+                -
+            </strong>
+
+            <span>
+                User ID
+            </span>
+
         </div>
 
     </div>
@@ -711,11 +784,11 @@ const API_BASE =
     localStorage.getItem("apiBase") ||
     "https://api.legionteknologi.my.id";
 
-let currentUser = null;
-let selectedAvatar = null;
-
 const MAX_AVATAR_SIZE =
     5 * 1024 * 1024;
+
+let currentUser = null;
+let selectedAvatar = null;
 
 function escapeHTML(value){
 
@@ -725,6 +798,7 @@ function escapeHTML(value){
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
+
 }
 
 function getUser(){
@@ -756,29 +830,42 @@ function getUser(){
                 data.result &&
                 data.result.user
             ){
+
                 return data.result.user;
+
             }
 
             if(
                 data &&
                 data.user
             ){
+
                 return data.user;
+
             }
 
             if(
                 data &&
                 data.username
             ){
+
                 return data;
+
             }
 
         }catch(error){
-            console.error(error);
+
+            console.error(
+                "[STORAGE]",
+                error
+            );
+
         }
+
     }
 
     return null;
+
 }
 
 function saveLocalUser(user){
@@ -810,6 +897,7 @@ function saveLocalUser(user){
         "loginUser",
         json
     );
+
 }
 
 function formatRole(role){
@@ -821,6 +909,7 @@ function formatRole(role){
         char =>
             char.toUpperCase()
     );
+
 }
 
 function formatDate(value){
@@ -837,7 +926,9 @@ function formatDate(value){
             date.getTime()
         )
     ){
+
         return "-";
+
     }
 
     return date.toLocaleDateString(
@@ -848,6 +939,7 @@ function formatDate(value){
             year:"numeric"
         }
     );
+
 }
 
 function showStatus(
@@ -868,83 +960,6 @@ function showStatus(
 
 }
 
-function renderUser(user){
-
-    currentUser =
-        user;
-
-    const username =
-        String(
-            user.username ||
-            "User"
-        );
-
-    const role =
-        String(
-            user.role ||
-            "member"
-        );
-
-    document.getElementById(
-        "profileName"
-    ).textContent =
-        username;
-
-    document.getElementById(
-        "profileRole"
-    ).textContent =
-        formatRole(role);
-
-    document.getElementById(
-        "username"
-    ).value =
-        username;
-
-    document.getElementById(
-        "bio"
-    ).value =
-        user.bio || "";
-
-    updateBioCount();
-
-    document.getElementById(
-        "infoRole"
-    ).textContent =
-        formatRole(role);
-
-    document.getElementById(
-        "infoStatus"
-    ).textContent =
-        user.status || "active";
-
-    document.getElementById(
-        "infoCreated"
-    ).textContent =
-        formatDate(
-            user.createdAt
-        );
-
-    document.getElementById(
-        "infoDuration"
-    ).textContent =
-        user.duration || "-";
-
-    document.getElementById(
-        "miniUsername"
-    ).textContent =
-        username;
-
-    document.getElementById(
-        "miniRole"
-    ).textContent =
-        formatRole(role);
-
-    renderAvatar(
-        user.avatar,
-        username
-    );
-}
-
 function renderAvatar(
     avatar,
     username
@@ -962,105 +977,134 @@ function renderAvatar(
 
     if(avatar){
 
-        const safe =
-            escapeHTML(avatar);
-
         profile.innerHTML = `
             <img
-                src="${safe}"
+                src="${escapeHTML(avatar)}"
                 alt="Avatar"
             >
         `;
 
         mini.innerHTML = `
             <img
-                src="${safe}"
+                src="${escapeHTML(avatar)}"
                 alt="Avatar"
             >
         `;
 
-    }else{
+        return;
 
-        const initial =
-            String(
-                username || "U"
-            )
-            .charAt(0)
-            .toUpperCase();
-
-        profile.textContent =
-            initial;
-
-        mini.textContent =
-            initial;
     }
+
+    const initial =
+        String(
+            username || "U"
+        )
+        .charAt(0)
+        .toUpperCase();
+
+    profile.textContent =
+        initial;
+
+    mini.textContent =
+        initial;
+
 }
 
-async function loadProfile(){
+function renderUser(user){
 
-    const localUser =
-        getUser();
-
-    if(!localUser?.username){
-
-        window.location.href =
-            "index.html";
-
+    if(!user){
         return;
     }
 
-    try{
+    currentUser =
+        user;
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/users/${encodeURIComponent(
-                    localUser.username
-                )}`,
-                {
-                    method:"GET",
-                    cache:"no-store"
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if(
-            !response.ok ||
-            !data.status ||
-            !data.result
-        ){
-
-            throw new Error(
-                data.message ||
-                "Gagal mengambil profile"
-            );
-        }
-
-        renderUser(
-            data.result
+    const username =
+        String(
+            user.username ||
+            "User"
         );
 
-        saveLocalUser(
-            data.result
+    document.getElementById(
+        "profileName"
+    ).textContent =
+        username;
+
+    document.getElementById(
+        "profileRole"
+    ).textContent =
+        formatRole(
+            user.role
         );
 
-    }catch(error){
+    document.getElementById(
+        "username"
+    ).value =
+        username;
 
-        console.error(
-            "[PROFILE GET]",
-            error
+    document.getElementById(
+        "bio"
+    ).value =
+        user.bio || "";
+
+    document.getElementById(
+        "infoRole"
+    ).textContent =
+        formatRole(
+            user.role
         );
 
-        renderUser(
-            localUser
+    document.getElementById(
+        "infoStatus"
+    ).textContent =
+        user.status ||
+        "active";
+
+    document.getElementById(
+        "infoCreated"
+    ).textContent =
+        formatDate(
+            user.createdAt
         );
 
-        showStatus(
-            "Gagal mengambil data terbaru dari server.",
-            "error"
+    document.getElementById(
+        "infoDuration"
+    ).textContent =
+        user.duration ||
+        "-";
+
+    document.getElementById(
+        "infoExpires"
+    ).textContent =
+        formatDate(
+            user.expiresAt
         );
-    }
+
+    document.getElementById(
+        "infoId"
+    ).textContent =
+        user.id ||
+        "-";
+
+    document.getElementById(
+        "miniUsername"
+    ).textContent =
+        username;
+
+    document.getElementById(
+        "miniRole"
+    ).textContent =
+        formatRole(
+            user.role
+        );
+
+    updateBioCount();
+
+    renderAvatar(
+        user.avatar,
+        username
+    );
+
 }
 
 function updateBioCount(){
@@ -1074,121 +1118,172 @@ function updateBioCount(){
         "bioCount"
     ).textContent =
         bio.value.length;
+
 }
 
-document.getElementById(
-    "bio"
-).addEventListener(
-    "input",
-    updateBioCount
-);
+async function loadProfile(
+    showError = true
+){
 
-document.getElementById(
-    "uploadBtn"
-).addEventListener(
-    "click",
-    () => {
+    const localUser =
+        getUser();
 
-        document.getElementById(
-            "avatarInput"
-        ).click();
+    if(
+        !localUser ||
+        !localUser.username
+    ){
+
+        window.location.href =
+            "index.html";
+
+        return false;
 
     }
-);
 
-document.getElementById(
-    "avatarInput"
-).addEventListener(
-    "change",
-    event => {
+    try{
 
-        const file =
-            event.target.files?.[0];
+        const response =
+            await fetch(
+                `${API_BASE}/api/users/${encodeURIComponent(
+                    localUser.username
+                )}`,
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
 
-        if(!file){
-            return;
-        }
+        const data =
+            await response.json();
 
         if(
-            file.size >
-            MAX_AVATAR_SIZE
+            !response.ok ||
+            data.status !== true ||
+            !data.result
         ){
 
+            throw new Error(
+                data.message ||
+                "Data user tidak ditemukan."
+            );
+
+        }
+
+        renderUser(
+            data.result
+        );
+
+        saveLocalUser(
+            data.result
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "[USER READ]",
+            error
+        );
+
+        renderUser(
+            localUser
+        );
+
+        if(showError){
+
             showStatus(
-                "Avatar maksimal 5MB.",
+                error.message ||
+                "Gagal mengambil profile dari server.",
                 "error"
             );
 
-            event.target.value =
-                "";
-
-            return;
         }
 
-        const allowed = [
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-            "image/gif"
-        ];
+        return false;
 
-        if(
-            !allowed.includes(
-                file.type
-            )
-        ){
-
-            showStatus(
-                "Format avatar harus JPG, PNG, WEBP, atau GIF.",
-                "error"
-            );
-
-            event.target.value =
-                "";
-
-            return;
-        }
-
-        selectedAvatar =
-            file;
-
-        const url =
-            URL.createObjectURL(
-                file
-            );
-
-        renderAvatar(
-            url,
-            currentUser?.username
-        );
-
-        showStatus(
-            "Avatar dipilih. Klik Simpan Profile untuk menyimpan.",
-            "success"
-        );
     }
-);
+
+}
 
 function extractUploadUrl(data){
 
     const candidates = [
+
         data?.url,
+
         data?.result?.url,
+
         data?.result?.fileUrl,
+
         data?.result?.urlFile,
+
         data?.result?.link,
+
         data?.data?.url,
+
         data?.file?.url
+
     ];
 
     return candidates.find(
         value =>
             typeof value === "string" &&
-            /^https?:\/\//i.test(value)
+            /^https?:\/\//i.test(
+                value
+            )
     ) || "";
+
 }
 
 async function uploadAvatar(file){
+
+    if(!file){
+
+        throw new Error(
+            "File avatar tidak ditemukan."
+        );
+
+    }
+
+    if(
+        file.size >
+        MAX_AVATAR_SIZE
+    ){
+
+        throw new Error(
+            "Ukuran avatar maksimal 5MB."
+        );
+
+    }
+
+    const allowedTypes = [
+
+        "image/jpeg",
+
+        "image/png",
+
+        "image/webp",
+
+        "image/gif"
+
+    ];
+
+    if(
+        !allowedTypes.includes(
+            file.type
+        )
+    ){
+
+        throw new Error(
+            "Format avatar harus JPG, PNG, WEBP, atau GIF."
+        );
+
+    }
 
     const form =
         new FormData();
@@ -1217,8 +1312,9 @@ async function uploadAvatar(file){
 
         throw new Error(
             data.message ||
-            "Upload avatar gagal"
+            "Upload avatar gagal."
         );
+
     }
 
     const url =
@@ -1228,13 +1324,126 @@ async function uploadAvatar(file){
 
     if(!url){
 
+        console.error(
+            "[UPLOAD RESPONSE]",
+            data
+        );
+
         throw new Error(
             "URL avatar tidak ditemukan dari response upload."
         );
+
     }
 
     return url;
+
 }
+
+document.getElementById(
+    "avatarInput"
+).addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files?.[0];
+
+        if(!file){
+            return;
+        }
+
+        try{
+
+            if(
+                file.size >
+                MAX_AVATAR_SIZE
+            ){
+
+                throw new Error(
+                    "Ukuran avatar maksimal 5MB."
+                );
+
+            }
+
+            const allowedTypes = [
+
+                "image/jpeg",
+
+                "image/png",
+
+                "image/webp",
+
+                "image/gif"
+
+            ];
+
+            if(
+                !allowedTypes.includes(
+                    file.type
+                )
+            ){
+
+                throw new Error(
+                    "Format avatar harus JPG, PNG, WEBP, atau GIF."
+                );
+
+            }
+
+            selectedAvatar =
+                file;
+
+            const previewURL =
+                URL.createObjectURL(
+                    file
+                );
+
+            renderAvatar(
+                previewURL,
+                currentUser?.username
+            );
+
+            showStatus(
+                "Avatar siap disimpan. Klik Simpan Profile.",
+                "success"
+            );
+
+        }catch(error){
+
+            selectedAvatar =
+                null;
+
+            event.target.value =
+                "";
+
+            showStatus(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+);
+
+document.getElementById(
+    "uploadBtn"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "avatarInput"
+        ).click();
+
+    }
+);
+
+document.getElementById(
+    "bio"
+).addEventListener(
+    "input",
+    updateBioCount
+);
 
 document.getElementById(
     "saveBtn"
@@ -1245,8 +1454,18 @@ document.getElementById(
 
 async function saveProfile(){
 
-    if(!currentUser?.username){
+    if(
+        !currentUser ||
+        !currentUser.username
+    ){
+
+        showStatus(
+            "User tidak ditemukan.",
+            "error"
+        );
+
         return;
+
     }
 
     const button =
@@ -1260,7 +1479,10 @@ async function saveProfile(){
         ).value
         .trim();
 
-    if(bio.length > 300){
+    if(
+        bio.length >
+        300
+    ){
 
         showStatus(
             "Bio maksimal 300 karakter.",
@@ -1268,13 +1490,11 @@ async function saveProfile(){
         );
 
         return;
+
     }
 
     button.disabled =
         true;
-
-    button.textContent =
-        "Menyimpan...";
 
     try{
 
@@ -1291,15 +1511,19 @@ async function saveProfile(){
                 await uploadAvatar(
                     selectedAvatar
                 );
+
         }
 
         button.textContent =
             "Menyimpan profile...";
 
+        const username =
+            currentUser.username;
+
         const response =
             await fetch(
                 `${API_BASE}/api/users/${encodeURIComponent(
-                    currentUser.username
+                    username
                 )}/profile`,
                 {
                     method:"PUT",
@@ -1322,14 +1546,15 @@ async function saveProfile(){
 
         if(
             !response.ok ||
-            !data.status ||
+            data.status !== true ||
             !data.result
         ){
 
             throw new Error(
                 data.message ||
-                "Gagal update profile"
+                "Gagal update profile."
             );
+
         }
 
         currentUser =
@@ -1376,8 +1601,45 @@ async function saveProfile(){
 
         button.textContent =
             "Simpan Profile";
+
     }
+
 }
+
+document.getElementById(
+    "refreshProfile"
+).addEventListener(
+    "click",
+    async () => {
+
+        showStatus(
+            "Mengambil data profile terbaru...",
+            "success"
+        );
+
+        const success =
+            await loadProfile(
+                false
+            );
+
+        if(success){
+
+            showStatus(
+                "Data profile berhasil diperbarui dari server. ✅",
+                "success"
+            );
+
+        }else{
+
+            showStatus(
+                "Gagal mengambil data terbaru dari server.",
+                "error"
+            );
+
+        }
+
+    }
+);
 
 document.getElementById(
     "mobileMenu"
@@ -1393,6 +1655,7 @@ document.getElementById(
             .toggle(
                 "open"
             );
+
     }
 );
 
@@ -1413,8 +1676,11 @@ document.querySelectorAll(
                     .remove(
                         "open"
                     );
+
             }
+
         );
+
     }
 );
 
@@ -1439,6 +1705,7 @@ document.getElementById(
 
         window.location.href =
             "index.html";
+
     }
 );
 
