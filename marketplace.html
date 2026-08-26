@@ -497,7 +497,7 @@ a{
 }
 
 /* =========================
-   POST
+   POSTING
 ========================= */
 
 .post{
@@ -1200,7 +1200,7 @@ a{
     type="button"
     onclick="location.href='profile.html'"
 >
-    + Post
+    + Posting
 </button>
 
 </div>
@@ -1253,7 +1253,7 @@ a{
 </div>
 
 
-<div id="postsContainer">
+<div id="postingContainer">
 
 <div class="loading">
 
@@ -1280,7 +1280,7 @@ a{
 
 <div class="stat">
     <span>Total Postingan</span>
-    <strong id="totalPosts">-</strong>
+    <strong id="totalPosting">-</strong>
 </div>
 
 <div class="stat">
@@ -1334,15 +1334,12 @@ const API_BASE =
     "https://api.legionteknologi.my.id";
 
 /*
-    PENTING:
+    SEMUA ENDPOINT MARKETPLACE MENGGUNAKAN:
 
-    postingan kamu disimpan di posting.json
-    dan backend menyediakan:
+    /api/posting
 
-    GET /api/posting
-
-    Jadi JANGAN menggunakan /api/posts
-    untuk mengambil feed marketplace.
+    Tidak ada lagi:
+    /api/posts
 */
 
 const POSTING_API =
@@ -1353,7 +1350,7 @@ const POSTING_API =
    STATE
 ===================================================== */
 
-let allPosts = [];
+let allPosting = [];
 
 let activeCategory = "all";
 
@@ -1424,7 +1421,9 @@ function getCurrentUser(){
 function showToast(message){
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
 
     toast.textContent =
         message;
@@ -1585,27 +1584,10 @@ function renderUser(){
 
 
 /* =====================================================
-   NORMALIZE POSTING.JSON
+   NORMALIZE POSTING
 ===================================================== */
 
-/*
-    Struktur posting.json dari backend kamu:
-
-    {
-        id,
-        username,
-        foto,
-        comen: [],
-        like: [],
-        createdAt
-    }
-
-    Backend /api/posting juga menjalankan
-    enrichPosting(post), sehingga properti
-    tambahan dari enrichPosting tetap diterima.
-*/
-
-function normalizePost(post){
+function normalizePosting(post){
 
     if(!post || typeof post !== "object"){
         return null;
@@ -1628,11 +1610,6 @@ function normalizePost(post){
 
     let likes =
         likesArray.length;
-
-    /*
-        Kalau enrichPosting/backend mengirim
-        angka likes, tetap dukung.
-    */
 
     if(
         !likes &&
@@ -1688,10 +1665,6 @@ function normalizePost(post){
             post.text ||
             "",
 
-        /*
-            posting.json menggunakan "foto".
-        */
-
         image:
             post.foto ||
             post.photo ||
@@ -1739,11 +1712,11 @@ function normalizePost(post){
    LOAD POSTING
 ===================================================== */
 
-async function loadPosts(){
+async function loadPosting(){
 
     const container =
         document.getElementById(
-            "postsContainer"
+            "postingContainer"
         );
 
     container.innerHTML = `
@@ -1800,45 +1773,30 @@ async function loadPosts(){
 
         }
 
-        /*
-            Endpoint kamu:
-
-            {
-                status:true,
-                total,
-                page,
-                limit,
-                totalPages,
-                hasNextPage,
-                hasPreviousPage,
-                result:[]
-            }
-        */
-
-        let posts =
+        let posting =
             data.result;
 
-        if(!Array.isArray(posts)){
+        if(!Array.isArray(posting)){
 
-            posts =
-                data.posts ||
+            posting =
+                data.posting ||
                 data.data ||
                 [];
 
         }
 
-        if(!Array.isArray(posts)){
-            posts = [];
+        if(!Array.isArray(posting)){
+            posting = [];
         }
 
-        allPosts =
-            posts
-                .map(normalizePost)
+        allPosting =
+            posting
+                .map(normalizePosting)
                 .filter(Boolean);
 
         updateStats();
 
-        renderPosts();
+        renderPosting();
 
     }catch(error){
 
@@ -1868,7 +1826,7 @@ async function loadPosts(){
 
                 <button
                     type="button"
-                    onclick="loadPosts()"
+                    onclick="loadPosting()"
                     style="
                         margin-top:15px;
                         padding:9px 15px;
@@ -1896,17 +1854,17 @@ async function loadPosts(){
    FILTER
 ===================================================== */
 
-function getFilteredPosts(){
+function getFilteredPosting(){
 
-    let posts =
-        [...allPosts];
+    let posting =
+        [...allPosting];
 
     if(activeCategory !== "all"){
 
-        posts =
-            posts.filter(
-                post =>
-                    post.category ===
+        posting =
+            posting.filter(
+                item =>
+                    item.category ===
                     activeCategory
             );
 
@@ -1917,18 +1875,18 @@ function getFilteredPosts(){
         const q =
             searchQuery.toLowerCase();
 
-        posts =
-            posts.filter(post => {
+        posting =
+            posting.filter(item => {
 
                 return [
 
-                    post.username,
+                    item.username,
 
-                    post.caption,
+                    item.caption,
 
-                    post.category,
+                    item.category,
 
-                    post.role
+                    item.role
 
                 ]
                 .join(" ")
@@ -1939,26 +1897,26 @@ function getFilteredPosts(){
 
     }
 
-    return posts;
+    return posting;
 
 }
 
 
 /* =====================================================
-   RENDER POSTS
+   RENDER POSTING
 ===================================================== */
 
-function renderPosts(){
+function renderPosting(){
 
     const container =
         document.getElementById(
-            "postsContainer"
+            "postingContainer"
         );
 
-    const posts =
-        getFilteredPosts();
+    const posting =
+        getFilteredPosting();
 
-    if(!posts.length){
+    if(!posting.length){
 
         container.innerHTML = `
 
@@ -1985,18 +1943,18 @@ function renderPosts(){
     }
 
     container.innerHTML =
-        posts
-            .map(renderPost)
+        posting
+            .map(renderPostingItem)
             .join("");
 
 }
 
 
 /* =====================================================
-   POST HTML
+   POSTING HTML
 ===================================================== */
 
-function renderPost(post){
+function renderPostingItem(posting){
 
     const verified =
         [
@@ -2005,18 +1963,18 @@ function renderPost(post){
             "owner",
             "tangan-kanan"
         ].includes(
-            String(post.role)
+            String(posting.role)
                 .toLowerCase()
         );
 
     const image =
-        post.image
+        posting.image
         ? `
 
             <div class="post-image">
 
                 <img
-                    src="${escapeHTML(post.image)}"
+                    src="${escapeHTML(posting.image)}"
                     alt="Postingan"
                     loading="lazy"
                     onerror="
@@ -2030,20 +1988,20 @@ function renderPost(post){
         : "";
 
     const likesText =
-        post.likes > 0
-        ? `${post.likes} suka`
+        posting.likes > 0
+        ? `${posting.likes} suka`
         : "Belum ada suka";
 
     const commentsText =
-        post.comments > 0
-        ? `${post.comments} komentar`
+        posting.comments > 0
+        ? `${posting.comments} komentar`
         : "Belum ada komentar";
 
     return `
 
 <article
     class="post"
-    id="post-${escapeHTML(post.id)}"
+    id="post-${escapeHTML(posting.id)}"
 >
 
 <div class="post-header">
@@ -2051,8 +2009,8 @@ function renderPost(post){
     <div class="avatar">
 
         ${avatarHTML(
-            post.avatar,
-            post.username
+            posting.avatar,
+            posting.username
         )}
 
     </div>
@@ -2063,7 +2021,7 @@ function renderPost(post){
         <div class="username">
 
             ${escapeHTML(
-                post.username
+                posting.username
             )}
 
             ${
@@ -2078,14 +2036,14 @@ function renderPost(post){
         <div class="meta">
 
             ${escapeHTML(
-                post.role
+                posting.role
             )}
 
             ·
 
             ${escapeHTML(
                 formatDate(
-                    post.createdAt
+                    posting.createdAt
                 )
             )}
 
@@ -2097,7 +2055,7 @@ function renderPost(post){
     <button
         class="more"
         type="button"
-        onclick="showPostMenu('${escapeHTML(post.id)}')"
+        onclick="showPostingMenu('${escapeHTML(posting.id)}')"
     >
         •••
     </button>
@@ -2108,13 +2066,13 @@ function renderPost(post){
 <div class="post-content">
 
 ${
-    post.caption
+    posting.caption
     ? `
 
         <div class="caption">
 
             ${escapeHTML(
-                post.caption
+                posting.caption
             )}
 
         </div>
@@ -2125,14 +2083,14 @@ ${
 
 
 ${
-    post.category &&
-    post.category !== "other"
+    posting.category &&
+    posting.category !== "other"
     ? `
 
         <div class="category">
 
             #${escapeHTML(
-                post.category
+                posting.category
             )}
 
         </div>
@@ -2163,14 +2121,14 @@ ${image}
 <div class="actions">
 
 <button
-    class="action ${post.liked ? "liked" : ""}"
+    class="action ${posting.liked ? "liked" : ""}"
     type="button"
-    onclick="likePost('${escapeHTML(post.id)}',this)"
+    onclick="likePosting('${escapeHTML(posting.id)}',this)"
 >
 
-    ${post.liked ? "♥" : "♡"}
+    ${posting.liked ? "♥" : "♡"}
 
-    ${post.liked ? "Disukai" : "Suka"}
+    ${posting.liked ? "Disukai" : "Suka"}
 
 </button>
 
@@ -2178,7 +2136,7 @@ ${image}
 <button
     class="action"
     type="button"
-    onclick="toggleComments('${escapeHTML(post.id)}')"
+    onclick="toggleComments('${escapeHTML(posting.id)}')"
 >
 
     ♧ Komentar
@@ -2189,7 +2147,7 @@ ${image}
 <button
     class="action"
     type="button"
-    onclick="sharePost('${escapeHTML(post.id)}')"
+    onclick="sharePosting('${escapeHTML(posting.id)}')"
 >
 
     ↗ Bagikan
@@ -2201,13 +2159,13 @@ ${image}
 
 <div
     class="comments"
-    id="comments-${escapeHTML(post.id)}"
+    id="comments-${escapeHTML(posting.id)}"
     style="display:none"
 >
 
     <div
         class="comment-list"
-        id="comment-list-${escapeHTML(post.id)}"
+        id="comment-list-${escapeHTML(posting.id)}"
     >
     </div>
 
@@ -2217,13 +2175,13 @@ ${image}
         onsubmit="
             submitComment(
                 event,
-                '${escapeHTML(post.id)}'
+                '${escapeHTML(posting.id)}'
             )
         "
     >
 
         <input
-            id="comment-input-${escapeHTML(post.id)}"
+            id="comment-input-${escapeHTML(posting.id)}"
             type="text"
             placeholder="Tulis komentar..."
             maxlength="1000"
@@ -2251,22 +2209,8 @@ ${image}
    LIKE
 ===================================================== */
 
-/*
-    Backend kamu:
-
-    POST /api/posts/:id/like
-
-    menggunakan requireUser.
-
-    Username user diambil dari req.marketUser,
-    bukan dari body userId.
-
-    Karena itu frontend hanya perlu
-    request POST ke endpoint tersebut.
-*/
-
-async function likePost(
-    postId,
+async function likePosting(
+    postingId,
     button
 ){
 
@@ -2274,14 +2218,14 @@ async function likePost(
         return;
     }
 
-    const post =
-        allPosts.find(
-            p =>
-                String(p.id) ===
-                String(postId)
+    const posting =
+        allPosting.find(
+            item =>
+                String(item.id) ===
+                String(postingId)
         );
 
-    if(!post){
+    if(!posting){
         return;
     }
 
@@ -2289,9 +2233,14 @@ async function likePost(
 
     try{
 
+        /*
+            Endpoint:
+            POST /api/posting/:id/like
+        */
+
         const response =
             await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(postId)}/like`,
+                `${POSTING_API}/${encodeURIComponent(postingId)}/like`,
                 {
                     method:"POST",
 
@@ -2336,18 +2285,18 @@ async function likePost(
             data.data ||
             data;
 
-        post.liked =
+        posting.liked =
             Boolean(
                 result.liked
             );
 
-        post.likes =
+        posting.likes =
             Number(
                 result.likes ??
-                post.likes
+                posting.likes
             );
 
-        renderPosts();
+        renderPosting();
 
     }catch(error){
 
@@ -2373,12 +2322,12 @@ async function likePost(
 ===================================================== */
 
 async function toggleComments(
-    postId
+    postingId
 ){
 
     const box =
         document.getElementById(
-            `comments-${postId}`
+            `comments-${postingId}`
         );
 
     if(!box){
@@ -2396,14 +2345,14 @@ async function toggleComments(
     if(opening){
 
         await loadComments(
-            postId
+            postingId
         );
 
         setTimeout(() => {
 
             const input =
                 document.getElementById(
-                    `comment-input-${postId}`
+                    `comment-input-${postingId}`
                 );
 
             if(input){
@@ -2422,12 +2371,12 @@ async function toggleComments(
 ===================================================== */
 
 async function loadComments(
-    postId
+    postingId
 ){
 
     const container =
         document.getElementById(
-            `comment-list-${postId}`
+            `comment-list-${postingId}`
         );
 
     if(!container){
@@ -2450,13 +2399,13 @@ async function loadComments(
     try{
 
         /*
-            Backend comment endpoint menggunakan
-            /api/posts/:id/comments
+            Endpoint:
+            GET /api/posting/:id/comments
         */
 
         const response =
             await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(postId)}/comments`,
+                `${POSTING_API}/${encodeURIComponent(postingId)}/comments`,
                 {
                     method:"GET",
                     cache:"no-store",
@@ -2517,16 +2466,18 @@ async function loadComments(
             comments = [];
         }
 
-        const post =
-            allPosts.find(
-                p =>
-                    String(p.id) ===
-                    String(postId)
+        const posting =
+            allPosting.find(
+                item =>
+                    String(item.id) ===
+                    String(postingId)
             );
 
-        if(post){
-            post.comments =
+        if(posting){
+
+            posting.comments =
                 comments.length;
+
         }
 
         if(!comments.length){
@@ -2679,27 +2630,16 @@ function renderComment(
    SUBMIT COMMENT
 ===================================================== */
 
-/*
-    Backend:
-
-    POST /api/posts/:id/comments
-
-    requireUser mengambil username/avatar/role
-    dari req.marketUser.
-
-    Jadi tidak perlu mengirim username manual.
-*/
-
 async function submitComment(
     event,
-    postId
+    postingId
 ){
 
     event.preventDefault();
 
     const input =
         document.getElementById(
-            `comment-input-${postId}`
+            `comment-input-${postingId}`
         );
 
     if(!input){
@@ -2722,9 +2662,14 @@ async function submitComment(
 
     try{
 
+        /*
+            Endpoint:
+            POST /api/posting/:id/comments
+        */
+
         const response =
             await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(postId)}/comments`,
+                `${POSTING_API}/${encodeURIComponent(postingId)}/comments`,
                 {
                     method:"POST",
 
@@ -2739,9 +2684,7 @@ async function submitComment(
                     credentials:"include",
 
                     body:JSON.stringify({
-
                         text
-
                     })
 
                 }
@@ -2777,7 +2720,7 @@ async function submitComment(
         input.value = "";
 
         await loadComments(
-            postId
+            postingId
         );
 
         showToast(
@@ -2809,12 +2752,12 @@ async function submitComment(
    SHARE
 ===================================================== */
 
-async function sharePost(
-    postId
+async function sharePosting(
+    postingId
 ){
 
     const url =
-        `${location.origin}${location.pathname}#post-${encodeURIComponent(postId)}`;
+        `${location.origin}${location.pathname}#post-${encodeURIComponent(postingId)}`;
 
     try{
 
@@ -2857,23 +2800,23 @@ async function sharePost(
    MENU
 ===================================================== */
 
-function showPostMenu(
-    postId
+function showPostingMenu(
+    postingId
 ){
 
-    const post =
-        allPosts.find(
-            p =>
-                String(p.id) ===
-                String(postId)
+    const posting =
+        allPosting.find(
+            item =>
+                String(item.id) ===
+                String(postingId)
         );
 
-    if(!post){
+    if(!posting){
         return;
     }
 
     showToast(
-        `Postingan @${post.username}`
+        `Postingan @${posting.username}`
     );
 
 }
@@ -2886,15 +2829,15 @@ function showPostMenu(
 function updateStats(){
 
     document.getElementById(
-        "totalPosts"
+        "totalPosting"
     ).textContent =
-        allPosts.length;
+        allPosting.length;
 
     const categories =
         new Set(
-            allPosts
+            allPosting
                 .map(
-                    p => p.category
+                    item => item.category
                 )
                 .filter(
                     category =>
@@ -2924,7 +2867,7 @@ document
         searchQuery =
             event.target.value.trim();
 
-        renderPosts();
+        renderPosting();
 
     }
 );
@@ -2959,7 +2902,7 @@ document
                 button.dataset.category ||
                 "all";
 
-            renderPosts();
+            renderPosting();
 
         }
     );
@@ -2986,7 +2929,7 @@ document
 
         try{
 
-            await loadPosts();
+            await loadPosting();
 
             showToast(
                 "Marketplace diperbarui"
@@ -3009,7 +2952,7 @@ document
 setInterval(
     () => {
 
-        loadPosts();
+        loadPosting();
 
     },
     60000
@@ -3022,9 +2965,9 @@ setInterval(
 
 renderUser();
 
-loadPosts();
+loadPosting();
 
 </script>
 
 </body>
-</html>
+    </html>
