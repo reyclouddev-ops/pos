@@ -32,9 +32,7 @@ button{
     display:flex;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* SIDEBAR */
 
 .sidebar{
     width:250px;
@@ -169,9 +167,7 @@ button{
     margin-top:2px;
 }
 
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 
 .main{
     width:calc(100% - 250px);
@@ -215,9 +211,7 @@ button{
     padding:30px;
 }
 
-/* =========================
-   PROFILE HEADER
-========================= */
+/* PROFILE */
 
 .profile-header{
     background:#111827;
@@ -238,10 +232,6 @@ button{
     margin-top:7px;
 }
 
-/* =========================
-   CARD
-========================= */
-
 .card{
     background:#fff;
     border:1px solid #e5e7eb;
@@ -249,10 +239,6 @@ button{
     padding:25px;
     margin-bottom:18px;
 }
-
-/* =========================
-   AVATAR
-========================= */
 
 .avatar-section{
     display:flex;
@@ -310,14 +296,6 @@ button{
     font-weight:700;
 }
 
-.upload-btn:hover{
-    background:#f3f4f6;
-}
-
-/* =========================
-   FORM
-========================= */
-
 .form{
     padding-top:25px;
 }
@@ -335,7 +313,8 @@ button{
 }
 
 .form-group input,
-.form-group textarea{
+.form-group textarea,
+.comment-input{
     width:100%;
     border:1px solid #e5e7eb;
     background:#fafafa;
@@ -352,14 +331,14 @@ button{
 }
 
 .form-group textarea:focus,
-.form-group input:focus{
+.form-group input:focus,
+.comment-input:focus{
     background:#fff;
     border-color:#9ca3af;
 }
 
 .form-group input:disabled{
     color:#6b7280;
-    cursor:not-allowed;
 }
 
 .counter{
@@ -381,18 +360,12 @@ button{
     font-weight:750;
 }
 
-.save-btn:hover{
-    opacity:.92;
-}
-
 .save-btn:disabled{
     opacity:.5;
     cursor:not-allowed;
 }
 
-/* =========================
-   STATUS
-========================= */
+/* STATUS */
 
 .status-message{
     display:none;
@@ -416,9 +389,7 @@ button{
     color:#b91c1c;
 }
 
-/* =========================
-   INFO GRID
-========================= */
+/* INFO */
 
 .info-grid{
     display:grid;
@@ -450,9 +421,7 @@ button{
     margin-top:3px;
 }
 
-/* =========================
-   CREATE POST
-========================= */
+/* SECTION */
 
 .section-title{
     display:flex;
@@ -481,6 +450,8 @@ button{
     font-weight:700;
 }
 
+/* IMAGE */
+
 .post-textarea{
     min-height:130px !important;
 }
@@ -497,13 +468,6 @@ button{
     padding:20px;
     cursor:pointer;
     background:#fafafa;
-    transition:.2s;
-    overflow:hidden;
-}
-
-.image-upload-box:hover{
-    background:#f3f4f6;
-    border-color:#9ca3af;
 }
 
 .image-upload-box .upload-icon{
@@ -555,9 +519,7 @@ button{
     font-size:16px;
 }
 
-/* =========================
-   POSTS
-========================= */
+/* POSTS */
 
 .posts-list{
     display:flex;
@@ -651,19 +613,23 @@ button{
     margin-top:2px;
 }
 
-.delete-post{
-    border:0;
-    background:#fef2f2;
-    color:#b91c1c;
-    width:34px;
-    height:34px;
-    border-radius:8px;
-    cursor:pointer;
-    flex-shrink:0;
+.post-menu{
+    display:flex;
+    gap:5px;
 }
 
-.delete-post:hover{
-    background:#fee2e2;
+.post-menu button{
+    border:0;
+    background:#f3f4f6;
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.post-menu .delete{
+    background:#fef2f2;
+    color:#b91c1c;
 }
 
 .post-caption{
@@ -682,22 +648,206 @@ button{
     background:#f3f4f6;
 }
 
-.post-bottom{
-    padding:11px 15px;
-    border-top:1px solid #f0f1f3;
+/* ACTIONS */
+
+.post-actions{
     display:flex;
     align-items:center;
+    border-top:1px solid #f0f1f3;
+    border-bottom:1px solid #f0f1f3;
+    padding:4px 8px;
+}
+
+.post-action{
+    flex:1;
+    border:0;
+    background:transparent;
+    padding:10px 8px;
+    border-radius:8px;
+    cursor:pointer;
+    color:#6b7280;
+    font-size:12px;
+    font-weight:700;
+}
+
+.post-action:hover{
+    background:#f3f4f6;
+}
+
+.post-action.liked{
+    color:#2563eb;
+}
+
+.post-meta{
+    display:flex;
     justify-content:space-between;
-}
-
-.post-date{
-    font-size:10px;
+    padding:9px 15px;
     color:#9ca3af;
+    font-size:10px;
 }
 
-/* =========================
-   LOADING
-========================= */
+/* COMMENTS */
+
+.comments{
+    background:#fafafa;
+    padding:12px 15px 15px;
+    border-top:1px solid #f0f1f3;
+}
+
+.comment-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.comment{
+    display:flex;
+    gap:8px;
+}
+
+.comment-avatar{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:#111827;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:800;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.comment-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.comment-body{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:8px 10px;
+    flex:1;
+    min-width:0;
+}
+
+.comment-head{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.comment-head strong{
+    font-size:11px;
+}
+
+.comment-head span{
+    color:#9ca3af;
+    font-size:9px;
+}
+
+.comment-text{
+    font-size:11px;
+    line-height:1.5;
+    margin-top:3px;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.comment-tools{
+    margin-top:5px;
+    display:flex;
+    gap:8px;
+}
+
+.comment-delete{
+    border:0;
+    background:transparent;
+    color:#b91c1c;
+    cursor:pointer;
+    font-size:9px;
+    padding:0;
+}
+
+.comment-form{
+    display:flex;
+    gap:7px;
+}
+
+.comment-input{
+    padding:9px 11px;
+    min-width:0;
+}
+
+.comment-send{
+    border:0;
+    background:#111827;
+    color:#fff;
+    border-radius:9px;
+    padding:0 13px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.comment-send:disabled{
+    opacity:.5;
+}
+
+.comment-loading{
+    text-align:center;
+    color:#9ca3af;
+    font-size:10px;
+    padding:8px;
+}
+
+/* EDIT */
+
+.edit-box{
+    padding:0 15px 14px;
+}
+
+.edit-box textarea{
+    width:100%;
+    min-height:100px;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:10px;
+    outline:none;
+    resize:vertical;
+    font-size:12px;
+}
+
+.edit-actions{
+    display:flex;
+    gap:7px;
+    margin-top:7px;
+}
+
+.edit-actions button{
+    border:0;
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:700;
+}
+
+.edit-save{
+    background:#111827;
+    color:#fff;
+}
+
+.edit-cancel{
+    background:#f3f4f6;
+    color:#374151;
+}
+
+/* LOADING */
 
 .loading{
     text-align:center;
@@ -722,9 +872,7 @@ button{
     }
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:800px){
 
@@ -754,7 +902,6 @@ button{
     .content{
         padding:15px;
     }
-
 }
 
 @media(max-width:500px){
@@ -790,6 +937,13 @@ button{
         align-items:flex-start;
     }
 
+    .comment-form{
+        flex-direction:column;
+    }
+
+    .comment-send{
+        height:38px;
+    }
 }
 </style>
 </head>
@@ -798,76 +952,55 @@ button{
 
 <div class="app">
 
-<!-- =========================
-     SIDEBAR
-========================= -->
-
 <aside class="sidebar" id="sidebar">
 
     <div class="logo">
-
-        <div class="logo-icon">
-            R
-        </div>
-
+        <div class="logo-icon">R</div>
         <div class="logo-text">
             ReyCloud <span>Panel</span>
         </div>
-
     </div>
 
-    <div class="nav-title">
-        Main
-    </div>
+    <div class="nav-title">Main</div>
 
     <nav class="nav">
 
         <a href="dashboard.html">
-            <span>⌂</span>
-            Dashboard
+            <span>⌂</span> Dashboard
         </a>
 
         <a href="profile.html" class="active">
-            <span>◉</span>
-            Profile
+            <span>◉</span> Profile
         </a>
 
         <a href="marketplace.html">
-            <span>▤</span>
-            Marketplace
+            <span>▤</span> Marketplace
         </a>
 
         <a href="cpanel.html">
-            <span>▣</span>
-            Create Panel
+            <span>▣</span> Create Panel
         </a>
 
         <a href="cadmin.html">
-            <span>♙</span>
-            Create Admin
+            <span>♙</span> Create Admin
         </a>
 
         <a href="chat.html">
-            <span>☁</span>
-            Public Chat
+            <span>☁</span> Public Chat
         </a>
 
     </nav>
 
-    <div class="nav-title">
-        Account
-    </div>
+    <div class="nav-title">Account</div>
 
     <nav class="nav">
 
         <a href="javascript:void(0)" id="refreshProfile">
-            <span>↻</span>
-            Refresh Data
+            <span>↻</span> Refresh Data
         </a>
 
         <a href="javascript:void(0)" id="logout">
-            <span>↪</span>
-            Logout
+            <span>↪</span> Logout
         </a>
 
     </nav>
@@ -881,15 +1014,8 @@ button{
             </div>
 
             <div class="user-info">
-
-                <strong id="miniUsername">
-                    User
-                </strong>
-
-                <span id="miniRole">
-                    member
-                </span>
-
+                <strong id="miniUsername">User</strong>
+                <span id="miniRole">member</span>
             </div>
 
         </div>
@@ -897,11 +1023,6 @@ button{
     </div>
 
 </aside>
-
-
-<!-- =========================
-     MAIN
-========================= -->
 
 <main class="main">
 
@@ -925,19 +1046,11 @@ button{
 
 </header>
 
-
 <section class="content">
-
-
-<!-- =========================
-     PROFILE HEADER
-========================= -->
 
 <div class="profile-header">
 
-    <h1>
-        👤 My Profile
-    </h1>
+    <h1>👤 My Profile</h1>
 
     <p>
         Kelola profile, bio, dan postingan kamu dari satu tempat.
@@ -945,20 +1058,12 @@ button{
 
 </div>
 
-
-<!-- =========================
-     PROFILE CARD
-========================= -->
-
 <div class="card">
 
     <div
         class="status-message"
         id="statusMessage"
     ></div>
-
-
-    <!-- AVATAR -->
 
     <div class="avatar-section">
 
@@ -998,16 +1103,11 @@ button{
 
     </div>
 
-
-    <!-- PROFILE FORM -->
-
     <div class="form">
 
         <div class="form-group">
 
-            <label>
-                Username
-            </label>
+            <label>Username</label>
 
             <input
                 type="text"
@@ -1017,12 +1117,9 @@ button{
 
         </div>
 
-
         <div class="form-group">
 
-            <label>
-                Bio
-            </label>
+            <label>Bio</label>
 
             <textarea
                 id="bio"
@@ -1036,7 +1133,6 @@ button{
 
         </div>
 
-
         <button
             class="save-btn"
             id="saveBtn"
@@ -1045,86 +1141,36 @@ button{
             Simpan Profile
         </button>
 
-
-        <!-- INFO -->
-
         <div class="info-grid">
 
             <div class="info-box">
-
-                <strong id="infoRole">
-                    -
-                </strong>
-
-                <span>
-                    Role
-                </span>
-
+                <strong id="infoRole">-</strong>
+                <span>Role</span>
             </div>
 
-
             <div class="info-box">
-
-                <strong id="infoStatus">
-                    -
-                </strong>
-
-                <span>
-                    Status
-                </span>
-
+                <strong id="infoStatus">-</strong>
+                <span>Status</span>
             </div>
 
-
             <div class="info-box">
-
-                <strong id="infoCreated">
-                    -
-                </strong>
-
-                <span>
-                    Bergabung
-                </span>
-
+                <strong id="infoCreated">-</strong>
+                <span>Bergabung</span>
             </div>
 
-
             <div class="info-box">
-
-                <strong id="infoDuration">
-                    -
-                </strong>
-
-                <span>
-                    Durasi
-                </span>
-
+                <strong id="infoDuration">-</strong>
+                <span>Durasi</span>
             </div>
 
-
             <div class="info-box">
-
-                <strong id="infoExpires">
-                    -
-                </strong>
-
-                <span>
-                    Berakhir
-                </span>
-
+                <strong id="infoExpires">-</strong>
+                <span>Berakhir</span>
             </div>
 
-
             <div class="info-box">
-
-                <strong id="infoId">
-                    -
-                </strong>
-
-                <span>
-                    User ID
-                </span>
-
+                <strong id="infoId">-</strong>
+                <span>User ID</span>
             </div>
 
         </div>
@@ -1133,40 +1179,25 @@ button{
 
 </div>
 
-
-<!-- =========================
-     CREATE POST
-========================= -->
-
 <div class="card">
 
     <div class="section-title">
 
         <div>
-
-            <h2>
-                📝 Buat Postingan
-            </h2>
+            <h2>📝 Buat Postingan</h2>
 
             <p>
                 Postingan yang dibuat di sini akan muncul di Marketplace.
             </p>
-
         </div>
 
     </div>
 
-
     <div class="form">
-
-
-        <!-- CAPTION -->
 
         <div class="form-group">
 
-            <label>
-                Caption
-            </label>
+            <label>Caption</label>
 
             <textarea
                 id="postCaption"
@@ -1181,14 +1212,9 @@ button{
 
         </div>
 
-
-        <!-- IMAGE -->
-
         <div class="form-group">
 
-            <label>
-                Gambar Postingan
-            </label>
+            <label>Gambar Postingan</label>
 
             <input
                 type="file"
@@ -1202,22 +1228,15 @@ button{
                 id="imageUploadBox"
             >
 
-                <div class="upload-icon">
-                    🖼️
-                </div>
+                <div class="upload-icon">🖼️</div>
 
-                <strong>
-                    Pilih gambar
-                </strong>
+                <strong>Pilih gambar</strong>
 
                 <span>
                     JPG, PNG, WEBP atau GIF • Maksimal 10MB
                 </span>
 
             </div>
-
-
-            <!-- PREVIEW -->
 
             <div
                 class="preview-wrap"
@@ -1241,9 +1260,6 @@ button{
 
         </div>
 
-
-        <!-- POST BUTTON -->
-
         <button
             class="save-btn"
             id="createPostBtn"
@@ -1256,20 +1272,13 @@ button{
 
 </div>
 
-
-<!-- =========================
-     MY POSTS
-========================= -->
-
 <div class="card">
 
     <div class="section-title">
 
         <div>
 
-            <h2>
-                📦 Postingan Saya
-            </h2>
+            <h2>📦 Postingan Saya</h2>
 
             <p>
                 Semua postingan yang pernah kamu buat.
@@ -1286,31 +1295,25 @@ button{
 
     </div>
 
-
     <div
         class="posts-list"
         id="postsList"
     >
 
         <div class="loading">
-
             <div class="spinner"></div>
-
             Mengambil postingan...
-
         </div>
 
     </div>
 
 </div>
 
-
 </section>
 
 </main>
 
 </div>
-
 
 <script>
 
@@ -1329,14 +1332,14 @@ const MAX_POST_IMAGE_SIZE =
     10 * 1024 * 1024;
 
 let currentUser = null;
-
 let selectedAvatar = null;
-
 let selectedPostImage = null;
+let openComments = new Set();
+let editingPostId = null;
 
 
 /* =========================================================
-   HELPER
+   HELPERS
 ========================================================= */
 
 function escapeHTML(value){
@@ -1354,13 +1357,11 @@ function escapeHTML(value){
 function getUser(){
 
     const keys = [
-
         "user",
         "currentUser",
         "userData",
         "reycloud_user",
         "loginUser"
-
     ];
 
     for(const key of keys){
@@ -1368,9 +1369,7 @@ function getUser(){
         const raw =
             localStorage.getItem(key);
 
-        if(!raw){
-            continue;
-        }
+        if(!raw) continue;
 
         try{
 
@@ -1378,31 +1377,17 @@ function getUser(){
                 JSON.parse(raw);
 
             if(
-                data &&
-                data.result &&
-                data.result.user
+                data?.result?.user
             ){
-
                 return data.result.user;
-
             }
 
-            if(
-                data &&
-                data.user
-            ){
-
+            if(data?.user){
                 return data.user;
-
             }
 
-            if(
-                data &&
-                data.username
-            ){
-
+            if(data?.username){
                 return data;
-
             }
 
         }catch(error){
@@ -1417,7 +1402,6 @@ function getUser(){
     }
 
     return null;
-
 }
 
 
@@ -1426,30 +1410,20 @@ function saveLocalUser(user){
     const json =
         JSON.stringify(user);
 
-    localStorage.setItem(
+    [
         "user",
-        json
-    );
-
-    localStorage.setItem(
         "userData",
-        json
-    );
-
-    localStorage.setItem(
         "currentUser",
-        json
-    );
-
-    localStorage.setItem(
         "reycloud_user",
-        json
-    );
+        "loginUser"
+    ].forEach(key => {
 
-    localStorage.setItem(
-        "loginUser",
-        json
-    );
+        localStorage.setItem(
+            key,
+            json
+        );
+
+    });
 
 }
 
@@ -1460,8 +1434,7 @@ function formatRole(role){
         role || "member"
     ).replace(
         /\b\w/g,
-        char =>
-            char.toUpperCase()
+        char => char.toUpperCase()
     );
 
 }
@@ -1469,21 +1442,13 @@ function formatRole(role){
 
 function formatDate(value){
 
-    if(!value){
-        return "-";
-    }
+    if(!value) return "-";
 
     const date =
         new Date(value);
 
-    if(
-        Number.isNaN(
-            date.getTime()
-        )
-    ){
-
+    if(Number.isNaN(date.getTime())){
         return "-";
-
     }
 
     return date.toLocaleDateString(
@@ -1500,21 +1465,13 @@ function formatDate(value){
 
 function formatDateTime(value){
 
-    if(!value){
-        return "-";
-    }
+    if(!value) return "-";
 
     const date =
         new Date(value);
 
-    if(
-        Number.isNaN(
-            date.getTime()
-        )
-    ){
-
+    if(Number.isNaN(date.getTime())){
         return "-";
-
     }
 
     return date.toLocaleString(
@@ -1531,10 +1488,7 @@ function formatDateTime(value){
 }
 
 
-function showStatus(
-    message,
-    type
-){
+function showStatus(message,type){
 
     const box =
         document.getElementById(
@@ -1547,6 +1501,140 @@ function showStatus(
     box.className =
         `status-message show ${type}`;
 
+    clearTimeout(
+        showStatus.timer
+    );
+
+    showStatus.timer =
+        setTimeout(() => {
+
+            box.classList.remove(
+                "show"
+            );
+
+        },4000);
+
+}
+
+
+/* =========================================================
+   API HELPER
+========================================================= */
+
+async function api(
+    url,
+    options = {}
+){
+
+    const response =
+        await fetch(
+            `${API_BASE}${url}`,
+            {
+                ...options,
+                headers:{
+                    "Accept":
+                        "application/json",
+                    ...(options.body &&
+                    !(options.body instanceof FormData)
+                        ? {
+                            "Content-Type":
+                                "application/json"
+                        }
+                        : {}),
+                    ...(options.headers || {})
+                }
+            }
+        );
+
+    let data = null;
+
+    try{
+        data =
+            await response.json();
+    }catch{
+        data = {};
+    }
+
+    if(!response.ok){
+
+        throw new Error(
+            data?.message ||
+            data?.error ||
+            `Request gagal (${response.status})`
+        );
+
+    }
+
+    if(
+        data &&
+        data.status === false
+    ){
+
+        throw new Error(
+            data.message ||
+            data.error ||
+            "Request ditolak server."
+        );
+
+    }
+
+    return data;
+
+}
+
+
+/* =========================================================
+   RESPONSE EXTRACTOR
+========================================================= */
+
+function extractArray(data){
+
+    if(Array.isArray(data)){
+        return data;
+    }
+
+    const candidates = [
+        data?.result,
+        data?.result?.posts,
+        data?.result?.comments,
+        data?.posts,
+        data?.comments,
+        data?.data,
+        data?.data?.posts,
+        data?.data?.comments
+    ];
+
+    for(const item of candidates){
+
+        if(Array.isArray(item)){
+            return item;
+        }
+
+    }
+
+    return [];
+}
+
+
+function extractObject(data){
+
+    if(
+        data?.result &&
+        typeof data.result === "object" &&
+        !Array.isArray(data.result)
+    ){
+        return data.result;
+    }
+
+    if(
+        data?.data &&
+        typeof data.data === "object" &&
+        !Array.isArray(data.data)
+    ){
+        return data.data;
+    }
+
+    return data;
 }
 
 
@@ -1586,13 +1674,10 @@ function renderAvatar(
         `;
 
         return;
-
     }
 
     const initial =
-        String(
-            username || "U"
-        )
+        String(username || "U")
         .charAt(0)
         .toUpperCase();
 
@@ -1611,17 +1696,14 @@ function renderAvatar(
 
 function renderUser(user){
 
-    if(!user){
-        return;
-    }
+    if(!user) return;
 
     currentUser =
         user;
 
     const username =
         String(
-            user.username ||
-            "User"
+            user.username || "User"
         );
 
     document.getElementById(
@@ -1632,9 +1714,7 @@ function renderUser(user){
     document.getElementById(
         "profileRole"
     ).textContent =
-        formatRole(
-            user.role
-        );
+        formatRole(user.role);
 
     document.getElementById(
         "username"
@@ -1649,41 +1729,32 @@ function renderUser(user){
     document.getElementById(
         "infoRole"
     ).textContent =
-        formatRole(
-            user.role
-        );
+        formatRole(user.role);
 
     document.getElementById(
         "infoStatus"
     ).textContent =
-        user.status ||
-        "active";
+        user.status || "active";
 
     document.getElementById(
         "infoCreated"
     ).textContent =
-        formatDate(
-            user.createdAt
-        );
+        formatDate(user.createdAt);
 
     document.getElementById(
         "infoDuration"
     ).textContent =
-        user.duration ||
-        "-";
+        user.duration || "-";
 
     document.getElementById(
         "infoExpires"
     ).textContent =
-        formatDate(
-            user.expiresAt
-        );
+        formatDate(user.expiresAt);
 
     document.getElementById(
         "infoId"
     ).textContent =
-        user.id ||
-        "-";
+        user.id || user._id || "-";
 
     document.getElementById(
         "miniUsername"
@@ -1693,9 +1764,7 @@ function renderUser(user){
     document.getElementById(
         "miniRole"
     ).textContent =
-        formatRole(
-            user.role
-        );
+        formatRole(user.role);
 
     updateBioCount();
 
@@ -1708,41 +1777,7 @@ function renderUser(user){
 
 
 /* =========================================================
-   COUNTERS
-========================================================= */
-
-function updateBioCount(){
-
-    const bio =
-        document.getElementById(
-            "bio"
-        );
-
-    document.getElementById(
-        "bioCount"
-    ).textContent =
-        bio.value.length;
-
-}
-
-
-function updateCaptionCount(){
-
-    const caption =
-        document.getElementById(
-            "postCaption"
-        );
-
-    document.getElementById(
-        "captionCount"
-    ).textContent =
-        caption.value.length;
-
-}
-
-
-/* =========================================================
-   LOAD PROFILE
+   PROFILE
 ========================================================= */
 
 async function loadProfile(
@@ -1761,49 +1796,33 @@ async function loadProfile(
             "index.html";
 
         return false;
-
     }
 
     try{
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/users/${encodeURIComponent(
+        const data =
+            await api(
+                `/api/users/${encodeURIComponent(
                     localUser.username
-                )}`,
-                {
-                    method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        "Accept":
-                            "application/json"
-                    }
-                }
+                )}`
             );
 
-        const data =
-            await response.json();
+        const user =
+            extractObject(data);
 
         if(
-            !response.ok ||
-            data.status !== true ||
-            !data.result
+            !user ||
+            !user.username
         ){
 
             throw new Error(
-                data.message ||
                 "Data user tidak ditemukan."
             );
 
         }
 
-        renderUser(
-            data.result
-        );
-
-        saveLocalUser(
-            data.result
-        );
+        renderUser(user);
+        saveLocalUser(user);
 
         return true;
 
@@ -1814,75 +1833,49 @@ async function loadProfile(
             error
         );
 
-        renderUser(
-            localUser
-        );
+        renderUser(localUser);
 
         if(showError){
 
             showStatus(
                 error.message ||
-                "Gagal mengambil profile dari server.",
+                "Gagal mengambil profile.",
                 "error"
             );
 
         }
 
         return false;
-
     }
 
 }
 
 
 /* =========================================================
-   EXTRACT UPLOAD URL
+   UPLOAD
 ========================================================= */
 
 function extractUploadUrl(data){
 
     const candidates = [
-
         data?.url,
-
         data?.result?.url,
-
         data?.result?.fileUrl,
-
         data?.result?.urlFile,
-
         data?.result?.link,
-
         data?.data?.url,
-
         data?.file?.url
-
     ];
 
     return candidates.find(
         value =>
             typeof value === "string" &&
-            /^https?:\/\//i.test(
-                value
-            )
+            /^https?:\/\//i.test(value)
     ) || "";
-
 }
 
 
-/* =========================================================
-   UPLOAD FILE
-========================================================= */
-
 async function uploadFile(file){
-
-    if(!file){
-
-        throw new Error(
-            "File tidak ditemukan."
-        );
-
-    }
 
     const form =
         new FormData();
@@ -1901,8 +1894,12 @@ async function uploadFile(file){
             }
         );
 
-    const data =
-        await response.json();
+    let data = {};
+
+    try{
+        data =
+            await response.json();
+    }catch{}
 
     if(
         !response.ok ||
@@ -1917,25 +1914,49 @@ async function uploadFile(file){
     }
 
     const url =
-        extractUploadUrl(
-            data
-        );
+        extractUploadUrl(data);
 
     if(!url){
 
-        console.error(
-            "[UPLOAD RESPONSE]",
-            data
-        );
-
         throw new Error(
-            "URL file tidak ditemukan."
+            "URL file tidak ditemukan dari response upload."
         );
 
     }
 
     return url;
+}
 
+
+/* =========================================================
+   COUNTERS
+========================================================= */
+
+function updateBioCount(){
+
+    const value =
+        document.getElementById(
+            "bio"
+        ).value;
+
+    document.getElementById(
+        "bioCount"
+    ).textContent =
+        value.length;
+}
+
+
+function updateCaptionCount(){
+
+    const value =
+        document.getElementById(
+            "postCaption"
+        ).value;
+
+    document.getElementById(
+        "captionCount"
+    ).textContent =
+        value.length;
 }
 
 
@@ -1952,76 +1973,51 @@ document.getElementById(
         const file =
             event.target.files?.[0];
 
-        if(!file){
-            return;
-        }
+        if(!file) return;
 
-        try{
+        const allowed = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/gif"
+        ];
 
-            if(
-                file.size >
-                MAX_AVATAR_SIZE
-            ){
+        if(file.size > MAX_AVATAR_SIZE){
 
-                throw new Error(
-                    "Ukuran avatar maksimal 5MB."
-                );
-
-            }
-
-            const allowedTypes = [
-
-                "image/jpeg",
-                "image/png",
-                "image/webp",
-                "image/gif"
-
-            ];
-
-            if(
-                !allowedTypes.includes(
-                    file.type
-                )
-            ){
-
-                throw new Error(
-                    "Format avatar harus JPG, PNG, WEBP, atau GIF."
-                );
-
-            }
-
-            selectedAvatar =
-                file;
-
-            const previewURL =
-                URL.createObjectURL(
-                    file
-                );
-
-            renderAvatar(
-                previewURL,
-                currentUser?.username
-            );
+            event.target.value = "";
 
             showStatus(
-                "Avatar siap disimpan. Klik Simpan Profile.",
-                "success"
-            );
-
-        }catch(error){
-
-            selectedAvatar =
-                null;
-
-            event.target.value =
-                "";
-
-            showStatus(
-                error.message,
+                "Ukuran avatar maksimal 5MB.",
                 "error"
             );
 
+            return;
         }
+
+        if(!allowed.includes(file.type)){
+
+            event.target.value = "";
+
+            showStatus(
+                "Format avatar tidak didukung.",
+                "error"
+            );
+
+            return;
+        }
+
+        selectedAvatar =
+            file;
+
+        renderAvatar(
+            URL.createObjectURL(file),
+            currentUser?.username
+        );
+
+        showStatus(
+            "Avatar siap disimpan.",
+            "success"
+        );
 
     }
 );
@@ -2052,7 +2048,6 @@ document.getElementById(
     updateBioCount
 );
 
-
 document.getElementById(
     "saveBtn"
 ).addEventListener(
@@ -2067,14 +2062,7 @@ async function saveProfile(){
         !currentUser ||
         !currentUser.username
     ){
-
-        showStatus(
-            "User tidak ditemukan.",
-            "error"
-        );
-
         return;
-
     }
 
     const button =
@@ -2082,34 +2070,12 @@ async function saveProfile(){
             "saveBtn"
         );
 
-    const bio =
-        document.getElementById(
-            "bio"
-        ).value
-        .trim();
-
-    if(
-        bio.length >
-        300
-    ){
-
-        showStatus(
-            "Bio maksimal 300 karakter.",
-            "error"
-        );
-
-        return;
-
-    }
-
-    button.disabled =
-        true;
+    button.disabled = true;
 
     try{
 
         let avatar =
-            currentUser.avatar ||
-            "";
+            currentUser.avatar || "";
 
         if(selectedAvatar){
 
@@ -2120,70 +2086,46 @@ async function saveProfile(){
                 await uploadFile(
                     selectedAvatar
                 );
-
         }
 
         button.textContent =
             "Menyimpan profile...";
 
-        const username =
-            currentUser.username;
+        const bio =
+            document.getElementById(
+                "bio"
+            ).value.trim();
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/users/${encodeURIComponent(
-                    username
+        const data =
+            await api(
+                `/api/users/${encodeURIComponent(
+                    currentUser.username
                 )}/profile`,
                 {
                     method:"PUT",
-                    headers:{
-                        "Content-Type":
-                            "application/json",
-                        "Accept":
-                            "application/json"
-                    },
-                    body:
-                        JSON.stringify({
-                            avatar,
-                            bio
-                        })
+                    body:JSON.stringify({
+                        avatar,
+                        bio
+                    })
                 }
             );
 
-        const data =
-            await response.json();
-
-        if(
-            !response.ok ||
-            data.status !== true ||
-            !data.result
-        ){
-
-            throw new Error(
-                data.message ||
-                "Gagal update profile."
-            );
-
-        }
+        const user =
+            extractObject(data);
 
         currentUser =
-            data.result;
+            user;
 
-        saveLocalUser(
-            currentUser
-        );
+        saveLocalUser(user);
 
         selectedAvatar =
             null;
 
         document.getElementById(
             "avatarInput"
-        ).value =
-            "";
+        ).value = "";
 
-        renderUser(
-            currentUser
-        );
+        renderUser(user);
 
         showStatus(
             "Profile berhasil diperbarui! ✅",
@@ -2198,8 +2140,7 @@ async function saveProfile(){
         );
 
         showStatus(
-            error.message ||
-            "Gagal memperbarui profile.",
+            error.message,
             "error"
         );
 
@@ -2217,7 +2158,7 @@ async function saveProfile(){
 
 
 /* =========================================================
-   POST IMAGE PREVIEW
+   POST IMAGE
 ========================================================= */
 
 document.getElementById(
@@ -2243,85 +2184,54 @@ document.getElementById(
         const file =
             event.target.files?.[0];
 
-        if(!file){
-            return;
-        }
+        if(!file) return;
 
-        try{
+        const allowed = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/gif"
+        ];
 
-            if(
-                file.size >
-                MAX_POST_IMAGE_SIZE
-            ){
+        if(file.size > MAX_POST_IMAGE_SIZE){
 
-                throw new Error(
-                    "Ukuran gambar posting maksimal 10MB."
-                );
-
-            }
-
-            const allowedTypes = [
-
-                "image/jpeg",
-                "image/png",
-                "image/webp",
-                "image/gif"
-
-            ];
-
-            if(
-                !allowedTypes.includes(
-                    file.type
-                )
-            ){
-
-                throw new Error(
-                    "Format gambar harus JPG, PNG, WEBP, atau GIF."
-                );
-
-            }
-
-            selectedPostImage =
-                file;
-
-            const url =
-                URL.createObjectURL(
-                    file
-                );
-
-            document.getElementById(
-                "previewImage"
-            ).src =
-                url;
-
-            document.getElementById(
-                "previewWrap"
-            ).classList.add(
-                "show"
-            );
-
-        }catch(error){
-
-            selectedPostImage =
-                null;
-
-            event.target.value =
-                "";
+            event.target.value = "";
 
             showStatus(
-                error.message,
+                "Ukuran gambar maksimal 10MB.",
                 "error"
             );
 
+            return;
         }
+
+        if(!allowed.includes(file.type)){
+
+            event.target.value = "";
+
+            showStatus(
+                "Format gambar tidak didukung.",
+                "error"
+            );
+
+            return;
+        }
+
+        selectedPostImage =
+            file;
+
+        document.getElementById(
+            "previewImage"
+        ).src =
+            URL.createObjectURL(file);
+
+        document.getElementById(
+            "previewWrap"
+        ).classList.add("show");
 
     }
 );
 
-
-/* =========================================================
-   REMOVE PREVIEW
-========================================================= */
 
 document.getElementById(
     "removePreview"
@@ -2334,13 +2244,11 @@ document.getElementById(
 
         document.getElementById(
             "postImageInput"
-        ).value =
-            "";
+        ).value = "";
 
         document.getElementById(
             "previewImage"
-        ).src =
-            "";
+        ).src = "";
 
         document.getElementById(
             "previewWrap"
@@ -2363,7 +2271,6 @@ document.getElementById(
     updateCaptionCount
 );
 
-
 document.getElementById(
     "createPostBtn"
 ).addEventListener(
@@ -2385,7 +2292,6 @@ async function createPost(){
         );
 
         return;
-
     }
 
     const button =
@@ -2396,8 +2302,7 @@ async function createPost(){
     const caption =
         document.getElementById(
             "postCaption"
-        ).value
-        .trim();
+        ).value.trim();
 
     if(
         !caption &&
@@ -2410,107 +2315,65 @@ async function createPost(){
         );
 
         return;
-
     }
 
-    button.disabled =
-        true;
+    button.disabled = true;
 
     try{
 
-        let imageUrl =
-            "";
-
-        /* UPLOAD IMAGE */
+        let image = "";
 
         if(selectedPostImage){
 
             button.textContent =
                 "Mengupload gambar...";
 
-            imageUrl =
+            image =
                 await uploadFile(
                     selectedPostImage
                 );
-
         }
-
-        /* CREATE POST */
 
         button.textContent =
             "Membuat postingan...";
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/posts`,
-                {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":
-                            "application/json",
-                        "Accept":
-                            "application/json"
-                    },
-                    body:
-                        JSON.stringify({
+        await api(
+            "/api/posts",
+            {
+                method:"POST",
+                body:JSON.stringify({
 
-                            username:
-                                currentUser.username,
+                    username:
+                        currentUser.username,
 
-                            caption,
+                    caption,
 
-                            image:
-                                imageUrl
+                    image
 
-                        })
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if(
-            !response.ok ||
-            data.status !== true
-        ){
-
-            throw new Error(
-                data.message ||
-                "Gagal membuat postingan."
-            );
-
-        }
-
-        /* RESET FORM */
+                })
+            }
+        );
 
         document.getElementById(
             "postCaption"
-        ).value =
-            "";
+        ).value = "";
 
-        document.getElementById(
-            "captionCount"
-        ).textContent =
-            "0";
+        updateCaptionCount();
 
         selectedPostImage =
             null;
 
         document.getElementById(
             "postImageInput"
-        ).value =
-            "";
+        ).value = "";
 
         document.getElementById(
             "previewImage"
-        ).src =
-            "";
+        ).src = "";
 
         document.getElementById(
             "previewWrap"
-        ).classList.remove(
-            "show"
-        );
+        ).classList.remove("show");
 
         showStatus(
             "Postingan berhasil dibuat! 🚀",
@@ -2518,13 +2381,6 @@ async function createPost(){
         );
 
         await loadMyPosts();
-
-        document.getElementById(
-            "postsList"
-        ).scrollIntoView({
-            behavior:"smooth",
-            block:"start"
-        });
 
     }catch(error){
 
@@ -2534,8 +2390,7 @@ async function createPost(){
         );
 
         showStatus(
-            error.message ||
-            "Gagal membuat postingan.",
+            error.message,
             "error"
         );
 
@@ -2553,19 +2408,11 @@ async function createPost(){
 
 
 /* =========================================================
-   LOAD MY POSTS
+   LOAD ALL POSTS
+   GET /api/posts
 ========================================================= */
 
 async function loadMyPosts(){
-
-    if(
-        !currentUser ||
-        !currentUser.username
-    ){
-
-        return;
-
-    }
 
     const list =
         document.getElementById(
@@ -2581,56 +2428,45 @@ async function loadMyPosts(){
 
     try{
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/posts/user/${encodeURIComponent(
-                    currentUser.username
-                )}`,
+        const data =
+            await api(
+                "/api/posts",
                 {
                     method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        "Accept":
-                            "application/json"
-                    }
+                    cache:"no-store"
                 }
             );
 
-        const data =
-            await response.json();
-
-        if(
-            !response.ok ||
-            data.status !== true
-        ){
-
-            throw new Error(
-                data.message ||
-                "Gagal mengambil postingan."
-            );
-
-        }
-
         let posts =
-            data.result ||
-            data.posts ||
-            data.data ||
-            [];
+            extractArray(data);
 
-        if(!Array.isArray(posts)){
+        /*
+         * Profile hanya menampilkan postingan
+         * milik user yang sedang login.
+         */
 
-            posts = [];
+        posts =
+            posts.filter(post => {
 
-        }
+                const username =
+                    post.username ||
+                    post.user?.username ||
+                    post.author?.username;
 
-        renderPosts(
-            posts
-        );
+                return String(username || "")
+                    .toLowerCase() ===
+                    String(
+                        currentUser?.username || ""
+                    ).toLowerCase();
+
+            });
+
+        renderPosts(posts);
 
     }catch(error){
 
         console.error(
-            "[MY POSTS]",
+            "[POSTS]",
             error
         );
 
@@ -2639,10 +2475,7 @@ async function loadMyPosts(){
                 <div class="icon">⚠️</div>
                 <strong>Gagal mengambil postingan</strong>
                 <span>
-                    ${escapeHTML(
-                        error.message ||
-                        "Terjadi kesalahan."
-                    )}
+                    ${escapeHTML(error.message)}
                 </span>
             </div>
         `;
@@ -2651,9 +2484,97 @@ async function loadMyPosts(){
             "postCount"
         ).textContent =
             "0 Post";
-
     }
 
+}
+
+
+/* =========================================================
+   POST DATA HELPERS
+========================================================= */
+
+function postId(post){
+
+    return String(
+        post.id ??
+        post._id ??
+        post.postId ??
+        ""
+    );
+}
+
+
+function postUsername(post){
+
+    return (
+        post.username ||
+        post.user?.username ||
+        post.author?.username ||
+        currentUser?.username ||
+        "User"
+    );
+}
+
+
+function postAvatar(post){
+
+    return (
+        post.avatar ||
+        post.user?.avatar ||
+        post.author?.avatar ||
+        ""
+    );
+}
+
+
+function postCaption(post){
+
+    return (
+        post.caption ??
+        post.text ??
+        post.content ??
+        ""
+    );
+}
+
+
+function postImage(post){
+
+    return (
+        post.image ||
+        post.imageUrl ||
+        post.media ||
+        ""
+    );
+}
+
+
+function postLikes(post){
+
+    return Number(
+        post.likesCount ??
+        post.likeCount ??
+        post.likes ??
+        0
+    );
+}
+
+
+function postLiked(post){
+
+    if(
+        typeof post.liked === "boolean"
+    ){
+        return post.liked;
+    }
+
+    if(
+        typeof post.isLiked === "boolean"
+    ){
+        return post.isLiked;
+    }
+
+    return false;
 }
 
 
@@ -2678,9 +2599,7 @@ function renderPosts(posts){
         list.innerHTML = `
             <div class="empty-post">
 
-                <div class="icon">
-                    📝
-                </div>
+                <div class="icon">📝</div>
 
                 <strong>
                     Belum ada postingan
@@ -2694,56 +2613,48 @@ function renderPosts(posts){
         `;
 
         return;
-
     }
 
     list.innerHTML =
         posts.map(
             post =>
-                createPostHTML(
-                    post
-                )
+                createPostHTML(post)
         ).join("");
 
 }
 
 
 /* =========================================================
-   POST HTML
+   CREATE POST HTML
 ========================================================= */
 
 function createPostHTML(post){
 
+    const id =
+        postId(post);
+
     const username =
-        post.username ||
-        currentUser?.username ||
-        "User";
+        postUsername(post);
 
     const avatar =
-        post.avatar ||
-        currentUser?.avatar ||
-        "";
+        postAvatar(post);
 
     const caption =
-        post.caption ||
-        post.text ||
-        "";
+        postCaption(post);
 
     const image =
-        post.image ||
-        post.imageUrl ||
-        post.media ||
-        "";
+        postImage(post);
+
+    const likes =
+        postLikes(post);
+
+    const liked =
+        postLiked(post);
 
     const date =
         post.createdAt ||
         post.created_at ||
         post.date;
-
-    const id =
-        post.id ||
-        post._id ||
-        post.postId;
 
     const avatarHTML =
         avatar
@@ -2771,6 +2682,9 @@ function createPostHTML(post){
         `
         : "";
 
+    const isEditing =
+        editingPostId === id;
+
     return `
 
         <article
@@ -2783,9 +2697,7 @@ function createPostHTML(post){
                 <div class="post-user">
 
                     <div class="post-avatar">
-
                         ${avatarHTML}
-
                     </div>
 
                     <div class="post-user-info">
@@ -2802,38 +2714,163 @@ function createPostHTML(post){
 
                 </div>
 
-                <button
-                    class="delete-post"
-                    type="button"
-                    data-id="${escapeHTML(id)}"
-                    title="Hapus postingan"
-                >
-                    🗑️
-                </button>
+                <div class="post-menu">
+
+                    <button
+                        type="button"
+                        title="Edit"
+                        data-action="edit"
+                        data-id="${escapeHTML(id)}"
+                    >
+                        ✏️
+                    </button>
+
+                    <button
+                        class="delete"
+                        type="button"
+                        title="Hapus"
+                        data-action="delete"
+                        data-id="${escapeHTML(id)}"
+                    >
+                        🗑️
+                    </button>
+
+                </div>
 
             </div>
 
             ${
-                caption
+                isEditing
                 ? `
-                    <div class="post-caption">
-                        ${escapeHTML(caption)}
+                    <div class="edit-box">
+
+                        <textarea
+                            id="edit-${escapeHTML(id)}"
+                            maxlength="1000"
+                        >${escapeHTML(caption)}</textarea>
+
+                        <div class="edit-actions">
+
+                            <button
+                                class="edit-save"
+                                type="button"
+                                data-action="save-edit"
+                                data-id="${escapeHTML(id)}"
+                            >
+                                Simpan
+                            </button>
+
+                            <button
+                                class="edit-cancel"
+                                type="button"
+                                data-action="cancel-edit"
+                            >
+                                Batal
+                            </button>
+
+                        </div>
+
                     </div>
                 `
-                : ""
+                : `
+                    ${
+                        caption
+                        ? `
+                            <div class="post-caption">
+                                ${escapeHTML(caption)}
+                            </div>
+                        `
+                        : ""
+                    }
+
+                    ${imageHTML}
+                `
             }
 
-            ${imageHTML}
+            <div class="post-actions">
 
-            <div class="post-bottom">
+                <button
+                    class="post-action ${liked ? "liked" : ""}"
+                    type="button"
+                    data-action="like"
+                    data-id="${escapeHTML(id)}"
+                >
+                    ${liked ? "❤️" : "♡"}
+                    Suka
+                    <span class="like-count">
+                        ${likes}
+                    </span>
+                </button>
 
-                <span class="post-date">
-                    📦 Postingan saya
+                <button
+                    class="post-action"
+                    type="button"
+                    data-action="comments"
+                    data-id="${escapeHTML(id)}"
+                >
+                    💬 Komentar
+                </button>
+
+            </div>
+
+            <div class="post-meta">
+
+                <span>
+                    ❤️ ${likes} suka
                 </span>
 
-                <span class="post-date">
+                <span>
                     ReyCloud Marketplace
                 </span>
+
+            </div>
+
+            <div
+                class="comments"
+                id="comments-${escapeHTML(id)}"
+                style="display:${
+                    openComments.has(id)
+                        ? "block"
+                        : "none"
+                }"
+            >
+
+                <div
+                    class="comment-list"
+                    id="comment-list-${escapeHTML(id)}"
+                >
+                    ${
+                        openComments.has(id)
+                        ? `
+                            <div class="comment-loading">
+                                Mengambil komentar...
+                            </div>
+                        `
+                        : ""
+                    }
+                </div>
+
+                <form
+                    class="comment-form"
+                    data-post-id="${escapeHTML(id)}"
+                >
+
+                    <input
+                        class="comment-input"
+                        name="comment"
+                        maxlength="500"
+                        autocomplete="off"
+                        placeholder="Tulis komentar..."
+                    >
+
+                    <button
+                        class="comment-send"
+                        type="submit"
+                    >
+                        Kirim
+                    </button>
+
+                </form>
 
             </div>
 
@@ -2845,90 +2882,590 @@ function createPostHTML(post){
 
 
 /* =========================================================
-   DELETE POST
+   POST EVENTS
 ========================================================= */
 
 document.getElementById(
     "postsList"
 ).addEventListener(
     "click",
-    event => {
+    async event => {
 
         const button =
             event.target.closest(
-                ".delete-post"
+                "[data-action]"
             );
 
         if(!button){
             return;
         }
 
+        const action =
+            button.dataset.action;
+
         const id =
             button.dataset.id;
 
-        if(!id){
+        if(action === "like"){
 
-            showStatus(
-                "ID postingan tidak ditemukan.",
-                "error"
-            );
-
-            return;
+            await likePost(id);
 
         }
 
-        deletePost(
-            id
-        );
+        if(action === "comments"){
+
+            await toggleComments(id);
+
+        }
+
+        if(action === "delete"){
+
+            await deletePost(id);
+
+        }
+
+        if(action === "edit"){
+
+            editingPostId =
+                id;
+
+            await loadMyPosts();
+
+        }
+
+        if(action === "cancel-edit"){
+
+            editingPostId =
+                null;
+
+            await loadMyPosts();
+
+        }
+
+        if(action === "save-edit"){
+
+            await updatePost(id);
+
+        }
 
     }
 );
 
 
-async function deletePost(id){
+/* =========================================================
+   LIKE
+   POST /api/posts/:id/like
+========================================================= */
 
-    const confirmed =
-        confirm(
-            "Yakin ingin menghapus postingan ini?"
+async function likePost(id){
+
+    if(!id){
+
+        showStatus(
+            "ID postingan tidak ditemukan.",
+            "error"
         );
 
-    if(!confirmed){
         return;
     }
 
     try{
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/posts/${encodeURIComponent(
-                    id
-                )}`,
+        await api(
+            `/api/posts/${encodeURIComponent(id)}/like`,
+            {
+                method:"POST",
+                body:JSON.stringify({
+                    username:
+                        currentUser?.username
+                })
+            }
+        );
+
+        await loadMyPosts();
+
+    }catch(error){
+
+        console.error(
+            "[LIKE]",
+            error
+        );
+
+        showStatus(
+            error.message ||
+            "Gagal memberikan like.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+async function toggleComments(id){
+
+    if(!id) return;
+
+    if(
+        openComments.has(id)
+    ){
+
+        openComments.delete(id);
+
+        const box =
+            document.getElementById(
+                `comments-${id}`
+            );
+
+        if(box){
+            box.style.display =
+                "none";
+        }
+
+        return;
+    }
+
+    openComments.add(id);
+
+    const box =
+        document.getElementById(
+            `comments-${id}`
+        );
+
+    if(box){
+        box.style.display =
+            "block";
+    }
+
+    await loadComments(id);
+
+}
+
+
+/* =========================================================
+   GET COMMENTS
+   GET /api/posts/:id/comments
+========================================================= */
+
+async function loadComments(id){
+
+    const list =
+        document.getElementById(
+            `comment-list-${id}`
+        );
+
+    if(!list) return;
+
+    list.innerHTML = `
+        <div class="comment-loading">
+            Mengambil komentar...
+        </div>
+    `;
+
+    try{
+
+        const data =
+            await api(
+                `/api/posts/${encodeURIComponent(id)}/comments`
+            );
+
+        const comments =
+            extractArray(data);
+
+        renderComments(
+            id,
+            comments
+        );
+
+    }catch(error){
+
+        console.error(
+            "[COMMENTS]",
+            error
+        );
+
+        list.innerHTML = `
+            <div class="comment-loading">
+                ${escapeHTML(error.message)}
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER COMMENTS
+========================================================= */
+
+function renderComments(
+    postIdValue,
+    comments
+){
+
+    const list =
+        document.getElementById(
+            `comment-list-${postIdValue}`
+        );
+
+    if(!list) return;
+
+    if(!comments.length){
+
+        list.innerHTML = `
+            <div class="comment-loading">
+                Belum ada komentar.
+            </div>
+        `;
+
+        return;
+    }
+
+    list.innerHTML =
+        comments.map(
+            comment =>
+                createCommentHTML(
+                    postIdValue,
+                    comment
+                )
+        ).join("");
+
+}
+
+
+/* =========================================================
+   COMMENT HTML
+========================================================= */
+
+function createCommentHTML(
+    postIdValue,
+    comment
+){
+
+    const id =
+        String(
+            comment.id ??
+            comment._id ??
+            comment.commentId ??
+            ""
+        );
+
+    const username =
+        comment.username ||
+        comment.user?.username ||
+        comment.author?.username ||
+        "User";
+
+    const avatar =
+        comment.avatar ||
+        comment.user?.avatar ||
+        comment.author?.avatar ||
+        "";
+
+    const text =
+        comment.comment ??
+        comment.text ??
+        comment.content ??
+        "";
+
+    const date =
+        comment.createdAt ||
+        comment.created_at ||
+        comment.date;
+
+    const isMine =
+        String(username).toLowerCase() ===
+        String(
+            currentUser?.username || ""
+        ).toLowerCase();
+
+    const avatarHTML =
+        avatar
+        ? `
+            <img
+                src="${escapeHTML(avatar)}"
+                alt="Avatar"
+            >
+        `
+        : escapeHTML(
+            username
+                .charAt(0)
+                .toUpperCase()
+        );
+
+    return `
+
+        <div
+            class="comment"
+            data-comment-id="${escapeHTML(id)}"
+        >
+
+            <div class="comment-avatar">
+                ${avatarHTML}
+            </div>
+
+            <div class="comment-body">
+
+                <div class="comment-head">
+
+                    <strong>
+                        ${escapeHTML(username)}
+                    </strong>
+
+                    <span>
+                        ${formatDateTime(date)}
+                    </span>
+
+                </div>
+
+                <div class="comment-text">
+                    ${escapeHTML(text)}
+                </div>
+
+                ${
+                    isMine && id
+                    ? `
+                        <div class="comment-tools">
+
+                            <button
+                                class="comment-delete"
+                                type="button"
+                                data-delete-comment="true"
+                                data-post-id="${escapeHTML(postIdValue)}"
+                                data-comment-id="${escapeHTML(id)}"
+                            >
+                                Hapus komentar
+                            </button>
+
+                        </div>
+                    `
+                    : ""
+                }
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+/* =========================================================
+   POST COMMENT
+   POST /api/posts/:id/comments
+========================================================= */
+
+document.getElementById(
+    "postsList"
+).addEventListener(
+    "submit",
+    async event => {
+
+        const form =
+            event.target.closest(
+                ".comment-form"
+            );
+
+        if(!form){
+            return;
+        }
+
+        event.preventDefault();
+
+        const postIdValue =
+            form.dataset.postId;
+
+        const input =
+            form.querySelector(
+                ".comment-input"
+            );
+
+        const button =
+            form.querySelector(
+                ".comment-send"
+            );
+
+        const comment =
+            input.value.trim();
+
+        if(!comment){
+            return;
+        }
+
+        button.disabled =
+            true;
+
+        try{
+
+            await api(
+                `/api/posts/${encodeURIComponent(
+                    postIdValue
+                )}/comments`,
                 {
-                    method:"DELETE",
-                    headers:{
-                        "Accept":
-                            "application/json"
-                    }
+                    method:"POST",
+                    body:JSON.stringify({
+
+                        username:
+                            currentUser?.username,
+
+                        comment
+
+                    })
                 }
             );
 
-        const data =
-            await response.json();
+            input.value = "";
 
-        if(
-            !response.ok ||
-            data.status !== true
-        ){
+            await loadComments(
+                postIdValue
+            );
 
-            throw new Error(
-                data.message ||
-                "Gagal menghapus postingan."
+        }catch(error){
+
+            console.error(
+                "[COMMENT CREATE]",
+                error
+            );
+
+            showStatus(
+                error.message ||
+                "Gagal mengirim komentar.",
+                "error"
+            );
+
+        }finally{
+
+            button.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DELETE COMMENT
+   DELETE /api/posts/:postId/comments/:commentId
+========================================================= */
+
+document.getElementById(
+    "postsList"
+).addEventListener(
+    "click",
+    async event => {
+
+        const button =
+            event.target.closest(
+                "[data-delete-comment]"
+            );
+
+        if(!button){
+            return;
+        }
+
+        const postIdValue =
+            button.dataset.postId;
+
+        const commentId =
+            button.dataset.commentId;
+
+        if(!postIdValue || !commentId){
+            return;
+        }
+
+        const confirmed =
+            confirm(
+                "Hapus komentar ini?"
+            );
+
+        if(!confirmed){
+            return;
+        }
+
+        try{
+
+            await api(
+                `/api/posts/${encodeURIComponent(
+                    postIdValue
+                )}/comments/${encodeURIComponent(
+                    commentId
+                )}`,
+                {
+                    method:"DELETE"
+                }
+            );
+
+            await loadComments(
+                postIdValue
+            );
+
+        }catch(error){
+
+            console.error(
+                "[COMMENT DELETE]",
+                error
+            );
+
+            showStatus(
+                error.message ||
+                "Gagal menghapus komentar.",
+                "error"
             );
 
         }
 
+    }
+);
+
+
+/* =========================================================
+   UPDATE POST
+   PUT /api/posts/:id
+========================================================= */
+
+async function updatePost(id){
+
+    const textarea =
+        document.getElementById(
+            `edit-${id}`
+        );
+
+    if(!textarea){
+
+        return;
+    }
+
+    const caption =
+        textarea.value.trim();
+
+    try{
+
+        await api(
+            `/api/posts/${encodeURIComponent(id)}`,
+            {
+                method:"PUT",
+                body:JSON.stringify({
+
+                    username:
+                        currentUser?.username,
+
+                    caption
+
+                })
+            }
+        );
+
+        editingPostId =
+            null;
+
         showStatus(
-            "Postingan berhasil dihapus. 🗑️",
+            "Postingan berhasil diperbarui. ✅",
             "success"
         );
 
@@ -2937,7 +3474,74 @@ async function deletePost(id){
     }catch(error){
 
         console.error(
-            "[DELETE POST]",
+            "[POST UPDATE]",
+            error
+        );
+
+        showStatus(
+            error.message ||
+            "Gagal memperbarui postingan.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE POST
+   DELETE /api/posts/:id
+========================================================= */
+
+async function deletePost(id){
+
+    if(!id){
+
+        showStatus(
+            "ID postingan tidak ditemukan.",
+            "error"
+        );
+
+        return;
+    }
+
+    if(
+        !confirm(
+            "Yakin ingin menghapus postingan ini?"
+        )
+    ){
+        return;
+    }
+
+    try{
+
+        await api(
+            `/api/posts/${encodeURIComponent(id)}`,
+            {
+                method:"DELETE",
+                body:JSON.stringify({
+
+                    username:
+                        currentUser?.username
+
+                })
+            }
+        );
+
+        showStatus(
+            "Postingan berhasil dihapus. 🗑️",
+            "success"
+        );
+
+        openComments.delete(id);
+
+        await loadMyPosts();
+
+    }catch(error){
+
+        console.error(
+            "[POST DELETE]",
             error
         );
 
@@ -2968,16 +3572,14 @@ document.getElementById(
         );
 
         const success =
-            await loadProfile(
-                false
-            );
+            await loadProfile(false);
 
         if(success){
 
             await loadMyPosts();
 
             showStatus(
-                "Profile dan postingan berhasil diperbarui. ✅",
+                "Data berhasil diperbarui. ✅",
                 "success"
             );
 
@@ -2995,7 +3597,7 @@ document.getElementById(
 
 
 /* =========================================================
-   MOBILE MENU
+   MOBILE
 ========================================================= */
 
 document.getElementById(
@@ -3005,13 +3607,9 @@ document.getElementById(
     () => {
 
         document
-            .getElementById(
-                "sidebar"
-            )
+            .getElementById("sidebar")
             .classList
-            .toggle(
-                "open"
-            );
+            .toggle("open");
 
     }
 );
@@ -3027,16 +3625,11 @@ document.querySelectorAll(
             () => {
 
                 document
-                    .getElementById(
-                        "sidebar"
-                    )
+                    .getElementById("sidebar")
                     .classList
-                    .remove(
-                        "open"
-                    );
+                    .remove("open");
 
             }
-
         );
 
     }
@@ -3061,9 +3654,7 @@ document.getElementById(
             "loginUser"
         ].forEach(
             key =>
-                localStorage.removeItem(
-                    key
-                )
+                localStorage.removeItem(key)
         );
 
         window.location.href =
@@ -3080,9 +3671,7 @@ document.getElementById(
 async function init(){
 
     const success =
-        await loadProfile(
-            true
-        );
+        await loadProfile(true);
 
     if(success){
 
